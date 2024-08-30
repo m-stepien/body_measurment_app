@@ -7,24 +7,24 @@ import org.springframework.stereotype.Component;
 public class CircumferenceValidator implements Validator{
 
     @Override
-    public boolean checkRequiredField(Circumference circumference) {
-        return circumference.abdominal() != null && circumference.hip() != null
-                && circumference.waist() != null && circumference.chest() != null;
+    public boolean checkRequiredField(BasicCircumference basicCircumference) {
+        return basicCircumference.getAbdominal() != null && basicCircumference.getHip() != null
+                && basicCircumference.getWaist() != null && basicCircumference.getChest() != null;
     }
 
     @Override
-    public boolean checkSignOnFields(Circumference circumference) {
+    public boolean checkSignOnFields(BasicCircumference basicCircumference) {
         boolean result=true;
-        if(circumference.chest()<=0){
+        if(basicCircumference.getChest()<=0){
             result = false;
         }
-        else if(circumference.hip()<=0){
+        else if(basicCircumference.getHip()<=0){
             result = false;
         }
-        else if(circumference.abdominal()<=0){
+        else if(basicCircumference.getAbdominal()<=0){
             result = false;
         }
-        else if(circumference.waist()<=0){
+        else if(basicCircumference.getWaist()<=0){
             result = false;
         }
         return result;
