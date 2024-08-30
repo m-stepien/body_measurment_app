@@ -4,10 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 public class MeasurementController {
-    private MeasurementService measurementService;
+    private final MeasurementService measurementService;
 
     @Autowired
     public MeasurementController(MeasurementService measurementService){
@@ -15,8 +16,8 @@ public class MeasurementController {
     }
 
     @PostMapping("/bodyMonitoring/addNewCircumference")
-    public void addNewMeasurement(){
-
+    public void addNewMeasurement(@RequestBody Circumference circumference){
+        this.measurementService.addNewMeasurement(circumference);
     }
 
     @GetMapping("bodyMonitoring/getAllCircumference")
