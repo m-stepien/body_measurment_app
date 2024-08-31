@@ -15,27 +15,22 @@ public class MeasurementController {
 
     @PostMapping("/bodyMonitoring/addNewCircumference")
     public void addNewMeasurement(@RequestBody CircumferenceData basicCircumference){
-        try {
             this.measurementService.addNewMeasurement(basicCircumference);
-        }
-        catch(Exception e) {
-            System.out.println("Something is fucked");
-        }
     }
 
-    @GetMapping("/bodyMonitoring/getAllCircumference")
+    @GetMapping("/bodyMonitoring/getCircumference/{id}")
     public CircumferenceData getAllCircumference(){
-        return null;
+        this.measurementService.
     }
 
-    @PatchMapping("/bodyMonitoring/update/circumference/basic/{id}")
-    public void updateBasicCircumference(@RequestBody BasicCircumference basicCircumference){
-        //czy powinno być oddzielne dla basic czy additional
+    @PatchMapping("/bodyMonitoring/update/circumference/{id}")
+    public void updateCircumference(@RequestBody CircumferenceData circumferenceData){
+        this.measurementService.updateCircumgerence(circumferenceData);
     }
 
     @DeleteMapping("/bodyMonitoring/circumference/deleta/{id}")
     public void deleteCircumference(@RequestParam long id){
-
+        this.measurementService.deleteCircumferenceById(id);
     }
 
 }

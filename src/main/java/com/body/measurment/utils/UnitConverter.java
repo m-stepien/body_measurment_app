@@ -1,6 +1,4 @@
-package com.body.measurment;
-
-import com.body.measurment.utils.FootAndInch;
+package com.body.measurment.utils;
 
 import static java.lang.Math.floor;
 

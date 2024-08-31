@@ -2,6 +2,11 @@ package com.body.measurment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BasicCircumferenceRepository extends JpaRepository<BasicCircumference, Long> {
+import java.time.LocalDate;
+import java.util.List;
 
+public interface BasicCircumferenceRepository extends JpaRepository<BasicCircumference, Long> {
+    public void updateBasicCircumference(BasicCircumference basicCircumference);
+    public List<BasicCircumference> findByBetweenMeasurmentDateOrderByMeasurmentDateDesc(LocalDate startData, LocalDate stopDate);
+    public List<BasicCircumference> findByMeasurmentDateGreaterThanEqual(LocalDate measurmentDate);
 }
