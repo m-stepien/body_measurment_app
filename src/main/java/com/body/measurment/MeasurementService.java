@@ -2,6 +2,7 @@ package com.body.measurment;
 
 import com.body.measurment.custom.exception.InvalidDataException;
 import com.body.measurment.custom.exception.MissingRequiredDataException;
+import com.body.measurment.dto.CircumferenceData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,15 @@ public class MeasurementService{
         this.validator = validator;
     }
 
-    public void addNewMeasurement(BasicCircumference basicCircumference) throws Exception{
+    public void addNewMeasurement(CircumferenceData circumferenceData) throws Exception{
+        try {
+            this.addNewBasicCircumference(circumferenceData.getBasicCircumference());
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void addNewBasicCircumference(BasicCircumference basicCircumference) throws Exception{
         if(this.validator.checkRequiredField(basicCircumference)){
             if(this.validator.checkSignOnFields(basicCircumference)){
                 basicCircumferenceRepository.save(basicCircumference);
@@ -28,6 +37,5 @@ public class MeasurementService{
         else{
             throw new MissingRequiredDataException(basicCircumference.getClass().getName());
         }
-
     }
 }
