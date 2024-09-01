@@ -19,8 +19,8 @@ public class MeasurementController {
     }
 
     @GetMapping("/bodyMonitoring/getCircumference/{id}")
-    public CircumferenceData getAllCircumference(){
-        this.measurementService.
+    public CircumferenceData getCircumferenceDate(@RequestParam long id){
+        return this.measurementService.getCircumferenceDateById(id);
     }
 
     @PatchMapping("/bodyMonitoring/update/circumference/{id}")
