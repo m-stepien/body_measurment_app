@@ -7,7 +7,8 @@ import com.body.measurment.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,11 +35,7 @@ public class MeasurementService {
         }
     }
 
-    public void deleteCircumferenceById(long id) {
-        this.basicCircumferenceRepository.deleteById(id);
-    }
-
-    public void updateCircumgerence(CircumferenceData circumferenceData) {
+    public void updateCircumference(CircumferenceData circumferenceData) {
         if (checkIsBasicCircumferenceUpdated(circumferenceData.getBasicCircumference())) {
             this.basicCircumferenceRepository.updateBasicCircumference(circumferenceData.getBasicCircumference());
         }
@@ -47,11 +44,11 @@ public class MeasurementService {
         }
     }
 
-    public CircumferenceData getCircumferenceDateById(long id) {
+    public CircumferenceData getCircumferenceDataById(long id) {
         CircumferenceData circumferenceData = null;
         Optional<BasicCircumference> basicCircumference = this.basicCircumferenceRepository.findById(id);
         AdditionalCircumference additionalCircumference;
-        if (basicCircumference != null) {
+        if (basicCircumference.isPresent()) {
             if(basicCircumference.get().getAdditionalCircumference()!=null) {
                 additionalCircumference =basicCircumference.get().getAdditionalCircumference();
             }
@@ -61,6 +58,33 @@ public class MeasurementService {
             circumferenceData = new CircumferenceData(basicCircumference.get(), additionalCircumference);
         }
         return circumferenceData;
+    }
+
+    public List<CircumferenceData> getCircumferenceDataFromDate(LocalDate startDate){
+        List<BasicCircumference> basicCircumferenceList = this.basicCircumferenceRepository.findByMeasurmentDateGreaterThanEqual(startDate);
+        List<CircumferenceData> circumferenceDataList = this.mapBasicCircumferenceListToCircumferenceDate(basicCircumferenceList);
+        return circumferenceDataList;
+    }
+
+    public List<CircumferenceData> getCircumferenceDataInDateRange(LocalDate startDate, LocalDate endDate){
+        List<BasicCircumference> basicCircumferenceList = this.basicCircumferenceRepository
+                .findByBetweenMeasurmentDateOrderByMeasurmentDateDesc(startDate, endDate);
+        List<CircumferenceData> circumferenceDataList = this.mapBasicCircumferenceListToCircumferenceDate(basicCircumferenceList);
+        return circumferenceDataList;
+    }
+
+    public List<CircumferenceData> getCircumferenceDataAll(){
+        List<BasicCircumference> basicCircumferences = this.basicCircumferenceRepository.findAll();
+        List<CircumferenceData> circumferenceDataList = this.mapBasicCircumferenceListToCircumferenceDate(basicCircumferences);
+        return circumferenceDataList;
+    }
+
+    public void deleteCircumferenceById(long id) {
+        this.basicCircumferenceRepository.deleteById(id);
+    }
+
+    public void deleteAllCircumference(){
+        this.basicCircumferenceRepository.deleteAll();
     }
 
     private void addNewBasicCircumference(BasicCircumference basicCircumference) throws Exception {
@@ -83,11 +107,20 @@ public class MeasurementService {
         }
     }
 
+    private List<CircumferenceData> mapBasicCircumferenceListToCircumferenceDate(List<BasicCircumference> basicCircumferenceList) {
+        List<CircumferenceData> circumferenceDataList = basicCircumferenceList.stream().map(basicCircumference -> {
+            AdditionalCircumference additionalCircumference = basicCircumference.getAdditionalCircumference();
+            CircumferenceData circumferenceData = new CircumferenceData(basicCircumference, additionalCircumference);
+            return circumferenceData;
+        }).toList();
+        return circumferenceDataList;
+    }
+
     private boolean checkIsBasicCircumferenceUpdated(BasicCircumference basicCircumference) {
         return basicCircumference != null;
     }
 
     private boolean checkIsAdditionalCircumferenceUpdated(AdditionalCircumference additionalCircumference) {
-        return additionalCircumferenceRepository != null;
+        return additionalCircumference != null;
     }
 }
