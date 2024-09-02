@@ -1,5 +1,7 @@
 package com.body.measurment.utils;
 
+import com.body.measurment.dto.FootAndInch;
+
 import static java.lang.Math.floor;
 
 public class UnitConverter {

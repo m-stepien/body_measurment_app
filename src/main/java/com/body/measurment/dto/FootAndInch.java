@@ -1,4 +1,4 @@
-package com.body.measurment.utils;
+package com.body.measurment.dto;
 
 public class FootAndInch {
     public Integer foot;

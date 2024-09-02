@@ -26,21 +26,18 @@ public class MeasurementService {
         this.validator = validator;
     }
 
-    public void addNewMeasurement(CircumferenceData circumferenceData) {
+    public void saveMeasurement(CircumferenceData circumferenceData) {
         try {
-            this.addNewBasicCircumference(circumferenceData.getBasicCircumference());
-            this.addNewAdditionalCircumference(circumferenceData.getAdditionalCircumference());
+            this.saveBasicCircumference(circumferenceData.getBasicCircumference());
+            this.saveAdditionalCircumference(circumferenceData.getAdditionalCircumference());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }
 
     public void updateCircumference(CircumferenceData circumferenceData) {
-        if (checkIsBasicCircumferenceUpdated(circumferenceData.getBasicCircumference())) {
-            this.basicCircumferenceRepository.updateBasicCircumference(circumferenceData.getBasicCircumference());
-        }
-        if (checkIsAdditionalCircumferenceUpdated(circumferenceData.getAdditionalCircumference())) {
-            this.additionalCircumferenceRepository.updateAdditionalCircumference(circumferenceData.getAdditionalCircumference());
+        if(circumferenceData.getBasicCircumference().getId()!=null) {
+            saveMeasurement(circumferenceData);
         }
     }
 
@@ -68,7 +65,7 @@ public class MeasurementService {
 
     public List<CircumferenceData> getCircumferenceDataInDateRange(LocalDate startDate, LocalDate endDate){
         List<BasicCircumference> basicCircumferenceList = this.basicCircumferenceRepository
-                .findByBetweenMeasurmentDateOrderByMeasurmentDateDesc(startDate, endDate);
+                .findByMeasurmentDateBetweenOrderByMeasurmentDateDesc(startDate, endDate);
         List<CircumferenceData> circumferenceDataList = this.mapBasicCircumferenceListToCircumferenceDate(basicCircumferenceList);
         return circumferenceDataList;
     }
@@ -87,7 +84,7 @@ public class MeasurementService {
         this.basicCircumferenceRepository.deleteAll();
     }
 
-    private void addNewBasicCircumference(BasicCircumference basicCircumference) throws Exception {
+    private void saveBasicCircumference(BasicCircumference basicCircumference) throws Exception {
         if (this.validator.checkRequiredField(basicCircumference)) {
             if (this.validator.checkSignOnFields(basicCircumference)) {
                 basicCircumferenceRepository.save(basicCircumference);
@@ -99,7 +96,7 @@ public class MeasurementService {
         }
     }
 
-    private void addNewAdditionalCircumference(AdditionalCircumference additionalCircumference) throws Exception {
+    private void saveAdditionalCircumference(AdditionalCircumference additionalCircumference) throws Exception {
         if (this.validator.checkSignOnFields(additionalCircumference)) {
             additionalCircumferenceRepository.save(additionalCircumference);
         } else {
