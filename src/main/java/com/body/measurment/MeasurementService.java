@@ -28,8 +28,9 @@ public class MeasurementService {
 
     public void saveMeasurement(CircumferenceData circumferenceData) {
         try {
+            long id = this.saveAdditionalCircumference(circumferenceData.getAdditionalCircumference());
+            circumferenceData.getBasicCircumference().setAdditionalCircumference(circumferenceData.getAdditionalCircumference());
             this.saveBasicCircumference(circumferenceData.getBasicCircumference());
-            this.saveAdditionalCircumference(circumferenceData.getAdditionalCircumference());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -96,9 +97,10 @@ public class MeasurementService {
         }
     }
 
-    private void saveAdditionalCircumference(AdditionalCircumference additionalCircumference) throws Exception {
+    private long saveAdditionalCircumference(AdditionalCircumference additionalCircumference) throws Exception {
         if (this.validator.checkSignOnFields(additionalCircumference)) {
             additionalCircumferenceRepository.save(additionalCircumference);
+            return additionalCircumference.getId();
         } else {
             throw new InvalidDataException(additionalCircumference.getClass().getName());
         }

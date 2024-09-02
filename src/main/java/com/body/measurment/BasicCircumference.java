@@ -19,6 +19,10 @@ public class BasicCircumference {
     @JoinColumn(name = "additional_measurement_id")
     private AdditionalCircumference additionalCircumference;
 
+    public BasicCircumference(){
+
+    }
+
     public BasicCircumference(LocalDate measurmentDate, Double abdominal, Double chest, Double waist, Double hip, AdditionalCircumference additionalCircumference) {
         this.measurmentDate = measurmentDate;
         this.abdominal = abdominal;

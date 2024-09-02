@@ -18,6 +18,7 @@ public class AdditionalCircumference {
     private Double calfL;
     private Double calfR;
 
+
     public AdditionalCircumference(Double thighL, Double thighR, Double armL,
                                    Double armR, Double neck, Double forarmL,
                                    Double forarmR, Double calfL, Double calfR) {
