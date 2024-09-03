@@ -1,4 +1,4 @@
-package com.body.measurment;
+package com.body.measurment.dto;
 
 import jakarta.persistence.*;
 

@@ -1,15 +1,33 @@
 package com.body.measurment.dto;
 
-import com.body.measurment.AdditionalCircumference;
-import com.body.measurment.BasicCircumference;
+import jakarta.persistence.*;
 
+import java.time.LocalDate;
+@Entity
 public class CircumferenceData {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @OneToOne
+    @JoinColumn(name = "basic_measurement_id")
     private BasicCircumference basicCircumference;
+    @OneToOne
+    @JoinColumn(name = "additional_measurement_id")
     private AdditionalCircumference additionalCircumference;
+    @Column(name = "measurment_date")
+    private LocalDate measurmentDate;
+
+    public CircumferenceData(BasicCircumference basicCircumference, AdditionalCircumference additionalCircumference,
+                             LocalDate measurmentDate) {
+        this.basicCircumference = basicCircumference;
+        this.additionalCircumference = additionalCircumference;
+        this.measurmentDate = measurmentDate;
+    }
 
     public CircumferenceData(BasicCircumference basicCircumference, AdditionalCircumference additionalCircumference) {
         this.basicCircumference = basicCircumference;
         this.additionalCircumference = additionalCircumference;
+
     }
 
     public CircumferenceData() {
@@ -21,6 +39,14 @@ public class CircumferenceData {
 
     public void setBasicCircumference(BasicCircumference basicCircumference) {
         this.basicCircumference = basicCircumference;
+    }
+
+    public LocalDate getMeasurmentDate() {
+        return measurmentDate;
+    }
+
+    public void setMeasurmentDate(LocalDate measurmentDate) {
+        this.measurmentDate = measurmentDate;
     }
 
     public AdditionalCircumference getAdditionalCircumference() {
