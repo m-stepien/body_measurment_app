@@ -1,5 +1,6 @@
-package com.body.measurment;
+package com.body.measurment.controllers;
 
+import com.body.measurment.services.MeasurementService;
 import com.body.measurment.dto.CircumferenceData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,10 +1,9 @@
-package com.body.measurment;
+package com.body.measurment.services;
 
-import com.body.measurment.custom.exception.InvalidDataException;
-import com.body.measurment.custom.exception.MissingRequiredDataException;
-import com.body.measurment.dto.AdditionalCircumference;
-import com.body.measurment.dto.BasicCircumference;
 import com.body.measurment.dto.CircumferenceData;
+import com.body.measurment.repositories.AdditionalCircumferenceRepository;
+import com.body.measurment.repositories.BasicCircumferenceRepository;
+import com.body.measurment.repositories.CircumferenceDataRepository;
 import com.body.measurment.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

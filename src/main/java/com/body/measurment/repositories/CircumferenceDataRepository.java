@@ -1,6 +1,5 @@
-package com.body.measurment;
+package com.body.measurment.repositories;
 
-import com.body.measurment.dto.BasicCircumference;
 import com.body.measurment.dto.CircumferenceData;
 import org.springframework.data.jpa.repository.JpaRepository;
 
