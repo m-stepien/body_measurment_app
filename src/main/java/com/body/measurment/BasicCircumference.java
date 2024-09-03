@@ -3,13 +3,14 @@ package com.body.measurment;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+
 @Entity
 @Table(name = "basic_circumference")
 public class BasicCircumference {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(name="measurment_date")
+    @Column(name = "measurment_date")
     private LocalDate measurmentDate;
     private Double abdominal;
     private Double chest;
@@ -19,8 +20,7 @@ public class BasicCircumference {
     @JoinColumn(name = "additional_measurement_id")
     private AdditionalCircumference additionalCircumference;
 
-    public BasicCircumference(){
-
+    public BasicCircumference() {
     }
 
     public BasicCircumference(LocalDate measurmentDate, Double abdominal, Double chest, Double waist, Double hip, AdditionalCircumference additionalCircumference) {

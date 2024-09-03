@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Table(name = "additional_circumference")
 public class AdditionalCircumference {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Double thighL;
     private Double thighR;
@@ -19,9 +19,7 @@ public class AdditionalCircumference {
     private Double calfR;
 
 
-    public AdditionalCircumference(Double thighL, Double thighR, Double armL,
-                                   Double armR, Double neck, Double forarmL,
-                                   Double forarmR, Double calfL, Double calfR) {
+    public AdditionalCircumference(Double thighL, Double thighR, Double armL, Double armR, Double neck, Double forarmL, Double forarmR, Double calfL, Double calfR) {
         this.thighL = thighL;
         this.thighR = thighR;
         this.armL = armL;

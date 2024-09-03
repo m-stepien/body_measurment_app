@@ -11,7 +11,9 @@ public class CircumferenceData {
         this.basicCircumference = basicCircumference;
         this.additionalCircumference = additionalCircumference;
     }
-    public CircumferenceData(){}
+
+    public CircumferenceData() {
+    }
 
     public BasicCircumference getBasicCircumference() {
         return basicCircumference;

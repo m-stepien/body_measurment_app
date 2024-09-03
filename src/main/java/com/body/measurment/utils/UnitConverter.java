@@ -9,25 +9,25 @@ public class UnitConverter {
     private final Double CM_TO_INCH = 0.393700787;
     private final Integer FOOT_TO_INCH = 12;
 
-    public Double convertKgToLbs(Double weightInKg){
-        return weightInKg*KG_TO_LBS;
+    public Double convertKgToLbs(Double weightInKg) {
+        return weightInKg * KG_TO_LBS;
     }
 
-    public Double convertLbsToKg(Double weightInLbs){
-        return weightInLbs/KG_TO_LBS;
+    public Double convertLbsToKg(Double weightInLbs) {
+        return weightInLbs / KG_TO_LBS;
     }
 
-    public Double convertCmToInch(Double sizeInCm){
-        return sizeInCm*CM_TO_INCH;
+    public Double convertCmToInch(Double sizeInCm) {
+        return sizeInCm * CM_TO_INCH;
     }
 
-    public Double convertInchToCm(Double sizeInInch){
-        return sizeInInch/CM_TO_INCH;
+    public Double convertInchToCm(Double sizeInInch) {
+        return sizeInInch / CM_TO_INCH;
     }
 
-    public FootAndInch convertInchToFootAndInch(Double sizeInInch){
+    public FootAndInch convertInchToFootAndInch(Double sizeInInch) {
         Integer foot = (int) floor(sizeInInch / FOOT_TO_INCH);
-        Double inch = sizeInInch%FOOT_TO_INCH;
+        Double inch = sizeInInch % FOOT_TO_INCH;
         return new FootAndInch(foot, inch);
     }
 }

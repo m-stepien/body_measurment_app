@@ -37,7 +37,7 @@ public class MeasurementService {
     }
 
     public void updateCircumference(CircumferenceData circumferenceData) {
-        if(circumferenceData.getBasicCircumference().getId()!=null) {
+        if (circumferenceData.getBasicCircumference().getId() != null) {
             saveMeasurement(circumferenceData);
         }
     }
@@ -47,10 +47,9 @@ public class MeasurementService {
         Optional<BasicCircumference> basicCircumference = this.basicCircumferenceRepository.findById(id);
         AdditionalCircumference additionalCircumference;
         if (basicCircumference.isPresent()) {
-            if(basicCircumference.get().getAdditionalCircumference()!=null) {
-                additionalCircumference =basicCircumference.get().getAdditionalCircumference();
-            }
-            else{
+            if (basicCircumference.get().getAdditionalCircumference() != null) {
+                additionalCircumference = basicCircumference.get().getAdditionalCircumference();
+            } else {
                 additionalCircumference = null;
             }
             circumferenceData = new CircumferenceData(basicCircumference.get(), additionalCircumference);
@@ -58,20 +57,20 @@ public class MeasurementService {
         return circumferenceData;
     }
 
-    public List<CircumferenceData> getCircumferenceDataFromDate(LocalDate startDate){
+    public List<CircumferenceData> getCircumferenceDataFromDate(LocalDate startDate) {
         List<BasicCircumference> basicCircumferenceList = this.basicCircumferenceRepository.findByMeasurmentDateGreaterThanEqual(startDate);
         List<CircumferenceData> circumferenceDataList = this.mapBasicCircumferenceListToCircumferenceDate(basicCircumferenceList);
         return circumferenceDataList;
     }
 
-    public List<CircumferenceData> getCircumferenceDataInDateRange(LocalDate startDate, LocalDate endDate){
+    public List<CircumferenceData> getCircumferenceDataInDateRange(LocalDate startDate, LocalDate endDate) {
         List<BasicCircumference> basicCircumferenceList = this.basicCircumferenceRepository
                 .findByMeasurmentDateBetweenOrderByMeasurmentDateDesc(startDate, endDate);
         List<CircumferenceData> circumferenceDataList = this.mapBasicCircumferenceListToCircumferenceDate(basicCircumferenceList);
         return circumferenceDataList;
     }
 
-    public List<CircumferenceData> getCircumferenceDataAll(){
+    public List<CircumferenceData> getCircumferenceDataAll() {
         List<BasicCircumference> basicCircumferences = this.basicCircumferenceRepository.findAll();
         List<CircumferenceData> circumferenceDataList = this.mapBasicCircumferenceListToCircumferenceDate(basicCircumferences);
         return circumferenceDataList;
@@ -81,7 +80,7 @@ public class MeasurementService {
         this.basicCircumferenceRepository.deleteById(id);
     }
 
-    public void deleteAllCircumference(){
+    public void deleteAllCircumference() {
         this.basicCircumferenceRepository.deleteAll();
     }
 
@@ -107,11 +106,12 @@ public class MeasurementService {
     }
 
     private List<CircumferenceData> mapBasicCircumferenceListToCircumferenceDate(List<BasicCircumference> basicCircumferenceList) {
-        List<CircumferenceData> circumferenceDataList = basicCircumferenceList.stream().map(basicCircumference -> {
-            AdditionalCircumference additionalCircumference = basicCircumference.getAdditionalCircumference();
-            CircumferenceData circumferenceData = new CircumferenceData(basicCircumference, additionalCircumference);
-            return circumferenceData;
-        }).toList();
+        List<CircumferenceData> circumferenceDataList = basicCircumferenceList.stream()
+                .map(basicCircumference -> {
+                    AdditionalCircumference additionalCircumference = basicCircumference.getAdditionalCircumference();
+                    CircumferenceData circumferenceData = new CircumferenceData(basicCircumference, additionalCircumference);
+                    return circumferenceData;
+                }).toList();
         return circumferenceDataList;
     }
 

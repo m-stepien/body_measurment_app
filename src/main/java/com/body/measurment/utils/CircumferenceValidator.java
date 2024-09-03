@@ -16,17 +16,14 @@ public class CircumferenceValidator implements Validator {
 
     @Override
     public boolean checkSignOnFields(BasicCircumference basicCircumference) {
-        boolean result=true;
-        if(basicCircumference.getChest()<=0){
+        boolean result = true;
+        if (basicCircumference.getChest() <= 0) {
             result = false;
-        }
-        else if(basicCircumference.getHip()<=0){
+        } else if (basicCircumference.getHip() <= 0) {
             result = false;
-        }
-        else if(basicCircumference.getAbdominal()<=0){
+        } else if (basicCircumference.getAbdominal() <= 0) {
             result = false;
-        }
-        else if(basicCircumference.getWaist()<=0){
+        } else if (basicCircumference.getWaist() <= 0) {
             result = false;
         }
         return result;
@@ -34,50 +31,48 @@ public class CircumferenceValidator implements Validator {
 
     @Override
     public boolean checkSignOnFields(AdditionalCircumference additionalCircumference) {
-        if(additionalCircumference.getArmL()!=null){
-            if(additionalCircumference.getArmL()<=0){
+        if (additionalCircumference.getArmL() != null) {
+            if (additionalCircumference.getArmL() <= 0) {
                 return false;
             }
         }
-        if(additionalCircumference.getArmR()!=null){
-            if(additionalCircumference.getArmR()<=0){
+        if (additionalCircumference.getArmR() != null) {
+            if (additionalCircumference.getArmR() <= 0) {
                 return false;
             }
         }
-        if(additionalCircumference.getCalfR()!=null){
-            if(additionalCircumference.getCalfR()<=0){
+        if (additionalCircumference.getCalfR() != null) {
+            if (additionalCircumference.getCalfR() <= 0) {
                 return false;
             }
         }
-        if(additionalCircumference.getCalfL()!=null){
-            if(additionalCircumference.getCalfL()<=0){
+        if (additionalCircumference.getCalfL() != null) {
+            if (additionalCircumference.getCalfL() <= 0) {
                 return false;
             }
         }
-        if(additionalCircumference.getForarmL()!=null){
-            if(additionalCircumference.getForarmL()<=0){
+        if (additionalCircumference.getForarmL() != null) {
+            if (additionalCircumference.getForarmL() <= 0) {
                 return false;
             }
         }
-        if(additionalCircumference.getForarmR()!=null){
-            if(additionalCircumference.getForarmR()<=0){
+        if (additionalCircumference.getForarmR() != null) {
+            if (additionalCircumference.getForarmR() <= 0) {
                 return false;
             }
         }
-        if(additionalCircumference.getThighL()!=null){
-            if(additionalCircumference.getThighL()<=0){
+        if (additionalCircumference.getThighL() != null) {
+            if (additionalCircumference.getThighL() <= 0) {
                 return false;
             }
         }
-        if(additionalCircumference.getThighR()!=null){
-            if(additionalCircumference.getThighR()<=0){
+        if (additionalCircumference.getThighR() != null) {
+            if (additionalCircumference.getThighR() <= 0) {
                 return false;
             }
         }
-        if(additionalCircumference.getNeck()!=null){
-            if(additionalCircumference.getNeck()<=0){
-                return false;
-            }
+        if (additionalCircumference.getNeck() != null) {
+            return additionalCircumference.getNeck() > 0;
         }
         return true;
     }
