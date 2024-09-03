@@ -59,6 +59,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
             <version>3.3.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>2.2.224</version> <!-- Use the latest version -->
+            <scope>runtime</scope>
+        </dependency>
     </dependencies>
 
     <build>

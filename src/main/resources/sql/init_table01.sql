@@ -13,19 +13,17 @@ CREATE table IF NOT EXISTS additional_circumference (
 
 CREATE table IF NOT EXISTS basic_circumference (
 	id SERIAL primary key,
-	measurment_date DATE not null,
-	weist numeric(5,2) not null,
+	waist numeric(5,2) not null,
 	chest numeric(5,2) not null,
 	abdominal numeric(5,2) not null,
-	hip numeric(5,2) not null,
-	additional_measurement_id INT,
-	FOREIGN KEY (additional_measurement_id) REFERENCES additional_circumference(id) ON DELETE cascade
+	hip numeric(5,2) not null
 )
 
-create table IF NOT EXISTS basic_body_data(
-    id serial primary key,
+CREATE table IF NOT EXISTS circumference_data(
+    id SERIAL primary key,
+    additional_circumference_id INT,
+    basic_circumference_id INT,
     measurment_date DATE not null,
-    height_in_cm numeric(5,2) not null,
-    weight_in_kg numeric(5,2) not null,
-    body_fat_percent INT
+    FOREIGN KEY (additional_circumference_id) REFERENCES additional_circumference(id) ON DELETE cascade,
+    FOREIGN KEY (basic_circumference_id) REFERENCES basic_circumference(id) ON DELETE cascade
 )

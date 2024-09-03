@@ -9,10 +9,10 @@ public class CircumferenceData {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @OneToOne
-    @JoinColumn(name = "basic_measurement_id")
+    @JoinColumn(name = "basic_circumference_id")
     private BasicCircumference basicCircumference;
     @OneToOne
-    @JoinColumn(name = "additional_measurement_id")
+    @JoinColumn(name = "additional_circumference_id")
     private AdditionalCircumference additionalCircumference;
     @Column(name = "measurment_date")
     private LocalDate measurmentDate;
@@ -55,5 +55,13 @@ public class CircumferenceData {
 
     public void setAdditionalCircumference(AdditionalCircumference additionalCircumference) {
         this.additionalCircumference = additionalCircumference;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
