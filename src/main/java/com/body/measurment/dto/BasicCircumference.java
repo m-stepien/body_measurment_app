@@ -2,8 +2,6 @@ package com.body.measurment.dto;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
-
 @Entity
 @Table(name = "basic_circumference")
 public class BasicCircumference {

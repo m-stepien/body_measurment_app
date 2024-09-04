@@ -11,12 +11,12 @@ public class CircumferenceValidator implements Validator {
 
 
     @Override
-    public boolean validateCircumferenceDatra(CircumferenceData circumferenceData){
+    public boolean validateCircumferenceDatra(CircumferenceData circumferenceData) {
         boolean result = false;
         if (circumferenceData.getBasicCircumference() != null) {
             result = this.checkRequiredField(circumferenceData.getBasicCircumference())
                     && this.checkSignOnFields(circumferenceData.getBasicCircumference());
-            if(circumferenceData.getAdditionalCircumference() != null){
+            if (circumferenceData.getAdditionalCircumference() != null) {
                 result = result && this.checkSignOnFields(circumferenceData.getAdditionalCircumference());
             }
         }

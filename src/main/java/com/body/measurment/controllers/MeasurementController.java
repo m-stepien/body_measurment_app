@@ -22,6 +22,11 @@ public class MeasurementController {
             this.measurementService.saveMeasurement(circumferenceData);
     }
 
+    @PatchMapping("/bodyMonitoring/update/circumference/{id}")
+    public void updateCircumference(@PathVariable("id") long id, @RequestBody CircumferenceData circumferenceData){
+        this.measurementService.updateCircumference(circumferenceData);
+    }
+
     @GetMapping("/bodyMonitoring/getCircumference/{id}")
     public CircumferenceData getCircumferenceData(@PathVariable("id") long id){
         return this.measurementService.getCircumferenceDataById(id);
@@ -41,13 +46,6 @@ public class MeasurementController {
         return this.measurementService.getCircumferenceDataAll();
     }
 
-    //TODO repair issue when not every field is in class
-    //TODO change CircumferenceData structure in database
-    @PatchMapping("/bodyMonitoring/update/circumference/{id}")
-    public void updateCircumference(@PathVariable("id") long id, @RequestBody CircumferenceData circumferenceData){
-        this.measurementService.updateCircumference(circumferenceData);
-    }
-
     @DeleteMapping("/bodyMonitoring/circumference/deleta/{id}")
     public void deleteCircumference(@PathVariable("id") long id){
         this.measurementService.deleteCircumferenceById(id);
@@ -57,9 +55,4 @@ public class MeasurementController {
     public void deleteAllCircumference(){
         this.measurementService.deleteAllCircumference();
     }
-    @GetMapping("/bodyMonitoring/circumference")
-    public String helloThere(){
-        return "hello there";
-    }
-
 }
