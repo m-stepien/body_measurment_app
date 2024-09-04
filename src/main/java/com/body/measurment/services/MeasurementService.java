@@ -85,6 +85,9 @@ public class MeasurementService {
         if (oldCircumfarenceData != null) {
             if (circumferenceData.getAdditionalCircumference() != null) {
                 AdditionalCircumference oldAdditionalCircumference = oldCircumfarenceData.getAdditionalCircumference();
+                if(oldAdditionalCircumference == null){
+                    oldAdditionalCircumference = new AdditionalCircumference();
+                }
                 AdditionalCircumference additionalCircumference = circumferenceData.getAdditionalCircumference();
                 if (additionalCircumference.getArmL() != null) {
                     oldAdditionalCircumference.setArmL(additionalCircumference.getArmL());
@@ -128,6 +131,9 @@ public class MeasurementService {
                     oldBasicCircumference.setWaist(basicCircumference.getWaist());
                 }
                 oldCircumfarenceData.setBasicCircumference(oldBasicCircumference);
+            }
+            if(circumferenceData.getMeasurmentDate()!=null){
+                oldCircumfarenceData.setMeasurmentDate(circumferenceData.getMeasurmentDate());
             }
         }
         return oldCircumfarenceData;
