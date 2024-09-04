@@ -21,10 +21,7 @@ public class MeasurementService {
     private final CircumferenceDataRepository circumferenceDataRepository;
 
     @Autowired
-    public MeasurementService(Validator validator,
-                              BasicCircumferenceRepository basicCircumferenceRepository,
-                              AdditionalCircumferenceRepository additionalCircumferenceRepository,
-                              CircumferenceDataRepository circumferenceDataRepository) {
+    public MeasurementService(Validator validator, BasicCircumferenceRepository basicCircumferenceRepository, AdditionalCircumferenceRepository additionalCircumferenceRepository, CircumferenceDataRepository circumferenceDataRepository) {
         this.basicCircumferenceRepository = basicCircumferenceRepository;
         this.additionalCircumferenceRepository = additionalCircumferenceRepository;
         this.circumferenceDataRepository = circumferenceDataRepository;
@@ -47,7 +44,7 @@ public class MeasurementService {
 
     public void updateCircumference(CircumferenceData circumferenceData) {
         if (circumferenceData.getId() != null) {
-            CircumferenceData updatedCircumferenceData = this.updateCircumferenceData(circumferenceData);
+            CircumferenceData updatedCircumferenceData = this.mapCircumferenceData(circumferenceData);
             saveMeasurement(updatedCircumferenceData);
         }
     }
@@ -57,13 +54,11 @@ public class MeasurementService {
     }
 
     public List<CircumferenceData> getCircumferenceDataFromDate(LocalDate startDate) {
-        return this.circumferenceDataRepository
-                .findByMeasurmentDateGreaterThanEqual(startDate);
+        return this.circumferenceDataRepository.findByMeasurmentDateGreaterThanEqual(startDate);
     }
 
     public List<CircumferenceData> getCircumferenceDataInDateRange(LocalDate startDate, LocalDate endDate) {
-        return this.circumferenceDataRepository
-                .findByMeasurmentDateBetweenOrderByMeasurmentDateDesc(startDate, endDate);
+        return this.circumferenceDataRepository.findByMeasurmentDateBetweenOrderByMeasurmentDateDesc(startDate, endDate);
     }
 
     public List<CircumferenceData> getCircumferenceDataAll() {
@@ -78,63 +73,78 @@ public class MeasurementService {
         this.circumferenceDataRepository.deleteAll();
     }
 
-    private CircumferenceData updateCircumferenceData(CircumferenceData circumferenceData) {
-        CircumferenceData oldCircumfarenceData = this.circumferenceDataRepository.findById(circumferenceData.getId())
+    private CircumferenceData mapCircumferenceData(CircumferenceData circumferenceData) {
+
+        CircumferenceData oldCircumfarenceData = this.circumferenceDataRepository
+                .findById(circumferenceData.getId())
                 .orElse(null);
         if (oldCircumfarenceData != null) {
             if (circumferenceData.getAdditionalCircumference() != null) {
-                AdditionalCircumference oldAdditionalCircumference = oldCircumfarenceData.getAdditionalCircumference();
-                if (oldAdditionalCircumference == null) {
-                    oldAdditionalCircumference = new AdditionalCircumference();
-                }
-                AdditionalCircumference additionalCircumference = circumferenceData.getAdditionalCircumference();
-                if (additionalCircumference.getArmL() != null) {
-                    oldAdditionalCircumference.setArmL(additionalCircumference.getArmL());
-                }
-                if (additionalCircumference.getArmR() != null) {
-                    oldAdditionalCircumference.setArmR(additionalCircumference.getArmR());
-                }
-                if (additionalCircumference.getCalfL() != null) {
-                    oldAdditionalCircumference.setCalfL(additionalCircumference.getCalfL());
-                }
-                if (additionalCircumference.getCalfR() != null) {
-                    oldAdditionalCircumference.setCalfR(additionalCircumference.getCalfR());
-                }
-                if (additionalCircumference.getForarmR() != null) {
-                    oldAdditionalCircumference.setForarmR(additionalCircumference.getForarmR());
-                }
-                if (additionalCircumference.getThighL() != null) {
-                    oldAdditionalCircumference.setThighL(additionalCircumference.getThighL());
-                }
-                if (additionalCircumference.getThighR() != null) {
-                    oldAdditionalCircumference.setThighR(additionalCircumference.getThighR());
-                }
-                if (additionalCircumference.getNeck() != null) {
-                    oldAdditionalCircumference.setNeck(additionalCircumference.getNeck());
-                }
-                oldCircumfarenceData.setAdditionalCircumference(oldAdditionalCircumference);
+                oldCircumfarenceData.setAdditionalCircumference(
+                        this.mapNewDataToAdditionalCircumference(
+                                oldCircumfarenceData.getAdditionalCircumference(),
+                                circumferenceData.getAdditionalCircumference())
+                );
             }
             if (circumferenceData.getBasicCircumference() != null) {
-                BasicCircumference basicCircumference = circumferenceData.getBasicCircumference();
-                BasicCircumference oldBasicCircumference = oldCircumfarenceData.getBasicCircumference();
-                if (basicCircumference.getAbdominal() != null) {
-                    oldBasicCircumference.setAbdominal(basicCircumference.getAbdominal());
-                }
-                if (basicCircumference.getHip() != null) {
-                    oldBasicCircumference.setHip(basicCircumference.getHip());
-                }
-                if (basicCircumference.getChest() != null) {
-                    oldBasicCircumference.setChest(basicCircumference.getChest());
-                }
-                if (basicCircumference.getWaist() != null) {
-                    oldBasicCircumference.setWaist(basicCircumference.getWaist());
-                }
-                oldCircumfarenceData.setBasicCircumference(oldBasicCircumference);
+                oldCircumfarenceData.setBasicCircumference(this.mapNewDataToBasicCircumference(
+                        oldCircumfarenceData.getBasicCircumference(),
+                        circumferenceData.getBasicCircumference()));
             }
             if (circumferenceData.getMeasurmentDate() != null) {
                 oldCircumfarenceData.setMeasurmentDate(circumferenceData.getMeasurmentDate());
             }
         }
         return oldCircumfarenceData;
+    }
+
+    private AdditionalCircumference mapNewDataToAdditionalCircumference(AdditionalCircumference additionalCircumference,
+                                                                        AdditionalCircumference newData) {
+        if (additionalCircumference == null) {
+            additionalCircumference = new AdditionalCircumference();
+        }
+        if (newData.getArmL() != null) {
+            additionalCircumference.setArmL(newData.getArmL());
+        }
+        if (newData.getArmR() != null) {
+            additionalCircumference.setArmR(newData.getArmR());
+        }
+        if (newData.getCalfL() != null) {
+            additionalCircumference.setCalfL(newData.getCalfL());
+        }
+        if (newData.getCalfR() != null) {
+            additionalCircumference.setCalfR(newData.getCalfR());
+        }
+        if (newData.getForarmR() != null) {
+            additionalCircumference.setForarmR(newData.getForarmR());
+        }
+        if (newData.getThighL() != null) {
+            additionalCircumference.setThighL(newData.getThighL());
+        }
+        if (newData.getThighR() != null) {
+            additionalCircumference.setThighR(newData.getThighR());
+        }
+        if (newData.getNeck() != null) {
+            additionalCircumference.setNeck(newData.getNeck());
+        }
+        return additionalCircumference;
+    }
+
+
+    private BasicCircumference mapNewDataToBasicCircumference(BasicCircumference basicCircumference,
+                                                              BasicCircumference newData) {
+        if (newData.getAbdominal() != null) {
+            basicCircumference.setAbdominal(newData.getAbdominal());
+        }
+        if (newData.getHip() != null) {
+            basicCircumference.setHip(newData.getHip());
+        }
+        if (newData.getChest() != null) {
+            basicCircumference.setChest(newData.getChest());
+        }
+        if (newData.getWaist() != null) {
+            basicCircumference.setWaist(newData.getWaist());
+        }
+        return basicCircumference;
     }
 }
