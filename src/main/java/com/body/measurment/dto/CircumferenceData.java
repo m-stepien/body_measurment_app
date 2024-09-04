@@ -3,6 +3,7 @@ package com.body.measurment.dto;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+
 @Entity
 public class CircumferenceData {
     @Id
@@ -17,21 +18,9 @@ public class CircumferenceData {
     @Column(name = "measurment_date")
     private LocalDate measurmentDate;
 
-    public CircumferenceData(BasicCircumference basicCircumference, AdditionalCircumference additionalCircumference,
-                             LocalDate measurmentDate) {
-        this.basicCircumference = basicCircumference;
-        this.additionalCircumference = additionalCircumference;
-        this.measurmentDate = measurmentDate;
-    }
-
-    public CircumferenceData(BasicCircumference basicCircumference, AdditionalCircumference additionalCircumference) {
-        this.basicCircumference = basicCircumference;
-        this.additionalCircumference = additionalCircumference;
-
-    }
-
     public CircumferenceData() {
     }
+    //prawdopodobonie najlepiej zwrócić new i pusty
 
     public BasicCircumference getBasicCircumference() {
         return basicCircumference;

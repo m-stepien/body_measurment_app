@@ -33,13 +33,17 @@ public class MeasurementService {
     }
 
     public void saveMeasurement(CircumferenceData circumferenceData) {
-        //todo validation
-        if (circumferenceData.getMeasurmentDate() == null) {
-            circumferenceData.setMeasurmentDate(LocalDate.now());
+        boolean dataValid = this.validator.validateCircumferenceDatra(circumferenceData);
+        if(dataValid) {
+            if (circumferenceData.getMeasurmentDate() == null) {
+                circumferenceData.setMeasurmentDate(LocalDate.now());
+            }
+            if (circumferenceData.getAdditionalCircumference() != null) {
+                this.additionalCircumferenceRepository.save(circumferenceData.getAdditionalCircumference());
+            }
+            this.basicCircumferenceRepository.save(circumferenceData.getBasicCircumference());
+            this.circumferenceDataRepository.save(circumferenceData);
         }
-        this.additionalCircumferenceRepository.save(circumferenceData.getAdditionalCircumference());
-        this.basicCircumferenceRepository.save(circumferenceData.getBasicCircumference());
-        this.circumferenceDataRepository.save(circumferenceData);
     }
 
     public void updateCircumference(CircumferenceData circumferenceData) {

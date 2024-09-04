@@ -98,6 +98,10 @@ public class AdditionalCircumference {
         return calfL;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public void setCalfL(Double calfL) {
         this.calfL = calfL;
     }

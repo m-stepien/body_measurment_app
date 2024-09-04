@@ -3,10 +3,25 @@ package com.body.measurment.utils;
 
 import com.body.measurment.dto.AdditionalCircumference;
 import com.body.measurment.dto.BasicCircumference;
+import com.body.measurment.dto.CircumferenceData;
 import org.springframework.stereotype.Component;
 
 @Component
 public class CircumferenceValidator implements Validator {
+
+
+    @Override
+    public boolean validateCircumferenceDatra(CircumferenceData circumferenceData){
+        boolean result = false;
+        if (circumferenceData.getBasicCircumference() != null) {
+            result = this.checkRequiredField(circumferenceData.getBasicCircumference())
+                    && this.checkSignOnFields(circumferenceData.getBasicCircumference());
+            if(circumferenceData.getAdditionalCircumference() != null){
+                result = result && this.checkSignOnFields(circumferenceData.getAdditionalCircumference());
+            }
+        }
+        return result;
+    }
 
     @Override
     public boolean checkRequiredField(BasicCircumference basicCircumference) {

@@ -1,0 +1,18 @@
+{
+  "basicCircumference": {
+    "abdominal": 22.0,
+    "chest": 111.0,
+    "waist": 44.0
+  },
+  "additionalCircumference":{
+    "forarmL": 22.0,
+    "forarmR": 22.0,
+    "armR": 30.0,
+    "armL": 31.0,
+    "thighL":41.0,
+    "thighR":41.5,
+    "calfL":35.0,
+    "calfR":35.0,
+    "neck":48
+  }
+}
