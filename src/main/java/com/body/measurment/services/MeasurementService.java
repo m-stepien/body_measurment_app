@@ -29,7 +29,7 @@ public class MeasurementService {
     }
 
     public void saveMeasurement(CircumferenceData circumferenceData) {
-        boolean dataValid = this.validator.validateCircumferenceDatra(circumferenceData);
+        boolean dataValid = this.validator.validateCircumferenceData(circumferenceData);
         if (dataValid) {
             if (circumferenceData.getMeasurmentDate() == null) {
                 circumferenceData.setMeasurmentDate(LocalDate.now());
