@@ -20,6 +20,4 @@ public class MeasurementServiceTest {
     CircumferenceDataRepository circumferenceDataRepository;
     @InjectMocks
     MeasurementService measurementService;
-
-    public void
 }
