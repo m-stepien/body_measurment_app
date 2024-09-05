@@ -1,8 +1,11 @@
 package com.body.measurment.services;
 
+import com.body.measurment.custom.exception.InvalidDataException;
+import com.body.measurment.custom.exception.MissingRequiredDataException;
 import com.body.measurment.dto.AdditionalCircumference;
 import com.body.measurment.dto.BasicCircumference;
 import com.body.measurment.dto.CircumferenceData;
+import com.body.measurment.dto.responses.CircumferenceDataSaveResponse;
 import com.body.measurment.repositories.AdditionalCircumferenceRepository;
 import com.body.measurment.repositories.BasicCircumferenceRepository;
 import com.body.measurment.repositories.CircumferenceDataRepository;
@@ -28,18 +31,30 @@ public class MeasurementService {
         this.validator = validator;
     }
 
-    public void saveMeasurement(CircumferenceData circumferenceData) {
-        boolean dataValid = this.validator.validateCircumferenceData(circumferenceData);
-        if (dataValid) {
-            if (circumferenceData.getMeasurmentDate() == null) {
-                circumferenceData.setMeasurmentDate(LocalDate.now());
-            }
-            if (circumferenceData.getAdditionalCircumference() != null) {
-                this.additionalCircumferenceRepository.save(circumferenceData.getAdditionalCircumference());
-            }
-            this.basicCircumferenceRepository.save(circumferenceData.getBasicCircumference());
-            this.circumferenceDataRepository.save(circumferenceData);
+    public CircumferenceDataSaveResponse saveMeasurement(CircumferenceData circumferenceData) {
+        CircumferenceDataSaveResponse circumferenceDataSaveResponse = new CircumferenceDataSaveResponse();
+        try {
+            this.validator.validateCircumferenceData(circumferenceData);
+        } catch (InvalidDataException | MissingRequiredDataException e) {
+            circumferenceDataSaveResponse.setSuccess(false);
+            circumferenceDataSaveResponse.setMessage(e.getMessage().toString());
+            circumferenceDataSaveResponse.setCircumferenceData(circumferenceData);
+            return circumferenceDataSaveResponse;
         }
+        this.setDefaultData(circumferenceData);
+        if (circumferenceData.getAdditionalCircumference() != null) {
+            this.additionalCircumferenceRepository.save(circumferenceData.getAdditionalCircumference());
+        }
+        this.basicCircumferenceRepository.save(circumferenceData.getBasicCircumference());
+        this.circumferenceDataRepository.save(circumferenceData);
+
+    }
+
+    private CircumferenceData setDefaultData(CircumferenceData circumferenceData){
+        if (circumferenceData.getMeasurmentDate() == null) {
+            circumferenceData.setMeasurmentDate(LocalDate.now());
+        }
+        return circumferenceData;
     }
 
     public void updateCircumference(CircumferenceData circumferenceData) {

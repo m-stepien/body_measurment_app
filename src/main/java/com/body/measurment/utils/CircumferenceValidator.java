@@ -11,7 +11,7 @@ public class CircumferenceValidator implements Validator {
 
 
     @Override
-    public boolean validateCircumferenceData(CircumferenceData circumferenceData) {
+    public boolean validateCircumferenceData(CircumferenceData circumferenceData){
         boolean result = false;
         if (circumferenceData.getBasicCircumference() != null) {
             result = this.checkRequiredField(circumferenceData.getBasicCircumference())
