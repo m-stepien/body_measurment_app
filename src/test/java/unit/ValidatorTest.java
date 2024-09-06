@@ -1,60 +1,92 @@
 package unit;
 
+import com.body.measurment.custom.exception.InvalidDataException;
+import com.body.measurment.custom.exception.MissingRequiredDataException;
 import com.body.measurment.dto.AdditionalCircumference;
 import com.body.measurment.dto.BasicCircumference;
 import com.body.measurment.utils.CircumferenceValidator;
 import com.body.measurment.utils.Validator;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class ValidatorTest {
-    @Test
-    public void checkRequiredFieldBCTestOneParamSet(){
+
+    @Test(expected = MissingRequiredDataException.class)
+    public void checkRequiredFieldBCTestNoParamSet() throws MissingRequiredDataException {
         Validator validator = new CircumferenceValidator();
         BasicCircumference basicCircumference = new BasicCircumference();
-        assertFalse(validator.checkRequiredField(basicCircumference));
+        validator.checkRequiredField(basicCircumference);
+    }
+
+    @Test(expected = MissingRequiredDataException.class)
+    public void checkRequiredFieldBCTestWaistParamSet() throws MissingRequiredDataException {
+        Validator validator = new CircumferenceValidator();
+        BasicCircumference basicCircumference = new BasicCircumference();
         basicCircumference.setWaist(22.0);
-        assertFalse(validator.checkRequiredField(basicCircumference));
-        basicCircumference.setWaist(null);
-        basicCircumference.setHip(22.0);
-        assertFalse(validator.checkRequiredField(basicCircumference));
-        basicCircumference.setHip(null);
+        validator.checkRequiredField(basicCircumference);
+    }
+
+    @Test(expected = MissingRequiredDataException.class)
+    public void checkRequiredFieldBCTestChestParamSet() throws MissingRequiredDataException {
+        Validator validator = new CircumferenceValidator();
+        BasicCircumference basicCircumference = new BasicCircumference();
         basicCircumference.setChest(22.0);
-        assertFalse(validator.checkRequiredField(basicCircumference));
-        basicCircumference.setChest(null);
+        validator.checkRequiredField(basicCircumference);
+    }
+
+    @Test(expected = MissingRequiredDataException.class)
+    public void checkRequiredFieldBCTestHipParamSet() throws MissingRequiredDataException {
+        Validator validator = new CircumferenceValidator();
+        BasicCircumference basicCircumference = new BasicCircumference();
+        basicCircumference.setHip(22.0);
+        validator.checkRequiredField(basicCircumference);
+    }
+
+    @Test(expected = MissingRequiredDataException.class)
+    public void checkRequiredFieldBCTestAbdominalParamSet() throws MissingRequiredDataException {
+        Validator validator = new CircumferenceValidator();
+        BasicCircumference basicCircumference = new BasicCircumference();
         basicCircumference.setAbdominal(22.0);
-        assertFalse(validator.checkRequiredField(basicCircumference));
+        validator.checkRequiredField(basicCircumference);
+    }
+
+    //Abdominal Waist Hip
+    @Test(expected = MissingRequiredDataException.class)
+    public void checkRequiredFieldBCTestAWHParamSet() throws MissingRequiredDataException{
+        Validator validator = new CircumferenceValidator();
+        BasicCircumference basicCircumference = new BasicCircumference();
+        basicCircumference.setAbdominal(22.0);
+        basicCircumference.setHip(22.0);
+        basicCircumference.setWaist(22.0);
+        validator.checkRequiredField(basicCircumference);
+    }
+
+    //Abdominal Waist Chest
+    @Test(expected = MissingRequiredDataException.class)
+    public void checkRequiredFieldBCTestAWHCaramSet() throws MissingRequiredDataException{
+        Validator validator = new CircumferenceValidator();
+        BasicCircumference basicCircumference = new BasicCircumference();
+        basicCircumference.setAbdominal(22.0);
+        basicCircumference.setWaist(22.0);
+        basicCircumference.setChest(22.0);
+        validator.checkRequiredField(basicCircumference);
+    }
+
+    //Hip Waist Chest
+    @Test(expected = MissingRequiredDataException.class)
+    public void checkRequiredFieldBCTestCWHCaramSet() throws MissingRequiredDataException{
+        Validator validator = new CircumferenceValidator();
+        BasicCircumference basicCircumference = new BasicCircumference();
+        basicCircumference.setWaist(22.0);
+        basicCircumference.setHip(22.0);
+        basicCircumference.setChest(22.0);
+        validator.checkRequiredField(basicCircumference);
     }
 
     @Test
-    public void checkRequiredFieldBCTestThreeParamSet(){
-        Validator validator = new CircumferenceValidator();
-        BasicCircumference basicCircumference = new BasicCircumference();
-        basicCircumference.setAbdominal(22.0);
-        basicCircumference.setHip(22.0);
-        basicCircumference.setWaist(22.0);
-        assertFalse(validator.checkRequiredField(basicCircumference));
-        basicCircumference = new BasicCircumference();
-        basicCircumference.setAbdominal(22.0);
-        basicCircumference.setHip(22.0);
-        basicCircumference.setChest(22.0);
-        assertFalse(validator.checkRequiredField(basicCircumference));
-        basicCircumference = new BasicCircumference();
-        basicCircumference.setAbdominal(22.0);
-        basicCircumference.setWaist(22.0);
-        basicCircumference.setChest(22.0);
-        assertFalse(validator.checkRequiredField(basicCircumference));
-        basicCircumference = new BasicCircumference();
-        basicCircumference.setHip(22.0);
-        basicCircumference.setWaist(22.0);
-        basicCircumference.setChest(22.0);
-        assertFalse(validator.checkRequiredField(basicCircumference));
-
-    }
-
-    @Test
-    public void checkRequiredFieldBCTestAllParamSet(){
+    public void checkRequiredFieldBCTestAllParamSet() throws MissingRequiredDataException{
         Validator validator = new CircumferenceValidator();
         BasicCircumference basicCircumference = new BasicCircumference();
         basicCircumference.setAbdominal(22.0);
@@ -64,39 +96,63 @@ public class ValidatorTest {
         assertTrue(validator.checkRequiredField(basicCircumference));
     }
 
-    @Test
-    public void checkSignOnFieldsBCAllWrongTest(){
+    @Test(expected = InvalidDataException.class)
+    public void checkSignOnFieldsBCAllWrongTest() throws InvalidDataException {
         Validator validator = new CircumferenceValidator();
         BasicCircumference basicCircumference = new BasicCircumference();
         basicCircumference.setChest(-22.0);
         basicCircumference.setHip(-22.0);
         basicCircumference.setAbdominal(-22.0);
         basicCircumference.setWaist(-22.0);
-        assertFalse(validator.checkSignOnFields(basicCircumference));
+        validator.checkSignOnFields(basicCircumference);
     }
 
-    @Test
-    public void checkSignOnFieldsBCOneWrongTest(){
+    @Test(expected = InvalidDataException.class)
+    public void checkSignOnFieldsBCChestWrongTest() throws InvalidDataException{
         Validator validator = new CircumferenceValidator();
         BasicCircumference basicCircumference = new BasicCircumference();
         basicCircumference.setWaist(22.0);
         basicCircumference.setAbdominal(22.0);
         basicCircumference.setHip(22.0);
         basicCircumference.setChest(-22.0);
-        assertFalse(validator.checkSignOnFields(basicCircumference));
-        basicCircumference.setChest(22.0);
-        basicCircumference.setHip(-22.0);
-        assertFalse(validator.checkSignOnFields(basicCircumference));
-        basicCircumference.setHip(22.0);
-        basicCircumference.setAbdominal(-22.0);
-        assertFalse(validator.checkSignOnFields(basicCircumference));
+        validator.checkSignOnFields(basicCircumference);
+    }
+
+    @Test(expected = InvalidDataException.class)
+    public void checkSignOnFieldsBCHipWrongTest() throws InvalidDataException{
+        Validator validator = new CircumferenceValidator();
+        BasicCircumference basicCircumference = new BasicCircumference();
+        basicCircumference.setWaist(22.0);
         basicCircumference.setAbdominal(22.0);
+        basicCircumference.setHip(-22.0);
+        basicCircumference.setChest(22.0);
+        validator.checkSignOnFields(basicCircumference);
+    }
+
+    @Test(expected = InvalidDataException.class)
+    public void checkSignOnFieldsBCWaistWrongTest() throws InvalidDataException{
+        Validator validator = new CircumferenceValidator();
+        BasicCircumference basicCircumference = new BasicCircumference();
         basicCircumference.setWaist(-22.0);
-        assertFalse(validator.checkSignOnFields(basicCircumference));
+        basicCircumference.setAbdominal(22.0);
+        basicCircumference.setHip(22.0);
+        basicCircumference.setChest(22.0);
+        validator.checkSignOnFields(basicCircumference);
+    }
+
+    @Test(expected = InvalidDataException.class)
+    public void checkSignOnFieldsBCAbdominalWrongTest() throws InvalidDataException{
+        Validator validator = new CircumferenceValidator();
+        BasicCircumference basicCircumference = new BasicCircumference();
+        basicCircumference.setWaist(22.0);
+        basicCircumference.setAbdominal(-22.0);
+        basicCircumference.setHip(22.0);
+        basicCircumference.setChest(22.0);
+        validator.checkSignOnFields(basicCircumference);
     }
 
     @Test
-    public void checkSignOnFieldsBCRightTest() {
+    public void checkSignOnFieldsBCRightTest() throws InvalidDataException{
         Validator validator = new CircumferenceValidator();
         BasicCircumference basicCircumference = new BasicCircumference();
         basicCircumference.setHip(22.3);
@@ -106,8 +162,8 @@ public class ValidatorTest {
         assertTrue(validator.checkSignOnFields(basicCircumference));
     }
 
-    @Test
-    public void checkSignOnFieldsACAllWrongTest(){
+    @Test(expected = InvalidDataException.class)
+    public void checkSignOnFieldsACAllWrongTest() throws InvalidDataException{
         Validator validator = new CircumferenceValidator();
         AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setNeck(-22.0);
@@ -119,43 +175,83 @@ public class ValidatorTest {
         additionalCircumference.setArmL(-22.0);
         additionalCircumference.setCalfL(-22.0);
         additionalCircumference.setCalfR(-22.0);
-        assertFalse(validator.checkSignOnFields(additionalCircumference));
+        validator.checkSignOnFields(additionalCircumference);
     }
 
-    @Test
-    public void checkSignOnFieldsACOneWrongTest(){
+    @Test(expected = InvalidDataException.class)
+    public void checkSignOnFieldsACNeckWrongTest() throws InvalidDataException {
         Validator validator = new CircumferenceValidator();
         AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setNeck(-22.0);
-        assertFalse(validator.checkSignOnFields(additionalCircumference));
-        additionalCircumference.setNeck(null);
+        validator.checkSignOnFields(additionalCircumference);
+    }
+
+    @Test(expected = InvalidDataException.class)
+    public void checkSignOnFieldsACCalfRWrongTest() throws InvalidDataException {
+        Validator validator = new CircumferenceValidator();
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setCalfR(-22.0);
-        assertFalse(validator.checkSignOnFields(additionalCircumference));
-        additionalCircumference.setCalfR(null);
+        validator.checkSignOnFields(additionalCircumference);
+    }
+
+    @Test(expected = InvalidDataException.class)
+    public void checkSignOnFieldsACCalfLWrongTest() throws InvalidDataException {
+        Validator validator = new CircumferenceValidator();
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setCalfL(-22.0);
-        assertFalse(validator.checkSignOnFields(additionalCircumference));
-        additionalCircumference.setCalfL(null);
+        validator.checkSignOnFields(additionalCircumference);
+    }
+
+    @Test(expected = InvalidDataException.class)
+    public void checkSignOnFieldsACArmLWrongTest() throws InvalidDataException {
+        Validator validator = new CircumferenceValidator();
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setArmL(-22.0);
-        assertFalse(validator.checkSignOnFields(additionalCircumference));
-        additionalCircumference.setArmL(null);
+        validator.checkSignOnFields(additionalCircumference);
+    }
+
+    @Test(expected = InvalidDataException.class)
+    public void checkSignOnFieldsACArmRWrongTest() throws InvalidDataException {
+        Validator validator = new CircumferenceValidator();
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setArmR(-22.0);
-        assertFalse(validator.checkSignOnFields(additionalCircumference));
-        additionalCircumference.setArmR(null);
-        additionalCircumference.setForarmL(-22.0);
-        assertFalse(validator.checkSignOnFields(additionalCircumference));
-        additionalCircumference.setForarmL(null);
+        validator.checkSignOnFields(additionalCircumference);
+    }
+
+    @Test(expected = InvalidDataException.class)
+    public void checkSignOnFieldsACForarmRWrongTest() throws InvalidDataException {
+        Validator validator = new CircumferenceValidator();
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setForarmR(-22.0);
-        assertFalse(validator.checkSignOnFields(additionalCircumference));
-        additionalCircumference.setForarmR(null);
+        validator.checkSignOnFields(additionalCircumference);
+    }
+
+    @Test(expected = InvalidDataException.class)
+    public void checkSignOnFieldsACForarmLWrongTest() throws InvalidDataException {
+        Validator validator = new CircumferenceValidator();
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
+        additionalCircumference.setForarmL(-22.0);
+        validator.checkSignOnFields(additionalCircumference);
+    }
+
+    @Test(expected = InvalidDataException.class)
+    public void checkSignOnFieldsACThighRWrongTest() throws InvalidDataException {
+        Validator validator = new CircumferenceValidator();
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setThighR(-22.0);
-        assertFalse(validator.checkSignOnFields(additionalCircumference));
-        additionalCircumference.setThighR(null);
+        validator.checkSignOnFields(additionalCircumference);
+    }
+
+    @Test(expected = InvalidDataException.class)
+    public void checkSignOnFieldsACThighLWrongTest() throws InvalidDataException {
+        Validator validator = new CircumferenceValidator();
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setThighL(-22.0);
-        assertFalse(validator.checkSignOnFields(additionalCircumference));
+        validator.checkSignOnFields(additionalCircumference);
     }
 
     @Test
-    public void checkSignOnFieldsACAllRightTest(){
+    public void checkSignOnFieldsACAllRightTest() throws InvalidDataException{
         Validator validator = new CircumferenceValidator();
         AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setNeck(22.0);
@@ -171,34 +267,74 @@ public class ValidatorTest {
     }
 
     @Test
-    public void checkSignOnFieldsACOneRightTest(){
+    public void checkSignOnFieldsACNeckRightTest() throws InvalidDataException {
         Validator validator = new CircumferenceValidator();
         AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setNeck(22.0);
         assertTrue(validator.checkSignOnFields(additionalCircumference));
-        additionalCircumference.setNeck(null);
+    }
+
+    @Test
+    public void checkSignOnFieldsACCalfRRightTest() throws InvalidDataException {
+        Validator validator = new CircumferenceValidator();
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setCalfR(22.0);
         assertTrue(validator.checkSignOnFields(additionalCircumference));
-        additionalCircumference.setCalfR(null);
+    }
+
+    @Test
+    public void checkSignOnFieldsACCalfLRightTest() throws InvalidDataException {
+        Validator validator = new CircumferenceValidator();
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setCalfL(22.0);
         assertTrue(validator.checkSignOnFields(additionalCircumference));
-        additionalCircumference.setCalfL(null);
+    }
+
+    @Test
+    public void checkSignOnFieldsACArmLRightTest() throws InvalidDataException {
+        Validator validator = new CircumferenceValidator();
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setArmL(22.0);
         assertTrue(validator.checkSignOnFields(additionalCircumference));
-        additionalCircumference.setArmL(null);
+    }
+
+    @Test
+    public void checkSignOnFieldsACArmRRightTest() throws InvalidDataException {
+        Validator validator = new CircumferenceValidator();
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setArmR(22.0);
         assertTrue(validator.checkSignOnFields(additionalCircumference));
-        additionalCircumference.setArmR(null);
-        additionalCircumference.setForarmL(22.0);
-        assertTrue(validator.checkSignOnFields(additionalCircumference));
-        additionalCircumference.setForarmL(null);
+    }
+
+    @Test
+    public void checkSignOnFieldsACForarmRRightTest() throws InvalidDataException {
+        Validator validator = new CircumferenceValidator();
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setForarmR(22.0);
         assertTrue(validator.checkSignOnFields(additionalCircumference));
-        additionalCircumference.setForarmR(null);
-        additionalCircumference.setThighR(22.0);
+    }
+
+    @Test
+    public void checkSignOnFieldsACForarmLRightTest() throws InvalidDataException {
+        Validator validator = new CircumferenceValidator();
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
+        additionalCircumference.setForarmL(22.0);
         assertTrue(validator.checkSignOnFields(additionalCircumference));
-        additionalCircumference.setThighR(null);
+    }
+
+    @Test
+    public void checkSignOnFieldsACThighLRightTest() throws InvalidDataException {
+        Validator validator = new CircumferenceValidator();
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setThighL(22.0);
+        assertTrue(validator.checkSignOnFields(additionalCircumference));
+    }
+
+    @Test
+    public void checkSignOnFieldsACThighRRightTest() throws InvalidDataException {
+        Validator validator = new CircumferenceValidator();
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
+        additionalCircumference.setThighR(22.0);
         assertTrue(validator.checkSignOnFields(additionalCircumference));
     }
 }
