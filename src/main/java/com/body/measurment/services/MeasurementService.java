@@ -46,7 +46,7 @@ public class MeasurementService {
         } catch (DatabaseException e) {
             return this.prepereResponseForSaveOperation(false, "Failed save to database", circumferenceData);
         }
-        return this.prepereResponseForSaveOperation(true, "Save CircumferenceData sucessful", circumferenceData);
+        return this.prepereResponseForSaveOperation(true, "Save CircumferenceData successful", circumferenceData);
 
     }
 
