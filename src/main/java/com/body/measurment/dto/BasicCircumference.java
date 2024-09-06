@@ -2,6 +2,8 @@ package com.body.measurment.dto;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "basic_circumference")
 public class BasicCircumference {
@@ -15,6 +17,10 @@ public class BasicCircumference {
 
 
     public BasicCircumference() {
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public BasicCircumference(Double abdominal, Double chest, Double waist, Double hip) {
@@ -58,5 +64,29 @@ public class BasicCircumference {
 
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BasicCircumference that = (BasicCircumference) o;
+        return Objects.equals(id, that.id) && Objects.equals(abdominal, that.abdominal) && Objects.equals(chest, that.chest) && Objects.equals(waist, that.waist) && Objects.equals(hip, that.hip);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, abdominal, chest, waist, hip);
+    }
+
+    @Override
+    public String toString() {
+        return "BasicCircumference{" +
+                "id=" + id +
+                ", abdominal=" + abdominal +
+                ", chest=" + chest +
+                ", waist=" + waist +
+                ", hip=" + hip +
+                '}';
     }
 }

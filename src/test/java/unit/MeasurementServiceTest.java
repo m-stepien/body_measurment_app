@@ -1,6 +1,5 @@
 package unit;
 
-import com.body.measurment.custom.exception.DatabaseException;
 import com.body.measurment.custom.exception.InvalidDataException;
 import com.body.measurment.custom.exception.MissingRequiredDataException;
 import com.body.measurment.dto.AdditionalCircumference;
@@ -17,9 +16,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -38,6 +37,7 @@ public class MeasurementServiceTest {
     CircumferenceDataRepository circumferenceDataRepository;
     @InjectMocks
     MeasurementService measurementService;
+
     @Test
     public void saveMeasurementSuccessfulSaveTest() throws MissingRequiredDataException, InvalidDataException {
         CircumferenceData circumferenceData = new CircumferenceData();
@@ -126,5 +126,96 @@ public class MeasurementServiceTest {
     }
 
 
+    @Test
+    public void updateMeasurementFailedWithoutIdTest(){
+        CircumferenceData circumferenceData = new CircumferenceData();
+        CircumferenceDataSaveResponse response = measurementService.updateCircumference(circumferenceData);
+        assertFalse(response.isSuccess());
+        assertEquals("Id is required for update",response.getMessage());
+        assertEquals(response.getCircumferenceData(), circumferenceData);
+    }
 
+    @Test
+    public void updateMeasurementFailedNoObjectWithIdInDatabaseTest(){
+        CircumferenceData circumferenceData = new CircumferenceData();
+        circumferenceData.setId(11L);
+        when(circumferenceDataRepository.findById(any(Long.class))).thenReturn(Optional.empty());
+        CircumferenceDataSaveResponse response = measurementService.updateCircumference(circumferenceData);
+        assertFalse(response.isSuccess());
+        assertEquals("There is no CircumferenceData object with this id in database",response.getMessage());
+        assertEquals(response.getCircumferenceData(), circumferenceData);
+    }
+
+    @Test
+    public void updateMeasurementSuccessfulTest() throws Exception{
+        when(circumferenceDataRepository.findById(any(Long.class))).thenReturn(Optional.of(getFullCircumferenceDataInDatabase()));
+        when(circumferenceDataRepository.save(any(CircumferenceData.class))).thenAnswer(invocation -> {
+            Object[] args = invocation.getArguments();
+            return args[0];
+        });
+        when(basicCircumferenceRepository.save(any(BasicCircumference.class))).thenAnswer(invocation -> {
+           Object[] args = invocation.getArguments();
+           return args[0];
+        });
+        when(additionalCircumferenceRepository.save(any(AdditionalCircumference.class))).thenAnswer(invocation -> {
+            Object[] args = invocation.getArguments();
+            return args[0];
+        });
+        when(validator.validateCircumferenceData(any(CircumferenceData.class))).thenReturn(true);
+        CircumferenceDataSaveResponse response = measurementService.updateCircumference(getCircumferenceDataFullUpdated());
+        assertTrue(response.isSuccess());
+        assertEquals("Save CircumferenceData successful", response.getMessage());
+        assertEquals(response.getCircumferenceData(), getCircumferenceDataFullUpdated());
+    }
+
+    private CircumferenceData getFullCircumferenceDataInDatabase(){
+        CircumferenceData circumferenceDataInDatabase = new CircumferenceData();
+        circumferenceDataInDatabase.setMeasurmentDate(LocalDate.of(2023,11,28));
+        BasicCircumference basicCircumference = new BasicCircumference();
+        basicCircumference = setSameValueToEveryFieldInBasicCircumference(basicCircumference, 22.0);
+        basicCircumference.setId(12L);
+        circumferenceDataInDatabase.setBasicCircumference(basicCircumference);
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
+        additionalCircumference = setSameValueToEveryFieldAdditionalCircumference(additionalCircumference, 22.0);
+        additionalCircumference.setId(14L);
+        circumferenceDataInDatabase.setAdditionalCircumference(additionalCircumference);
+        circumferenceDataInDatabase.setId(11L);
+        return circumferenceDataInDatabase;
+    }
+
+    private CircumferenceData getCircumferenceDataFullUpdated(){
+        CircumferenceData circumferenceDataUpdated = new CircumferenceData();
+        circumferenceDataUpdated.setMeasurmentDate(LocalDate.of(2022,12,1));
+        BasicCircumference basicCircumference = new BasicCircumference();
+        basicCircumference = setSameValueToEveryFieldInBasicCircumference(basicCircumference, 45.0);
+        basicCircumference.setId(12L);
+        circumferenceDataUpdated.setBasicCircumference(basicCircumference);
+        AdditionalCircumference additionalCircumference = new AdditionalCircumference();
+        additionalCircumference.setId(14L);
+        additionalCircumference = setSameValueToEveryFieldAdditionalCircumference(additionalCircumference, 45.0);
+        circumferenceDataUpdated.setAdditionalCircumference(additionalCircumference);
+        circumferenceDataUpdated.setId(11L);
+        return circumferenceDataUpdated;
+    }
+
+    private BasicCircumference setSameValueToEveryFieldInBasicCircumference(BasicCircumference basicCircumference, Double value){
+        basicCircumference.setWaist(value);
+        basicCircumference.setChest(value);
+        basicCircumference.setHip(value);
+        basicCircumference.setAbdominal(value);
+        return basicCircumference;
+    }
+
+    private AdditionalCircumference setSameValueToEveryFieldAdditionalCircumference(AdditionalCircumference additionalCircumference, Double value){
+        additionalCircumference.setThighL(value);
+        additionalCircumference.setThighR(value);
+        additionalCircumference.setForarmL(value);
+        additionalCircumference.setForarmR(value);
+        additionalCircumference.setArmR(value);
+        additionalCircumference.setArmL(value);
+        additionalCircumference.setCalfL(value);
+        additionalCircumference.setCalfR(value);
+        additionalCircumference.setNeck(value);
+        return additionalCircumference;
+    }
 }

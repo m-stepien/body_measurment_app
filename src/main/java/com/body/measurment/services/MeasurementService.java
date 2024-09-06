@@ -134,6 +134,9 @@ public class MeasurementService {
         if (newData.getCalfR() != null) {
             additionalCircumference.setCalfR(newData.getCalfR());
         }
+        if (newData.getForarmL() != null) {
+            additionalCircumference.setForarmL(newData.getForarmL());
+        }
         if (newData.getForarmR() != null) {
             additionalCircumference.setForarmR(newData.getForarmR());
         }

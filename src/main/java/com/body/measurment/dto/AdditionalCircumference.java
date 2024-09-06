@@ -2,6 +2,8 @@ package com.body.measurment.dto;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "additional_circumference")
 public class AdditionalCircumference {
@@ -112,5 +114,34 @@ public class AdditionalCircumference {
 
     public void setCalfR(Double calfR) {
         this.calfR = calfR;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AdditionalCircumference that = (AdditionalCircumference) o;
+        return Objects.equals(id, that.id) && Objects.equals(thighL, that.thighL) && Objects.equals(thighR, that.thighR) && Objects.equals(armL, that.armL) && Objects.equals(armR, that.armR) && Objects.equals(neck, that.neck) && Objects.equals(forarmL, that.forarmL) && Objects.equals(forarmR, that.forarmR) && Objects.equals(calfL, that.calfL) && Objects.equals(calfR, that.calfR);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, thighL, thighR, armL, armR, neck, forarmL, forarmR, calfL, calfR);
+    }
+
+    @Override
+    public String toString() {
+        return "AdditionalCircumference{" +
+                "id=" + id +
+                ", thighL=" + thighL +
+                ", thighR=" + thighR +
+                ", armL=" + armL +
+                ", armR=" + armR +
+                ", neck=" + neck +
+                ", forarmL=" + forarmL +
+                ", forarmR=" + forarmR +
+                ", calfL=" + calfL +
+                ", calfR=" + calfR +
+                '}';
     }
 }
