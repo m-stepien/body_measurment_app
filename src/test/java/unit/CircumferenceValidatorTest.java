@@ -6,12 +6,11 @@ import com.body.measurment.dto.AdditionalCircumference;
 import com.body.measurment.dto.BasicCircumference;
 import com.body.measurment.utils.CircumferenceValidator;
 import com.body.measurment.utils.Validator;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class ValidatorTest {
+public class CircumferenceValidatorTest {
 
     @Test(expected = MissingRequiredDataException.class)
     public void checkRequiredFieldBCTestNoParamSet() throws MissingRequiredDataException {

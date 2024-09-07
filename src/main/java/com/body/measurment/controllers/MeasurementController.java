@@ -1,6 +1,6 @@
 package com.body.measurment.controllers;
 
-import com.body.measurment.services.MeasurementService;
+import com.body.measurment.services.CircumferenceMeasurementService;
 import com.body.measurment.dto.CircumferenceData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,49 +10,49 @@ import java.util.List;
 
 @RestController
 public class MeasurementController {
-    private final MeasurementService measurementService;
+    private final CircumferenceMeasurementService circumferenceMeasurementService;
 
     @Autowired
-    public MeasurementController(MeasurementService measurementService){
-        this.measurementService = measurementService;
+    public MeasurementController(CircumferenceMeasurementService circumferenceMeasurementService){
+        this.circumferenceMeasurementService = circumferenceMeasurementService;
     }
 
     @PostMapping("/bodyMonitoring/addNewCircumference")
     public void addNewMeasurement(@RequestBody CircumferenceData circumferenceData){
-            this.measurementService.saveMeasurement(circumferenceData);
+            this.circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
     }
 
     @PatchMapping("/bodyMonitoring/update/circumference/{id}")
     public void updateCircumference(@PathVariable("id") long id, @RequestBody CircumferenceData circumferenceData){
-        this.measurementService.updateCircumference(circumferenceData);
+        this.circumferenceMeasurementService.updateCircumference(circumferenceData);
     }
 
     @GetMapping("/bodyMonitoring/getCircumference/{id}")
     public CircumferenceData getCircumferenceData(@PathVariable("id") long id){
-        return this.measurementService.getCircumferenceDataById(id);
+        return this.circumferenceMeasurementService.getCircumferenceDataById(id);
     }
     @GetMapping("/bodyMonitoring/getCircumference/betweenDate")
     public List<CircumferenceData> getCircumferenceDataBetweenDate(@RequestParam LocalDate start,@RequestParam LocalDate end){
-        return this.measurementService.getCircumferenceDataInDateRange(start, end);
+        return this.circumferenceMeasurementService.getCircumferenceDataInDateRange(start, end);
     }
 
     @GetMapping("/bodyMonitoring/getCircumference/sinceDate")
     public List<CircumferenceData> getCircumferenceDataSinceDate(@RequestParam LocalDate start){
-        return this.measurementService.getCircumferenceDataFromDate(start);
+        return this.circumferenceMeasurementService.getCircumferenceDataFromDate(start);
     }
 
     @GetMapping("/bodyMonitoring/getCircumference/all")
     public List<CircumferenceData> getCircumferenceDataAll(){
-        return this.measurementService.getCircumferenceDataAll();
+        return this.circumferenceMeasurementService.getCircumferenceDataAll();
     }
 
     @DeleteMapping("/bodyMonitoring/circumference/deleta/{id}")
     public void deleteCircumference(@PathVariable("id") long id){
-        this.measurementService.deleteCircumferenceById(id);
+        this.circumferenceMeasurementService.deleteCircumferenceById(id);
     }
 
     @DeleteMapping("/bodyMonitoring/circumference/delete/all")
     public void deleteAllCircumference(){
-        this.measurementService.deleteAllCircumference();
+        this.circumferenceMeasurementService.deleteAllCircumference();
     }
 }

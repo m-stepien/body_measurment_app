@@ -19,21 +19,21 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class MeasurementService {
+public class CircumferenceMeasurementService {
     private final Validator validator;
     private final BasicCircumferenceRepository basicCircumferenceRepository;
     private final AdditionalCircumferenceRepository additionalCircumferenceRepository;
     private final CircumferenceDataRepository circumferenceDataRepository;
 
     @Autowired
-    public MeasurementService(Validator validator, BasicCircumferenceRepository basicCircumferenceRepository, AdditionalCircumferenceRepository additionalCircumferenceRepository, CircumferenceDataRepository circumferenceDataRepository) {
+    public CircumferenceMeasurementService(Validator validator, BasicCircumferenceRepository basicCircumferenceRepository, AdditionalCircumferenceRepository additionalCircumferenceRepository, CircumferenceDataRepository circumferenceDataRepository) {
         this.basicCircumferenceRepository = basicCircumferenceRepository;
         this.additionalCircumferenceRepository = additionalCircumferenceRepository;
         this.circumferenceDataRepository = circumferenceDataRepository;
         this.validator = validator;
     }
 
-    public CircumferenceDataSaveResponse saveMeasurement(CircumferenceData circumferenceData) {
+    public CircumferenceDataSaveResponse saveCircumferenceMeasurement(CircumferenceData circumferenceData) {
         CircumferenceDataSaveResponse circumferenceDataSaveResponse = new CircumferenceDataSaveResponse();
         try {
             this.validator.validateCircumferenceData(circumferenceData);
@@ -54,7 +54,7 @@ public class MeasurementService {
         if (circumferenceData.getId() != null) {
             try {
                 CircumferenceData updatedCircumferenceData = this.mapCircumferenceData(circumferenceData);
-                return saveMeasurement(updatedCircumferenceData);
+                return saveCircumferenceMeasurement(updatedCircumferenceData);
             }
             catch (NoSuchObjectInDatabaseException e){
                 return prepereResponseForSaveOperation(false, e.getMessage(), circumferenceData);
