@@ -7,35 +7,36 @@ import com.body.measurment.dto.BasicCircumference;
 
 public class BodyDataValidator {
     public boolean isBodyDataValid(BasicBodyData basicBodyData) throws InvalidDataException, MissingRequiredDataException {
-        if (!isAllRequiredDataSet(basicBodyData)) {
-            throw new MissingRequiredDataException(BasicBodyData.class.getName());
-        }
-        if (!isAgeValid(basicBodyData.getAge())){
-            throw new InvalidDataException(BasicCircumference.class.getName(), "age");
-        }
-        if(!isHeightInCmValid(basicBodyData.getHeightInCm())){
-            throw new InvalidDataException(BasicCircumference.class.getName(), "heightInCm");
-        }
-        if(!isGenderValid(basicBodyData.getGander())){
-            throw new InvalidDataException(BasicCircumference.class.getName(), "gender");
-        }
+        checkIsAllRequiredDataSet(basicBodyData);
+        checkAgeValid(basicBodyData.getAge());
+        checkHeightInCmValid(basicBodyData.getHeightInCm());
+        checkGenderValid(basicBodyData.getGander());
         return true;
     }
 
 
-    private boolean isAllRequiredDataSet(BasicBodyData basicBodyData) {
-        return basicBodyData.getAge() != null && basicBodyData.getGander() != null && basicBodyData.getHeightInCm() != null;
+    private void checkIsAllRequiredDataSet(BasicBodyData basicBodyData) throws MissingRequiredDataException {
+        if(basicBodyData.getAge() == null || basicBodyData.getGander() == null || basicBodyData.getHeightInCm() == null)
+        {
+            throw new MissingRequiredDataException(BasicBodyData.class.getName());
+        }
     }
 
-    private boolean isHeightInCmValid(Double heightInCm){
-        return heightInCm > 0 && heightInCm <= 275;
+    private void checkHeightInCmValid(Double heightInCm) throws InvalidDataException {
+        if(heightInCm <= 0 || heightInCm > 275){
+            throw new InvalidDataException(BasicCircumference.class.getName(), "age");
+        }
     }
 
-    private boolean isAgeValid(Integer age){
-        return age>0 && age<=150;
+    private void checkAgeValid(Integer age) throws InvalidDataException {
+        if(age<=0 || age>150){
+            throw new InvalidDataException(BasicCircumference.class.getName(), "heightInCm");
+        }
     }
 
-    private boolean isGenderValid(String gender){
-        return gender.equals("M") || gender.equals("F") || gender.equals("O");
+    private void checkGenderValid(String gender) throws InvalidDataException {
+        if(!(gender.equals("M") || gender.equals("F") || gender.equals("O"))){
+            throw new InvalidDataException(BasicCircumference.class.getName(), "gender");
+        }
     }
 }
