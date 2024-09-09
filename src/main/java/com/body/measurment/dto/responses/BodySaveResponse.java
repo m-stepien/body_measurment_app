@@ -1,12 +1,11 @@
 package com.body.measurment.dto.responses;
 
 import com.body.measurment.dto.BasicBodyData;
-import com.body.measurment.dto.CircumferenceData;
 
 public class BodySaveResponse {
     private boolean success;
     private String message;
-    private BasicBodyData circumferenceData;
+    private BasicBodyData basicBodyData;
 
     public BodySaveResponse() {
     }
@@ -27,11 +26,11 @@ public class BodySaveResponse {
         this.message = message;
     }
 
-    public BasicBodyData getCircumferenceData() {
-        return circumferenceData;
+    public BasicBodyData getBasicBodyData() {
+        return basicBodyData;
     }
 
-    public void setCircumferenceData(BasicBodyData circumferenceData) {
-        this.circumferenceData = circumferenceData;
+    public void setBasicBodyData(BasicBodyData basicBodyData) {
+        this.basicBodyData = basicBodyData;
     }
 }

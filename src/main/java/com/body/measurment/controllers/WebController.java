@@ -9,6 +9,7 @@ public class WebController {
     public String home(){
         return "hello there";
     }
+
     @GetMapping("/addNewMeasurment")
     public String getAddNewMeasurment(){
         return "";

@@ -1,0 +1,31 @@
+package com.body.measurment.controllers;
+
+import com.body.measurment.dto.BasicBodyData;
+import com.body.measurment.services.BodyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+public class BodyController {
+    private final BodyService bodyService;
+
+    @Autowired
+    public BodyController(BodyService bodyService){
+        this.bodyService = bodyService;
+    }
+
+    @PostMapping("/body/basic/save")
+    public void saveBasicBodyData(BasicBodyData basicBodyData){
+        this.bodyService.saveBasicBodyData(basicBodyData);
+    }
+
+    @GetMapping("/body/basic/get/{id}")
+    public BasicBodyData getBasicBodyDataById(@PathVariable("id") long id){
+        return this.bodyService.getBasicBodyData(id);
+    }
+
+    @DeleteMapping("/body/basic/delete/{id}")
+    public void deleteBasicBodyDataById(@PathVariable("id") long id){
+        this.bodyService.deleteBasicBodyData(id);
+    }
+}

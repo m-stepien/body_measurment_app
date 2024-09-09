@@ -5,9 +5,11 @@ import com.body.measurment.custom.exception.MissingRequiredDataException;
 import com.body.measurment.dto.BasicBodyData;
 import com.body.measurment.dto.BasicCircumference;
 import com.body.measurment.dto.Weight;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
+@Component
 public class BodyDataValidator {
     public boolean isBodyDataValid(BasicBodyData basicBodyData) throws InvalidDataException, MissingRequiredDataException {
         checkIsAllRequiredDataSet(basicBodyData);

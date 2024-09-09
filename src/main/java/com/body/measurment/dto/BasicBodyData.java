@@ -5,16 +5,18 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.util.Objects;
+
 @Entity
 public class BasicBodyData {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     private Double heightInCm;
     private Integer age;
     private String gander; //will be enum
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -44,6 +46,29 @@ public class BasicBodyData {
 
     public void setGander(String gander) {
         this.gander = gander;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BasicBodyData that = (BasicBodyData) o;
+        return id == that.id && Objects.equals(heightInCm, that.heightInCm) && Objects.equals(age, that.age) && Objects.equals(gander, that.gander);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, heightInCm, age, gander);
+    }
+
+    @Override
+    public String toString() {
+        return "BasicBodyData{" +
+                "id=" + id +
+                ", heightInCm=" + heightInCm +
+                ", age=" + age +
+                ", gander='" + gander + '\'' +
+                '}';
     }
 }
 
