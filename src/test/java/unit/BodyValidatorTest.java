@@ -3,9 +3,13 @@ package unit;
 import com.body.measurment.custom.exception.InvalidDataException;
 import com.body.measurment.custom.exception.MissingRequiredDataException;
 import com.body.measurment.dto.BasicBodyData;
+import com.body.measurment.dto.Weight;
 import com.body.measurment.utils.BodyDataValidator;
 import org.junit.Test;
 import org.junit.Assert;
+
+import java.time.LocalDate;
+
 public class BodyValidatorTest {
 
     @Test
@@ -84,6 +88,68 @@ public class BodyValidatorTest {
         BasicBodyData basicBodyData = getValidBasicBodyData();
         basicBodyData.setHeightInCm(null);
         bodyDataValidator.isBodyDataValid(basicBodyData);
+    }
+
+    @Test
+    public void checkIsWeightValidSuccessfulTest() throws Exception{
+        BodyDataValidator bodyDataValidator = new BodyDataValidator();
+        Weight weight = new Weight();
+        weight.setDate(LocalDate.now());
+        weight.setWeightInKg(88.3);
+        Assert.assertTrue(bodyDataValidator.isWeightValid(weight));
+    }
+
+    @Test(expected = MissingRequiredDataException.class)
+    public void checkIsWeightValidNoWeightSetFailedTest() throws Exception{
+        BodyDataValidator bodyDataValidator = new BodyDataValidator();
+        Weight weight = new Weight();
+        weight.setDate(LocalDate.now());
+        bodyDataValidator.isWeightValid(weight);
+    }
+
+    @Test(expected = InvalidDataException.class)
+    public void checkIsWeightValidNoDateSetFailedTest() throws Exception{
+        BodyDataValidator bodyDataValidator = new BodyDataValidator();
+        Weight weight = new Weight();
+        weight.setWeightInKg(-88.3);
+        weight.setDate(LocalDate.now());
+        bodyDataValidator.isWeightValid(weight);
+    }
+
+    @Test(expected = InvalidDataException.class)
+    public void checkIsWeightValidFutureDateSetFailedTest() throws Exception{
+        BodyDataValidator bodyDataValidator = new BodyDataValidator();
+        Weight weight = new Weight();
+        weight.setWeightInKg(-88.3);
+        weight.setDate(LocalDate.of(2055, 12, 11));
+        bodyDataValidator.isWeightValid(weight);
+    }
+
+    @Test(expected = InvalidDataException.class)
+    public void checkIsWeightValidToOldDateSetFailedTest() throws Exception{
+        BodyDataValidator bodyDataValidator = new BodyDataValidator();
+        Weight weight = new Weight();
+        weight.setWeightInKg(-88.3);
+        weight.setDate(LocalDate.of(1755, 12, 11));
+        bodyDataValidator.isWeightValid(weight);
+    }
+
+    @Test(expected = InvalidDataException.class)
+    public void checkIsWeightValidNegativeWeightSetFailedTest() throws Exception{
+        BodyDataValidator bodyDataValidator = new BodyDataValidator();
+        Weight weight = new Weight();
+        weight.setDate(LocalDate.now());
+        weight.setWeightInKg(-88.3);
+        bodyDataValidator.isWeightValid(weight);
+    }
+
+    @Test(expected = InvalidDataException.class)
+    public void checkIsWeightValidToBigWeightSetFailedTest() throws Exception{
+        BodyDataValidator bodyDataValidator = new BodyDataValidator();
+        Weight weight = new Weight();
+        weight.setDate(LocalDate.now());
+        weight.setWeightInKg(1000.3);
+        bodyDataValidator.isWeightValid(weight);
     }
 
     private BasicBodyData getValidBasicBodyData(){
