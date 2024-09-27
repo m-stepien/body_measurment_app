@@ -2,6 +2,7 @@ package com.body.measurment.services;
 
 import com.body.measurment.custom.exception.InvalidDataException;
 import com.body.measurment.custom.exception.MissingRequiredDataException;
+import com.body.measurment.custom.exception.NoSuchObjectInDatabaseException;
 import com.body.measurment.dto.BasicBodyData;
 import com.body.measurment.dto.Weight;
 import com.body.measurment.dto.responses.BodySaveResponse;
@@ -66,8 +67,18 @@ public class BodyService {
     }
 
     public BodySaveResponse updateWeight(Weight weight){
-        BodySaveResponse bodySaveResponse = new BodySaveResponse();
-        return bodySaveResponse;
+        if (weight.getId() != null) {
+        try {
+            Weight updatedWeight = this.mapWeight(weight);
+            return saveWeight(updatedWeight);
+        }
+        catch (NoSuchObjectInDatabaseException e){
+            return setWeightSaveResponse(false, e.getMessage());
+        }
+        }
+        else{
+            return setWeightSaveResponse(false, "Id is required for update");
+        }
     }
 
     public Weight getWeightById(long id){
@@ -75,12 +86,32 @@ public class BodyService {
     }
 
     public void deleteWeight(long id){
+        this.weightRepository.deleteById(id);
+    }
 
+    private Weight mapWeight(Weight newWeight) throws NoSuchObjectInDatabaseException {
+        Weight weight = this.weightRepository
+                .findById(newWeight.getId())
+                .orElseThrow(() -> new NoSuchObjectInDatabaseException("There is no Weight object with this id in database"));
+        if(newWeight.getWeightInKg()!=null){
+            weight.setWeightInKg(newWeight.getWeightInKg());
+        }
+        if(newWeight.getDate()!=null){
+            weight.setDate(newWeight.getDate());
+        }
+        return weight;
     }
 
     private void setDefaultDataIfNeeded(Weight weight) {
         if (weight.getDate() == null) {
             weight.setDate(LocalDate.now());
         }
+    }
+
+    private BodySaveResponse setWeightSaveResponse(boolean success, String message){
+        BodySaveResponse bodySaveResponse = new BodySaveResponse();
+        bodySaveResponse.setSuccess(success);
+        bodySaveResponse.setMessage(message);
+        return bodySaveResponse;
     }
 }

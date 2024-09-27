@@ -128,18 +128,6 @@ public class BodyServiceTest {
         verify(validator.isBodyDataValid(any(BasicBodyData.class)));
     }
 
-//    @Test
-//    public void saveNewWeightSuccessfulTest() throws MissingRequiredDataException, InvalidDataException {
-//        Weight weight = new Weight();
-//        weight.setDate(LocalDate.now());
-//        weight.setWeightInKg(98.4);
-//
-//        when(validator.isWeightValid(any(Weight.class))).thenReturn(true);
-//        when(weightRepository.save(any(Weight.class))).thenReturn(weight);
-//        when(weightRepository.findById(any(long.class))).thenReturn(Optional.empty());
-//
-//    }
-
     private BasicBodyData getCorrectBasicBodyData() {
         BasicBodyData basicBodyData = new BasicBodyData();
         basicBodyData.setId(11L);

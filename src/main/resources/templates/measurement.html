@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Home</title>
 </head>
 <body>
-<h1>Hello again</h1>
+
 <ul>
-    <li><a href="add_new_measurment.html">Add new measurement</a></li>
+    <li th:each="circumference : ${tasks}">
+        <span th:text="${circumference.id}">1</span>
+    </li>
 </ul>
 </body>
 </html>

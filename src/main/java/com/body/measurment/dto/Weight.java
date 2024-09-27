@@ -13,7 +13,7 @@ public class Weight {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     private LocalDate date;
     private Double weightInKg;
 
@@ -33,7 +33,7 @@ public class Weight {
         this.weightInKg = weightInKg;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

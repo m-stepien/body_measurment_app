@@ -37,15 +37,15 @@ public class CircumferenceMeasurementService {
         try {
             this.validator.validateCircumferenceData(circumferenceData);
         } catch (InvalidDataException | MissingRequiredDataException e) {
-            return this.prepereResponseForSaveOperation(false, e.getMessage(), circumferenceData);
+            return this.prepareResponseForSaveOperation(false, e.getMessage(), circumferenceData);
         }
         this.setDefaultDataIfNeeded(circumferenceData);
         try {
             circumferenceData = this.saveCircumferenceData(circumferenceData);
         } catch (DatabaseException e) {
-            return this.prepereResponseForSaveOperation(false, "Failed save to database", circumferenceData);
+            return this.prepareResponseForSaveOperation(false, "Failed save to database", circumferenceData);
         }
-        return this.prepereResponseForSaveOperation(true, "Save CircumferenceData successful", circumferenceData);
+        return this.prepareResponseForSaveOperation(true, "Save CircumferenceData successful", circumferenceData);
 
     }
 
@@ -56,11 +56,11 @@ public class CircumferenceMeasurementService {
                 return saveCircumferenceMeasurement(updatedCircumferenceData);
             }
             catch (NoSuchObjectInDatabaseException e){
-                return prepereResponseForSaveOperation(false, e.getMessage(), circumferenceData);
+                return prepareResponseForSaveOperation(false, e.getMessage(), circumferenceData);
             }
         }
         else{
-            return this.prepereResponseForSaveOperation(
+            return this.prepareResponseForSaveOperation(
                     false, "Id is required for update",
                     circumferenceData);
         }
@@ -187,7 +187,7 @@ public class CircumferenceMeasurementService {
         }
     }
 
-    private CircumferenceDataSaveResponse prepereResponseForSaveOperation(boolean success, String message, CircumferenceData circumferenceData) {
+    private CircumferenceDataSaveResponse prepareResponseForSaveOperation(boolean success, String message, CircumferenceData circumferenceData) {
         CircumferenceDataSaveResponse circumferenceDataSaveResponse = new CircumferenceDataSaveResponse();
         circumferenceDataSaveResponse.setSuccess(success);
         circumferenceDataSaveResponse.setMessage(message);
