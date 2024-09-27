@@ -1,6 +1,6 @@
 FROM postgres
 
-ENV POSTGRES_DB=bd_measurment_db
+ENV POSTGRES_DB=bd_measurement_db
 ENV POSTGRES_USER=dev1
 ENV POSTGRES_PASSWORD=development
 EXPOSE 5432

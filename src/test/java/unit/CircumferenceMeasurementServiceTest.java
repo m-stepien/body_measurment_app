@@ -1,16 +1,16 @@
 package unit;
 
-import com.body.measurment.custom.exception.InvalidDataException;
-import com.body.measurment.custom.exception.MissingRequiredDataException;
-import com.body.measurment.dto.AdditionalCircumference;
-import com.body.measurment.dto.BasicCircumference;
-import com.body.measurment.dto.CircumferenceData;
-import com.body.measurment.dto.responses.CircumferenceDataSaveResponse;
-import com.body.measurment.repositories.AdditionalCircumferenceRepository;
-import com.body.measurment.repositories.BasicCircumferenceRepository;
-import com.body.measurment.repositories.CircumferenceDataRepository;
-import com.body.measurment.services.CircumferenceMeasurementService;
-import com.body.measurment.utils.Validator;
+import com.body.measurement.custom.exception.InvalidDataException;
+import com.body.measurement.custom.exception.MissingRequiredDataException;
+import com.body.measurement.dto.AdditionalCircumference;
+import com.body.measurement.dto.BasicCircumference;
+import com.body.measurement.dto.CircumferenceData;
+import com.body.measurement.dto.responses.CircumferenceDataSaveResponse;
+import com.body.measurement.repositories.AdditionalCircumferenceRepository;
+import com.body.measurement.repositories.BasicCircumferenceRepository;
+import com.body.measurement.repositories.CircumferenceDataRepository;
+import com.body.measurement.services.CircumferenceMeasurementService;
+import com.body.measurement.utils.Validator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -76,7 +76,7 @@ public class CircumferenceMeasurementServiceTest {
         when(validator.validateCircumferenceData(circumferenceData)).thenThrow(new MissingRequiredDataException(BasicCircumference.class.getName()));
         CircumferenceDataSaveResponse response = circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
         assertFalse(response.isSuccess());
-        assertEquals("Required data is missing in object com.body.measurment.dto.BasicCircumference", response.getMessage());
+        assertEquals("Required data is missing in object com.body.measurement.dto.BasicCircumference", response.getMessage());
         assertEquals(circumferenceData, response.getCircumferenceData());
     }
 
@@ -86,7 +86,7 @@ public class CircumferenceMeasurementServiceTest {
         when(validator.validateCircumferenceData(circumferenceData)).thenThrow(new InvalidDataException(BasicCircumference.class.getName(), "chest"));
         CircumferenceDataSaveResponse response = circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
         assertFalse(response.isSuccess());
-        assertEquals("There is invalid data value in com.body.measurment.dto.BasicCircumference in field chest", response.getMessage());
+        assertEquals("There is invalid data value in com.body.measurement.dto.BasicCircumference in field chest", response.getMessage());
         assertEquals(circumferenceData, response.getCircumferenceData());
     }
 
@@ -110,19 +110,19 @@ public class CircumferenceMeasurementServiceTest {
         when(basicCircumferenceRepository.save(any(BasicCircumference.class))).thenReturn(circumferenceData.getBasicCircumference());
         when(circumferenceDataRepository.save(any(CircumferenceData.class))).thenReturn(circumferenceData);
         CircumferenceDataSaveResponse response = circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
-        assertEquals(LocalDate.now(), response.getCircumferenceData().getMeasurmentDate());
+        assertEquals(LocalDate.now(), response.getCircumferenceData().getMeasurementDate());
     }
 
     @Test
     public void saveCircumferenceMeasurementSuccessfulWithDateSaveTest() throws MissingRequiredDataException, InvalidDataException {
         CircumferenceData circumferenceData = new CircumferenceData();
         circumferenceData.setBasicCircumference(new BasicCircumference());
-        circumferenceData.setMeasurmentDate(LocalDate.of(2023, 12, 11));
+        circumferenceData.setMeasurementDate(LocalDate.of(2023, 12, 11));
         when(validator.validateCircumferenceData(circumferenceData)).thenReturn(true);
         when(basicCircumferenceRepository.save(any(BasicCircumference.class))).thenReturn(circumferenceData.getBasicCircumference());
         when(circumferenceDataRepository.save(any(CircumferenceData.class))).thenReturn(circumferenceData);
         CircumferenceDataSaveResponse response = circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
-        assertEquals(LocalDate.of(2023, 12, 11), response.getCircumferenceData().getMeasurmentDate());
+        assertEquals(LocalDate.of(2023, 12, 11), response.getCircumferenceData().getMeasurementDate());
     }
 
 
@@ -318,35 +318,35 @@ public class CircumferenceMeasurementServiceTest {
         AdditionalCircumference additionalCircumference = new AdditionalCircumference();
         additionalCircumference.setNeck(45.0);
         circumferenceDataUpdate.setAdditionalCircumference(additionalCircumference);
-        circumferenceDataUpdate.setMeasurmentDate(LocalDate.now());
+        circumferenceDataUpdate.setMeasurementDate(LocalDate.now());
         return circumferenceDataUpdate;
     }
 
     private CircumferenceData getCircumferenceDataBCWaistUpdate(){
         CircumferenceData circumferenceDataUpdate = getCircumferenceDataOnlyBCInDatabase();
         circumferenceDataUpdate.getBasicCircumference().setWaist(99.0);
-        circumferenceDataUpdate.setMeasurmentDate(LocalDate.now());
+        circumferenceDataUpdate.setMeasurementDate(LocalDate.now());
         return circumferenceDataUpdate;
     }
 
     private CircumferenceData getCircumferenceDataBCHipUpdate(){
         CircumferenceData circumferenceDataUpdate = getCircumferenceDataOnlyBCInDatabase();
         circumferenceDataUpdate.getBasicCircumference().setHip(99.0);
-        circumferenceDataUpdate.setMeasurmentDate(LocalDate.now());
+        circumferenceDataUpdate.setMeasurementDate(LocalDate.now());
         return circumferenceDataUpdate;
     }
 
     private CircumferenceData getCircumferenceDataBCAbdominalUpdate(){
         CircumferenceData circumferenceDataUpdate = getCircumferenceDataOnlyBCInDatabase();
         circumferenceDataUpdate.getBasicCircumference().setAbdominal(99.0);
-        circumferenceDataUpdate.setMeasurmentDate(LocalDate.now());
+        circumferenceDataUpdate.setMeasurementDate(LocalDate.now());
         return circumferenceDataUpdate;
     }
 
     private CircumferenceData getCircumferenceDataBCChestUpdate(){
         CircumferenceData circumferenceDataUpdate = getCircumferenceDataOnlyBCInDatabase();
         circumferenceDataUpdate.getBasicCircumference().setChest(99.0);
-        circumferenceDataUpdate.setMeasurmentDate(LocalDate.now());
+        circumferenceDataUpdate.setMeasurementDate(LocalDate.now());
         return circumferenceDataUpdate;
     }
 
@@ -357,7 +357,7 @@ public class CircumferenceMeasurementServiceTest {
         basicCircumference.setId(12L);
         circumferenceData.setId(11L);
         circumferenceData.setBasicCircumference(basicCircumference);
-        circumferenceData.setMeasurmentDate(LocalDate.now());
+        circumferenceData.setMeasurementDate(LocalDate.now());
         return circumferenceData;
     }
 
@@ -373,7 +373,7 @@ public class CircumferenceMeasurementServiceTest {
     }
     private CircumferenceData getFullCircumferenceDataInDatabase(){
         CircumferenceData circumferenceDataInDatabase = new CircumferenceData();
-        circumferenceDataInDatabase.setMeasurmentDate(LocalDate.of(2023,11,28));
+        circumferenceDataInDatabase.setMeasurementDate(LocalDate.of(2023,11,28));
         BasicCircumference basicCircumference = new BasicCircumference();
         basicCircumference = setSameValueToEveryFieldInBasicCircumference(basicCircumference, 22.0);
         basicCircumference.setId(12L);
@@ -388,7 +388,7 @@ public class CircumferenceMeasurementServiceTest {
 
     private CircumferenceData getCircumferenceDataFullUpdated(){
         CircumferenceData circumferenceDataUpdated = new CircumferenceData();
-        circumferenceDataUpdated.setMeasurmentDate(LocalDate.of(2022,12,1));
+        circumferenceDataUpdated.setMeasurementDate(LocalDate.of(2022,12,1));
         BasicCircumference basicCircumference = new BasicCircumference();
         basicCircumference = setSameValueToEveryFieldInBasicCircumference(basicCircumference, 45.0);
         basicCircumference.setId(12L);

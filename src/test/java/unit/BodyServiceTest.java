@@ -1,23 +1,19 @@
 package unit;
 
-import com.body.measurment.custom.exception.InvalidDataException;
-import com.body.measurment.custom.exception.MissingRequiredDataException;
-import com.body.measurment.dto.BasicBodyData;
-import com.body.measurment.dto.Weight;
-import com.body.measurment.dto.responses.BodySaveResponse;
-import com.body.measurment.repositories.BasicBodyDataRepository;
-import com.body.measurment.repositories.WeightRepository;
-import com.body.measurment.services.BodyService;
-import com.body.measurment.utils.BodyDataValidator;
+import com.body.measurement.custom.exception.InvalidDataException;
+import com.body.measurement.custom.exception.MissingRequiredDataException;
+import com.body.measurement.dto.BasicBodyData;
+import com.body.measurement.dto.responses.BodySaveResponse;
+import com.body.measurement.repositories.BasicBodyDataRepository;
+import com.body.measurement.repositories.WeightRepository;
+import com.body.measurement.services.BodyService;
+import com.body.measurement.utils.BodyDataValidator;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-
-import java.time.LocalDate;
-import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;

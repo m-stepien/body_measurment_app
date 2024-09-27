@@ -23,7 +23,7 @@ CREATE table IF NOT EXISTS circumference_data(
     id SERIAL primary key,
     additional_circumference_id INT,
     basic_circumference_id INT,
-    measurment_date DATE not null,
+    measurement_date DATE not null,
     FOREIGN KEY (additional_circumference_id) REFERENCES additional_circumference(id) ON DELETE cascade,
     FOREIGN KEY (basic_circumference_id) REFERENCES basic_circumference(id) ON DELETE cascade
 )

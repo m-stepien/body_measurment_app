@@ -1,11 +1,11 @@
 package unit;
 
-import com.body.measurment.custom.exception.InvalidDataException;
-import com.body.measurment.custom.exception.MissingRequiredDataException;
-import com.body.measurment.dto.AdditionalCircumference;
-import com.body.measurment.dto.BasicCircumference;
-import com.body.measurment.utils.CircumferenceValidator;
-import com.body.measurment.utils.Validator;
+import com.body.measurement.custom.exception.InvalidDataException;
+import com.body.measurement.custom.exception.MissingRequiredDataException;
+import com.body.measurement.dto.AdditionalCircumference;
+import com.body.measurement.dto.BasicCircumference;
+import com.body.measurement.utils.CircumferenceValidator;
+import com.body.measurement.utils.Validator;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

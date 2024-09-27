@@ -1,10 +1,10 @@
 package unit;
 
-import com.body.measurment.custom.exception.InvalidDataException;
-import com.body.measurment.custom.exception.MissingRequiredDataException;
-import com.body.measurment.dto.BasicBodyData;
-import com.body.measurment.dto.Weight;
-import com.body.measurment.utils.BodyDataValidator;
+import com.body.measurement.custom.exception.InvalidDataException;
+import com.body.measurement.custom.exception.MissingRequiredDataException;
+import com.body.measurement.dto.BasicBodyData;
+import com.body.measurement.dto.Weight;
+import com.body.measurement.utils.BodyDataValidator;
 import org.junit.Test;
 import org.junit.Assert;
 
