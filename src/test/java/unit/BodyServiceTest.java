@@ -3,6 +3,7 @@ package unit;
 import com.body.measurment.custom.exception.InvalidDataException;
 import com.body.measurment.custom.exception.MissingRequiredDataException;
 import com.body.measurment.dto.BasicBodyData;
+import com.body.measurment.dto.Weight;
 import com.body.measurment.dto.responses.BodySaveResponse;
 import com.body.measurment.repositories.BasicBodyDataRepository;
 import com.body.measurment.repositories.WeightRepository;
@@ -14,6 +15,9 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+
+import java.time.LocalDate;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -123,6 +127,18 @@ public class BodyServiceTest {
 
         verify(validator.isBodyDataValid(any(BasicBodyData.class)));
     }
+
+//    @Test
+//    public void saveNewWeightSuccessfulTest() throws MissingRequiredDataException, InvalidDataException {
+//        Weight weight = new Weight();
+//        weight.setDate(LocalDate.now());
+//        weight.setWeightInKg(98.4);
+//
+//        when(validator.isWeightValid(any(Weight.class))).thenReturn(true);
+//        when(weightRepository.save(any(Weight.class))).thenReturn(weight);
+//        when(weightRepository.findById(any(long.class))).thenReturn(Optional.empty());
+//
+//    }
 
     private BasicBodyData getCorrectBasicBodyData() {
         BasicBodyData basicBodyData = new BasicBodyData();

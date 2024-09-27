@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class BodyMeasurementApp {
-    //TODO 2. utworzenie profili do testów
     //TODO 4. refaktoring całość
     //TODO 5. widok frontend
     //TODO 6. dodanie śledzenia wagi oraz pozostałych parametrów ciała

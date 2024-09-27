@@ -1,6 +1,8 @@
 package com.body.measurment.controllers;
 
 import com.body.measurment.dto.BasicBodyData;
+import com.body.measurment.dto.Weight;
+import com.body.measurment.dto.responses.BodySaveResponse;
 import com.body.measurment.services.BodyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +29,25 @@ public class BodyController {
     @DeleteMapping("/body/basic/delete/{id}")
     public void deleteBasicBodyDataById(@PathVariable("id") long id){
         this.bodyService.deleteBasicBodyData(id);
+    }
+
+    @PostMapping("weight/save")
+    public BodySaveResponse saveNewWeight(Weight weight){
+        return this.bodyService.saveWeight(weight);
+    }
+
+    @PatchMapping("weight/update")
+    public BodySaveResponse updateWeight(Weight weight){
+        return this.bodyService.updateWeight(weight);
+    }
+
+    @GetMapping("weight/get/{id}")
+    public Weight getWeightById(@PathVariable("id")long id){
+        return this.bodyService.getWeightById(id);
+    }
+
+    @DeleteMapping("weight/delete/{id}")
+    public void deleteWeightById(@PathVariable("id")long id){
+        this.bodyService.deleteWeight(id);
     }
 }

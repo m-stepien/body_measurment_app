@@ -21,7 +21,6 @@ public class CircumferenceData {
 
     public CircumferenceData() {
     }
-    //prawdopodobonie najlepiej zwrócić new i pusty
 
     public BasicCircumference getBasicCircumference() {
         return basicCircumference;

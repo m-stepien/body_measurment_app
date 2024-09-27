@@ -1,5 +1,6 @@
 package com.body.measurment.controllers;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -7,21 +8,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class WebController {
     @GetMapping("/")
     public String home(){
-        return "hello there";
+        return "index";
     }
 
-    @GetMapping("/addNewMeasurment")
-    public String getAddNewMeasurment(){
-        return "";
+    @GetMapping("/addNewMeasurement")
+    public String getAddNewMeasurement(){
+        return "new_measurement";
     }
 
-    @GetMapping("/measurmentHistoryBrief")
-    public String getBriefHistoryOfMeasurment(){
-        return "";
-    }
-
-    @GetMapping("/getMeasurment")
-    public String getMeasurment(){
-        return "";
+    @GetMapping("/getMeasurement")
+    public String getMeasurement(){
+        return "measurement";
     }
 }

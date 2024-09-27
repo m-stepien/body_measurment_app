@@ -34,7 +34,6 @@ public class CircumferenceMeasurementService {
     }
 
     public CircumferenceDataSaveResponse saveCircumferenceMeasurement(CircumferenceData circumferenceData) {
-        CircumferenceDataSaveResponse circumferenceDataSaveResponse = new CircumferenceDataSaveResponse();
         try {
             this.validator.validateCircumferenceData(circumferenceData);
         } catch (InvalidDataException | MissingRequiredDataException e) {
@@ -182,11 +181,10 @@ public class CircumferenceMeasurementService {
         return circumferenceData;
     }
 
-    private CircumferenceData setDefaultDataIfNeeded(CircumferenceData circumferenceData) {
+    private void setDefaultDataIfNeeded(CircumferenceData circumferenceData) {
         if (circumferenceData.getMeasurmentDate() == null) {
             circumferenceData.setMeasurmentDate(LocalDate.now());
         }
-        return circumferenceData;
     }
 
     private CircumferenceDataSaveResponse prepereResponseForSaveOperation(boolean success, String message, CircumferenceData circumferenceData) {
