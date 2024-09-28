@@ -19,4 +19,14 @@ public class WebController {
     public String getMeasurement(){
         return "measurement";
     }
+
+    @GetMapping("/addWeight")
+    public String addWeight(){
+        return "add_weight";
+    }
+
+    @GetMapping("/addBasicBodyData")
+    public String addBasicBodyData(){
+        return "add_basic_body_data";
+    }
 }

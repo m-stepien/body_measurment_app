@@ -17,7 +17,9 @@ public class BodyController {
     }
 
     @PostMapping("/body/basic/save")
-    public void saveBasicBodyData(BasicBodyData basicBodyData){
+    public void saveBasicBodyData(@RequestParam("gender") String gender, @ModelAttribute BasicBodyData basicBodyData){
+        //temp drut
+        basicBodyData.setGander(gender);
         this.bodyService.saveBasicBodyData(basicBodyData);
     }
 
@@ -31,22 +33,22 @@ public class BodyController {
         this.bodyService.deleteBasicBodyData(id);
     }
 
-    @PostMapping("weight/save")
-    public BodySaveResponse saveNewWeight(Weight weight){
+    @PostMapping("/weight/save")
+    public BodySaveResponse saveNewWeight(@ModelAttribute Weight weight){
         return this.bodyService.saveWeight(weight);
     }
 
-    @PatchMapping("weight/update")
-    public BodySaveResponse updateWeight(Weight weight){
+    @PatchMapping("/weight/update")
+    public BodySaveResponse updateWeight(@ModelAttribute Weight weight){
         return this.bodyService.updateWeight(weight);
     }
 
-    @GetMapping("weight/get/{id}")
+    @GetMapping("/weight/get/{id}")
     public Weight getWeightById(@PathVariable("id")long id){
         return this.bodyService.getWeightById(id);
     }
 
-    @DeleteMapping("weight/delete/{id}")
+    @DeleteMapping("/weight/delete/{id}")
     public void deleteWeightById(@PathVariable("id")long id){
         this.bodyService.deleteWeight(id);
     }

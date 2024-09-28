@@ -66,7 +66,7 @@ public class BodyDataValidator {
     }
 
     private void checkGenderValid(String gender) throws InvalidDataException {
-        if(!(gender.equals("M") || gender.equals("F") || gender.equals("O"))){
+        if(!(gender.equals("m") || gender.equals("f") || gender.equals("o"))){
             throw new InvalidDataException(BasicCircumference.class.getName(), "gender");
         }
     }

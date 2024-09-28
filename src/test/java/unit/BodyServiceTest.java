@@ -129,7 +129,7 @@ public class BodyServiceTest {
         basicBodyData.setId(11L);
         basicBodyData.setAge(22);
         basicBodyData.setHeightInCm(189.3);
-        basicBodyData.setGander("M");
+        basicBodyData.setGander("m");
         return basicBodyData;
     }
 
@@ -138,7 +138,7 @@ public class BodyServiceTest {
         basicBodyData.setId(11L);
         basicBodyData.setAge(25);
         basicBodyData.setHeightInCm(192.3);
-        basicBodyData.setGander("M");
+        basicBodyData.setGander("m");
         return basicBodyData;
     }
 }
