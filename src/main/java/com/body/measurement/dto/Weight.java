@@ -1,20 +1,20 @@
 package com.body.measurement.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
+@Table(name = "weight")
 public class Weight {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private LocalDate date;
+    @Column(name = "weight_kg")
     private Double weightInKg;
 
     public LocalDate getDate() {
@@ -42,7 +42,7 @@ public class Weight {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Weight weight = (Weight) o;
-        return id == weight.id && Objects.equals(date, weight.date) && Objects.equals(weightInKg, weight.weightInKg);
+        return id.equals(weight.id) && Objects.equals(date, weight.date) && Objects.equals(weightInKg, weight.weightInKg);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.body.measurement.lenght.estimation;
+package com.body.measurement.utils;
 
 public interface BodyPartLengthEstimator {
     public Double calculateArm();

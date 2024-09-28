@@ -27,9 +27,9 @@ public class BodyService {
         this.validator = validator;
     }
 
-    public BodySaveResponse saveBasicBodyData(BasicBodyData basicBodyData){
+    public BodySaveResponse saveBasicBodyData(BasicBodyData basicBodyData) {
         BodySaveResponse bodySaveResponse = new BodySaveResponse();
-        try{
+        try {
             this.validator.isBodyDataValid(basicBodyData);
             this.basicBodyDataRepository.save(basicBodyData);
             bodySaveResponse.setBasicBodyData(basicBodyData);
@@ -43,17 +43,17 @@ public class BodyService {
         return bodySaveResponse;
     }
 
-    public BasicBodyData getBasicBodyData(long id){
+    public BasicBodyData getBasicBodyData(long id) {
         return this.basicBodyDataRepository.findById(id).orElse(null);
     }
 
-    public void deleteBasicBodyData(long id){
+    public void deleteBasicBodyData(long id) {
         this.basicBodyDataRepository.deleteById(id);
     }
 
-    public BodySaveResponse saveWeight(Weight weight){
+    public BodySaveResponse saveWeight(Weight weight) {
         BodySaveResponse response = new BodySaveResponse();
-        try{
+        try {
             this.validator.isWeightValid(weight);
             this.setDefaultDataIfNeeded(weight);
             this.weightRepository.save(weight);
@@ -66,26 +66,25 @@ public class BodyService {
         return response;
     }
 
-    public BodySaveResponse updateWeight(Weight weight){
+    public BodySaveResponse updateWeight(Weight weight) {
         if (weight.getId() != null) {
-        try {
-            Weight updatedWeight = this.mapWeight(weight);
-            return saveWeight(updatedWeight);
+            try {
+                Weight updatedWeight = this.mapWeight(weight);
+                return saveWeight(updatedWeight);
+            } catch (NoSuchObjectInDatabaseException e) {
+                return setWeightSaveResponse(false, e.getMessage());
+            }
         }
-        catch (NoSuchObjectInDatabaseException e){
-            return setWeightSaveResponse(false, e.getMessage());
-        }
-        }
-        else{
+        else {
             return setWeightSaveResponse(false, "Id is required for update");
         }
     }
 
-    public Weight getWeightById(long id){
+    public Weight getWeightById(long id) {
         return this.weightRepository.findById(id).orElse(null);
     }
 
-    public void deleteWeight(long id){
+    public void deleteWeight(long id) {
         this.weightRepository.deleteById(id);
     }
 
@@ -93,10 +92,10 @@ public class BodyService {
         Weight weight = this.weightRepository
                 .findById(newWeight.getId())
                 .orElseThrow(() -> new NoSuchObjectInDatabaseException("There is no Weight object with this id in database"));
-        if(newWeight.getWeightInKg()!=null){
+        if (newWeight.getWeightInKg() != null) {
             weight.setWeightInKg(newWeight.getWeightInKg());
         }
-        if(newWeight.getDate()!=null){
+        if (newWeight.getDate() != null) {
             weight.setDate(newWeight.getDate());
         }
         return weight;
@@ -108,7 +107,7 @@ public class BodyService {
         }
     }
 
-    private BodySaveResponse setWeightSaveResponse(boolean success, String message){
+    private BodySaveResponse setWeightSaveResponse(boolean success, String message) {
         BodySaveResponse bodySaveResponse = new BodySaveResponse();
         bodySaveResponse.setSuccess(success);
         bodySaveResponse.setMessage(message);
