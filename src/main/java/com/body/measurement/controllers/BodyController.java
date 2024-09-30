@@ -7,6 +7,9 @@ import com.body.measurement.services.BodyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.List;
+
 @RestController
 public class BodyController {
     private final BodyService bodyService;
@@ -19,7 +22,7 @@ public class BodyController {
     @PostMapping("/body/basic/save")
     public void saveBasicBodyData(@RequestParam("gender") String gender, @ModelAttribute BasicBodyData basicBodyData){
         //temp drut
-        basicBodyData.setGander(gender);
+        basicBodyData.setGender(gender);
         this.bodyService.saveBasicBodyData(basicBodyData);
     }
 
@@ -47,6 +50,17 @@ public class BodyController {
     public Weight getWeightById(@PathVariable("id")long id){
         return this.bodyService.getWeightById(id);
     }
+
+    @GetMapping("/weight/get/last")
+    public Weight getLastWeight(){
+        return this.bodyService.getWeightLast();
+    }
+
+//    @GetMapping("weight/get/betweendates")
+//    public List<Weight> findWeightBetweenDates(@RequestParam LocalDate start, @RequestParam LocalDate end){
+//        return this.bodyService.
+//    }
+
 
     @DeleteMapping("/weight/delete/{id}")
     public void deleteWeightById(@PathVariable("id")long id){

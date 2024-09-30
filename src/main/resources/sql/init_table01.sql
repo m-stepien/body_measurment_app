@@ -38,5 +38,5 @@ CREATE table IF NOT EXISTS basic_body_data(
     id SERIAL primary key,
     height_in_cm numeric(5,2) not null,
     age INT not null,
-    gander CHAR not null
+    gender CHAR not null
 );

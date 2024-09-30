@@ -84,6 +84,11 @@ public class BodyService {
         return this.weightRepository.findById(id).orElse(null);
     }
 
+    public Weight getWeightLast(){
+        Weight weight = this.weightRepository.findTopByOrderByDateDesc().orElse(null);
+        return weight;
+    }
+
     public void deleteWeight(long id) {
         this.weightRepository.deleteById(id);
     }

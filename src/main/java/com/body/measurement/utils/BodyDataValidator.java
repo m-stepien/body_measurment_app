@@ -15,7 +15,7 @@ public class BodyDataValidator {
         checkIsAllRequiredDataSet(basicBodyData);
         checkAgeValid(basicBodyData.getAge());
         checkHeightInCmValid(basicBodyData.getHeightInCm());
-        checkGenderValid(basicBodyData.getGander());
+        checkGenderValid(basicBodyData.getGender());
         return true;
     }
 
@@ -35,7 +35,7 @@ public class BodyDataValidator {
 
 
     private void checkIsAllRequiredDataSet(BasicBodyData basicBodyData) throws MissingRequiredDataException {
-        if(basicBodyData.getAge() == null || basicBodyData.getGander() == null || basicBodyData.getHeightInCm() == null)
+        if(basicBodyData.getAge() == null || basicBodyData.getGender() == null || basicBodyData.getHeightInCm() == null)
         {
             throw new MissingRequiredDataException(BasicBodyData.class.getName());
         }

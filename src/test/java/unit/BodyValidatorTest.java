@@ -55,7 +55,7 @@ public class BodyValidatorTest {
     public void isBodyDataValidSuccessfulWomanAsGenderValueTest() throws Exception{
         BodyDataValidator bodyDataValidator = new BodyDataValidator();
         BasicBodyData basicBodyData = getValidBasicBodyData();
-        basicBodyData.setGander("W");
+        basicBodyData.setGender("W");
         bodyDataValidator.isBodyDataValid(basicBodyData);
     }
 
@@ -78,7 +78,7 @@ public class BodyValidatorTest {
     public void isBodyDataValidMissingGenderValueFailedTest() throws Exception {
         BodyDataValidator bodyDataValidator = new BodyDataValidator();
         BasicBodyData basicBodyData = getValidBasicBodyData();
-        basicBodyData.setGander(null);
+        basicBodyData.setGender(null);
         bodyDataValidator.isBodyDataValid(basicBodyData);
     }
 
@@ -155,7 +155,7 @@ public class BodyValidatorTest {
     private BasicBodyData getValidBasicBodyData(){
         BasicBodyData basicBodyData = new BasicBodyData();
         basicBodyData.setAge(22);
-        basicBodyData.setGander("M");
+        basicBodyData.setGender("M");
         basicBodyData.setHeightInCm(192.0);
         basicBodyData.setId(1);
         return basicBodyData;

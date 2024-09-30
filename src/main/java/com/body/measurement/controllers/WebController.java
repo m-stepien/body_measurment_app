@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class WebController {
+
     @GetMapping("/")
     public String home(){
         return "index";
@@ -15,11 +16,6 @@ public class WebController {
         return "new_measurement";
     }
 
-    @GetMapping("/getMeasurement")
-    public String getMeasurement(){
-        return "measurement";
-    }
-
     @GetMapping("/addWeight")
     public String addWeight(){
         return "add_weight";
@@ -28,5 +24,15 @@ public class WebController {
     @GetMapping("/addBasicBodyData")
     public String addBasicBodyData(){
         return "add_basic_body_data";
+    }
+
+    @GetMapping("/measurement")
+    public String getMeasurement(){
+        return "measurement";
+    }
+
+    @GetMapping("/body/data")
+    public String getBasicBodyData(){
+        return "basic_body_data";
     }
 }

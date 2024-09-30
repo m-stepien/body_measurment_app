@@ -13,7 +13,7 @@ public class BasicBodyData {
     @Column(name = "height_in_cm")
     private Double heightInCm;
     private Integer age;
-    private String gander; //will be enum
+    private String gender; //will be enum
 
     public Long getId() {
         return id;
@@ -39,12 +39,12 @@ public class BasicBodyData {
         this.age = age;
     }
 
-    public String getGander() {
-        return gander;
+    public String getGender() {
+        return gender;
     }
 
-    public void setGander(String gander) {
-        this.gander = gander;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     @Override
@@ -52,12 +52,12 @@ public class BasicBodyData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BasicBodyData that = (BasicBodyData) o;
-        return Objects.equals(id, that.id) && Objects.equals(heightInCm, that.heightInCm) && Objects.equals(age, that.age) && Objects.equals(gander, that.gander);
+        return Objects.equals(id, that.id) && Objects.equals(heightInCm, that.heightInCm) && Objects.equals(age, that.age) && Objects.equals(gender, that.gender);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, heightInCm, age, gander);
+        return Objects.hash(id, heightInCm, age, gender);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class BasicBodyData {
                 "id=" + id +
                 ", heightInCm=" + heightInCm +
                 ", age=" + age +
-                ", gander='" + gander + '\'' +
+                ", gander='" + gender + '\'' +
                 '}';
     }
 }
