@@ -5,12 +5,12 @@ async function getBasicBodyData() {
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
-    const bodyData = await response.json();  // Make sure bodyData is defined here
-        console.log("Data fetched successfully:", bodyData);  // Log the fetched data
-    return bodyData;  // Return bodyData when fetched successfully
+    const bodyData = await response.json();
+        console.log("Data fetched successfully:", bodyData);
+    return bodyData;
   } catch (error) {
     console.error(error.message);
-    return null;  // Return null if there's an error
+    return null;
   }
 }
 

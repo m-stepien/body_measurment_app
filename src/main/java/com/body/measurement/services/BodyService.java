@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class BodyService {
@@ -78,6 +79,14 @@ public class BodyService {
         else {
             return setWeightSaveResponse(false, "Id is required for update");
         }
+    }
+
+    public List<Weight> getWeightBetweenDates(LocalDate start, LocalDate end){
+        return this.weightRepository.findByDateBetweenOrderByDateDesc(start, end);
+    }
+
+    public Weight getWeightFirst(){
+        return this.weightRepository.findTopByOrderByDate().orElse(null);
     }
 
     public Weight getWeightById(long id) {

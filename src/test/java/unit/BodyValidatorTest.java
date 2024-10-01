@@ -155,7 +155,7 @@ public class BodyValidatorTest {
     private BasicBodyData getValidBasicBodyData(){
         BasicBodyData basicBodyData = new BasicBodyData();
         basicBodyData.setAge(22);
-        basicBodyData.setGender("M");
+        basicBodyData.setGender("m");
         basicBodyData.setHeightInCm(192.0);
         basicBodyData.setId(1);
         return basicBodyData;

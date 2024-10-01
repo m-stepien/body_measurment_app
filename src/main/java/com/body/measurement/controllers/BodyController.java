@@ -56,10 +56,15 @@ public class BodyController {
         return this.bodyService.getWeightLast();
     }
 
-//    @GetMapping("weight/get/betweendates")
-//    public List<Weight> findWeightBetweenDates(@RequestParam LocalDate start, @RequestParam LocalDate end){
-//        return this.bodyService.
-//    }
+    @GetMapping("weight/get/betweendates")
+    public List<Weight> findWeightBetweenDates(@RequestParam LocalDate start, @RequestParam LocalDate end){
+        return this.bodyService.getWeightBetweenDates(start, end);
+    }
+
+    @GetMapping("weight/get/first")
+    public Weight findFirstWeight(){
+        return this.bodyService.getWeightFirst();
+    }
 
 
     @DeleteMapping("/weight/delete/{id}")
