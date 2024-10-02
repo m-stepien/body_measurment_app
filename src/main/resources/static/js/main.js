@@ -14,9 +14,9 @@ async function getBasicBodyData() {
   }
 }
 
-async function getLastWeight(){
+async function getOldestWeightRecord(){
 
- const url = "http://localhost:8080/weight/get/last";
+ const url = "http://localhost:8080/weight/get/first";
   try {
     const response = await fetch(url);
     if (!response.ok) {
@@ -62,6 +62,6 @@ document.getElementById('startDate').valueAsDate = today;
 document.getElementById('endDate').valueAsDate = before;
 (async function() {
   var bd = await getBasicBodyData();
-  var lastWeight = await getLastWeight()
+  var lastWeight = await getOldestWeightRecord();
   putDataToSummary(bd, lastWeight);
 })();

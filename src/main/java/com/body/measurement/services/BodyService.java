@@ -86,7 +86,7 @@ public class BodyService {
     }
 
     public Weight getWeightFirst(){
-        return this.weightRepository.findTopByOrderByDate().orElse(null);
+        return this.weightRepository.findTopByOrderByDateAsc().orElse(null);
     }
 
     public Weight getWeightById(long id) {
@@ -94,8 +94,7 @@ public class BodyService {
     }
 
     public Weight getWeightLast(){
-        Weight weight = this.weightRepository.findTopByOrderByDateDesc().orElse(null);
-        return weight;
+        return this.weightRepository.findTopByOrderByDateDesc().orElse(null);
     }
 
     public void deleteWeight(long id) {

@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class BodyMeasurementApp {
-    //TODO 5. podstawowy widok frontend bez wykresów
     //TODO 4. refaktoring całość
     //TODO 8 wykres wagi
     //TODO 7. podział na użytkowników

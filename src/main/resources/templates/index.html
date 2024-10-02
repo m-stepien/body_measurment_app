@@ -7,19 +7,22 @@
 <body>
 <h1>Hello again</h1>
 <div class="summary">
-<label for="age">Age: </label><span id="age"></span>
-<label for="gender">Gender: </label><span id="gender"></span>
-<label for="height">Height: </label><span id="height"></span>
-<label for="currentWeight">Current Weight</label><span id="currentWeight"></span>
+    <label for="age">Age: </label><span id="age"></span>
+    <label for="gender">Gender: </label><span id="gender"></span>
+    <label for="height">Height: </label><span id="height"></span>
+    <label for="currentWeight">Current Weight</label><span id="currentWeight"></span>
 </div>
 
 <div class="weightHistoryContainer">
     <input type="date" id="endDate">
     <input type="date" id="startDate">
+    <div class="chart">
+
+    </div>
 </div>
 <button th:onclick="|window.location.href='/addBasicBodyData'|">Update</button>
 <script type="text/javascript" th:src="@{/js/main.js}"></script>
 <script type="text/javascript" th:src="@{/js/chartscript.js}"></script>
-
+<button th:onclick="|window.location.href='/addWeight'|">Add</button>
 </body>
 </html>
