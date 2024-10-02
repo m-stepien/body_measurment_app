@@ -57,6 +57,10 @@ public class BodyService {
         try {
             this.validator.isWeightValid(weight);
             this.setDefaultDataIfNeeded(weight);
+            Weight currentRecordOnDatabase = this.getWeightOnDate(weight.getDate());
+            if(currentRecordOnDatabase!=null) {
+                this.weightRepository.deleteById(currentRecordOnDatabase.getId());
+            }
             this.weightRepository.save(weight);
             response.setMessage("Weight save successful");
             response.setSuccess(true);
@@ -91,6 +95,10 @@ public class BodyService {
 
     public Weight getWeightById(long id) {
         return this.weightRepository.findById(id).orElse(null);
+    }
+
+    public Weight getWeightOnDate(LocalDate date){
+        return this.weightRepository.findByDate(date).orElse(null);
     }
 
     public Weight getWeightLast(){

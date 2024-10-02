@@ -187,6 +187,8 @@ public class CircumferenceMeasurementService {
         }
     }
 
+    private
+
     private CircumferenceDataSaveResponse prepareResponseForSaveOperation(boolean success, String message, CircumferenceData circumferenceData) {
         CircumferenceDataSaveResponse circumferenceDataSaveResponse = new CircumferenceDataSaveResponse();
         circumferenceDataSaveResponse.setSuccess(success);
