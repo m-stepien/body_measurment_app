@@ -12,7 +12,6 @@ public class Weight {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private LocalDate date;
     @Column(name = "weight_kg")
     private Double weightInKg;

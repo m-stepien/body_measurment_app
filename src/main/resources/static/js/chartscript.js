@@ -1,5 +1,5 @@
 async function getWeightBetweenDates(start, end){
-      const url = "http://localhost:8080/weight/get/betweendates";
+      const url = 'http://localhost:8080/weight/get/betweendates?start='+encodeURIComponent(start)+'&end='+encodeURIComponent(end);
     try {
         const response = await fetch(url);
     if (!response.ok) {
@@ -9,6 +9,7 @@ async function getWeightBetweenDates(start, end){
         console.log("Data fetched successfully:", weightList);
     return weightList;
   } catch (error) {
+    console.log("dupa");
     console.error(error.message);
     return null;
   }
@@ -23,7 +24,7 @@ async function getFirstWeightData(){
             throw new Error(`Response status: ${response.status}`);
           }
           const weight = await response.json();
-              console.log("Data fetched successfully:", weight);
+           console.log("Data fetched successfully:", weight);
           return weight;
         } catch (error) {
           console.error(error.message);
@@ -76,10 +77,13 @@ function calculateMaxValueInChart(arrayWeight){
 
 (async ()=>{
     console.log("import succesful");
-    var a = await getFirstWeightData();
+//    var a = await getFirstWeightData();
     var startDate = document.getElementById('startDate').value;
     var endDate = document.getElementById("endDate").value;
+    console.log("__________________");
+    console.log(startDate);
     var weightList = await getWeightBetweenDates(startDate, endDate);
+    console.log(weightList);
     var weightValueList = weightList.map(weight => {
     return weight.weight;
     }

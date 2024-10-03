@@ -57,7 +57,7 @@ public class BodyController {
     }
 
     @GetMapping("weight/get/betweendates")
-    public List<Weight> findWeightBetweenDates(@RequestParam LocalDate start, @RequestParam LocalDate end){
+    public List<Weight> findWeightBetweenDates(@RequestParam("start") LocalDate start, @RequestParam("end") LocalDate end){
         return this.bodyService.getWeightBetweenDates(start, end);
     }
 

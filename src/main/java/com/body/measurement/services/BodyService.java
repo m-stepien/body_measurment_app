@@ -86,7 +86,11 @@ public class BodyService {
     }
 
     public List<Weight> getWeightBetweenDates(LocalDate start, LocalDate end){
-        return this.weightRepository.findByDateBetweenOrderByDateDesc(start, end);
+        System.out.println(start);
+        System.out.println(end);
+        List<Weight> w =this.weightRepository.findByDateBetween(start, end);
+        System.out.println(w);
+        return w;
     }
 
     public Weight getWeightFirst(){

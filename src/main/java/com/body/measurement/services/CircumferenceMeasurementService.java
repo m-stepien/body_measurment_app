@@ -76,7 +76,7 @@ public class CircumferenceMeasurementService {
     }
 
     public List<CircumferenceData> getCircumferenceDataInDateRange(LocalDate startDate, LocalDate endDate) {
-        return this.circumferenceDataRepository.findByMeasurementDateBetweenOrderByMeasurementDateDesc(startDate, endDate);
+            return this.circumferenceDataRepository.findByMeasurementDateBetweenOrderByMeasurementDate(startDate, endDate);
     }
 
     public List<CircumferenceData> getCircumferenceDataAll() {
@@ -186,8 +186,6 @@ public class CircumferenceMeasurementService {
             circumferenceData.setMeasurementDate(LocalDate.now());
         }
     }
-
-    private
 
     private CircumferenceDataSaveResponse prepareResponseForSaveOperation(boolean success, String message, CircumferenceData circumferenceData) {
         CircumferenceDataSaveResponse circumferenceDataSaveResponse = new CircumferenceDataSaveResponse();
