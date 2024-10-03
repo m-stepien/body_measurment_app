@@ -13,8 +13,11 @@ public interface WeightRepository extends JpaRepository<Weight, Long> {
     Optional<Weight> findTopByOrderByDateDesc();
     @Query("SELECT w FROM Weight w WHERE date<=:startDate AND date>=:endDate")
     List<Weight> findByDateBetween(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate stopDate);
-//  List<Weight> findByDateBetweenOrderByDateDesc(LocalDate startData, LocalDate stopDate);
     Optional<Weight> findTopByOrderByDateAsc();
     Optional<Weight> findByDate(LocalDate date);
+    @Query("SELECT w FROM Weight w WHERE date<:dt ORDER BY date DESC LIMIT 1")
+    Optional<Weight> findOneBeforeGiven(@Param("dt") LocalDate date);
+    @Query("SELECT w FROM Weight w WHERE date>:dt ORDER BY date LIMIT 1")
+    Optional<Weight> findOneAfterGiven(@Param("dt") LocalDate date);
 
 }

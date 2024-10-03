@@ -105,6 +105,14 @@ public class BodyService {
         return this.weightRepository.findByDate(date).orElse(null);
     }
 
+    public Weight getWeightOneBefore(LocalDate localDate){
+        return this.weightRepository.findOneBeforeGiven(localDate).orElse(null);
+    }
+
+    public Weight getWeightOneAfter(LocalDate localDate){
+        return this.weightRepository.findOneAfterGiven(localDate).orElse(null);
+    }
+
     public Weight getWeightLast(){
         return this.weightRepository.findTopByOrderByDateDesc().orElse(null);
     }

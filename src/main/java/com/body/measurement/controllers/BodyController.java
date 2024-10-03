@@ -66,6 +66,15 @@ public class BodyController {
         return this.bodyService.getWeightFirst();
     }
 
+    @GetMapping("weight/get/before")
+    public Weight findOneBeforeDate(@RequestParam("date") LocalDate date){
+        this.bodyService.getWeightOneBefore(date);
+    }
+
+    @GetMapping("weight/get/after")
+    public Weight findOneAfterDate(@RequestParam("date") LocalDate date){
+        this.bodyService.getWeightOneAfter(date);
+    }
 
     @DeleteMapping("/weight/delete/{id}")
     public void deleteWeightById(@PathVariable("id")long id){

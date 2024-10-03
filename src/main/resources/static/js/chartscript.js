@@ -98,7 +98,7 @@ function generateRecordForDates(){
     return dates;
 }
 
-async function generateChart(data, minV, maxV) {
+async function generateChart(data, minV, maxV, minDate, maxDate) {
     if (currentChart) {
         currentChart.destroy();
     }
@@ -117,10 +117,20 @@ async function generateChart(data, minV, maxV) {
         ]
       },
       options: {
-              y: {
-                  min: minV,
-                  max: maxV
-                }
+                  scales: {
+                          x: {
+                              type: 'time',
+                              time: {
+                                  unit: 'day'
+                              },
+                              min: new Date(minDate).getTime(),
+                              max: new Date(maxDate).getTime()
+                          },
+                          y: {
+                            min: minV,
+                            max: maxV
+                          }
+                      }
       }
     }
   );
