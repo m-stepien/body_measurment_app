@@ -49,36 +49,36 @@ async function getLastWeightData(){
 }
 
 function calculateMinValueInChart(arrayWeight){
-    var min = Math.min.apply( ...arrayWeight);
+    var min = Math.min(...arrayWeight);
     var mod = min % 10;
     var chartMin;
     if(mod>=5){
-        chartMin = Math.floor(min/10)*10-5;
+        chartMin = Math.floor(min/10)*10-10;
     }
     else{
-        chartMin = Math.floor(min/10)*10-10;
+        chartMin = Math.floor(min/10)*10-5;
     }
     return chartMin;
 }
 
 function calculateMaxValueInChart(arrayWeight){
-    var max = Math.max.apply( ...arrayWeight);
+    var max = Math.max(...arrayWeight);
     var mod = max % 10;
     var chartMax;
     if(mod>=5){
-        chartMax = Math.floor(max/10)*10+10;
+        chartMax = Math.floor(max/10)*10+15;
     }
     else{
-        chartMax = Math.floor(max/10)*10+5;
+        chartMax = Math.floor(max/10)*10+10;
     }
     return chartMax;
 }
 function mapWeightOnDatesInChart(dates, weightList){
     var weightForDates = dates.map(date =>{
-        const weightEntry = weightList.find(weight => date.getTime() === weight.date.getTime());
+        const weightEntry = weightList.find(weight => date.getTime() === new Date(weight.date).getTime());
         return {
             date: date,
-            weight: weightEntry ? weightEntry.weightKg : null
+            weight: weightEntry ? weightEntry.weightInKg : null
         };
         });
     return weightForDates;
@@ -86,9 +86,9 @@ function mapWeightOnDatesInChart(dates, weightList){
 
 function generateRecordForDates(){
     const dates = []
-    var startDate = document.getElementById('startDate').value;
-    var endDate = document.getElementById("endDate").value;
-    let currentDate = startDate;
+    var startDate = document.getElementById('endDate').value;
+    var endDate = new Date(document.getElementById("startDate").value);
+    let currentDate = new Date(startDate);
     while(currentDate<=endDate){
         dates.push(new Date(currentDate));
         currentDate.setDate(currentDate.getDate() + 1);
@@ -96,40 +96,7 @@ function generateRecordForDates(){
     return dates;
 }
 
-async function createChart() {
-  const data = [
-    { date: new Date('2010-01-01'), weight: 10 },
-    { date: new Date('2010-01-02'), weight: 12 },
-    { date: new Date('2010-01-03'), weight: 15 },
-    { date: new Date('2010-01-04'), weight: null },
-    { date: new Date('2010-01-05'), weight: 25 },
-    { date: new Date('2010-01-06'), weight: 30 },
-  ];
-  new Chart(
-    document.getElementById('weightChart'),
-    {
-      type: 'line',
-      data: {
-        labels: data.map(row => row.date.toISOString().split('T')[0]),
-        datasets: [
-          {
-            label: 'Acquisitions by year',
-            data: data.map(row => row.weight),
-            spanGaps: true
-          }
-        ]
-      },
-      options: {
-              y: {
-                  min: 5,
-                  max: 35
-                }
-      }
-    }
-  );
-}
-
-async function createChart2(data, minV, maxV) {
+async function createChart(data, minV, maxV) {
   new Chart(
     document.getElementById('weightChart'),
     {
@@ -139,7 +106,7 @@ async function createChart2(data, minV, maxV) {
         datasets: [
           {
             label: 'Weight in kg',
-            data: data.map(row => row.weightKg),
+            data: data.map(row => row.weight),
             spanGaps: true
           }
         ]
@@ -160,11 +127,8 @@ async function createChart2(data, minV, maxV) {
     var startDate = document.getElementById('startDate').value;
     var endDate = document.getElementById("endDate").value;
     var weightList = await getWeightBetweenDates(startDate, endDate);
-    console.log(weightList);
+    var weights = weightList.map(weight => weight.weightInKg);
     var datesForChart = generateRecordForDates();
     var dataForChart = mapWeightOnDatesInChart(datesForChart, weightList);
-    console.log(datesForChart);
-    console.log(dataForChart);
-    createChart();
-    console.log(generateRecordForDates());
+    createChart(dataForChart, calculateMinValueInChart(weights), calculateMaxValueInChart(weights));
 })();

@@ -57,7 +57,7 @@ function putDataToSummary(bodyData, lastWeight) {
 }
 let today = new Date();
 let before = new Date(today);
-before.setMonth(today.getMonth() - 3);
+before.setMonth(today.getMonth() - 1);
 document.getElementById('startDate').valueAsDate = today;
 document.getElementById('endDate').valueAsDate = before;
 (async function() {
