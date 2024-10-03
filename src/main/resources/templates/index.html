@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <h1>Hello again</h1>
@@ -16,13 +17,13 @@
 <div class="weightHistoryContainer">
     <input type="date" id="endDate">
     <input type="date" id="startDate">
-    <div class="chart">
-
+    <div  style="width: 800px;" class="chart-container">
+        <canvas id="weightChart"></canvas>
     </div>
 </div>
 <button th:onclick="|window.location.href='/addBasicBodyData'|">Update</button>
-<script type="text/javascript" th:src="@{/js/main.js}"></script>
-<script type="text/javascript" th:src="@{/js/chartscript.js}"></script>
+<script type="text/javascript" th:src="@{/js/main.js}" defer></script>
+<script type="text/javascript" th:src="@{/js/chartscript.js}" defer></script>
 <button th:onclick="|window.location.href='/addWeight'|">Add</button>
 </body>
 </html>

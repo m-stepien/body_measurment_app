@@ -9,8 +9,7 @@ async function getWeightBetweenDates(start, end){
         console.log("Data fetched successfully:", weightList);
     return weightList;
   } catch (error) {
-    console.log("dupa");
-    console.error(error.message);
+        console.error(error.message);
     return null;
   }
 }
@@ -75,19 +74,48 @@ function calculateMaxValueInChart(arrayWeight){
     return chartMax;
 }
 
-(async ()=>{
-    console.log("import succesful");
-//    var a = await getFirstWeightData();
+function generateRecordForDates(){
+
+}
+
+async function createChart() {
+  const data = [
+    { date: new Date('2010-01-01'), weight: 10 },
+    { date: new Date('2010-01-02'), weight: 12 },
+    { date: new Date('2010-01-03'), weight: 15 },
+    { date: new Date('2010-01-04'), weight: null },
+    { date: new Date('2010-01-05'), weight: 25 },
+    { date: new Date('2010-01-06'), weight: 30 },
+  ];
+  new Chart(
+    document.getElementById('weightChart'),
+    {
+      type: 'line',
+      data: {
+        labels: data.map(row => row.date.toISOString().split('T')[0]),
+        datasets: [
+          {
+            label: 'Acquisitions by year',
+            data: data.map(row => row.weight),
+            spanGaps: true
+          }
+        ]
+      },
+      options: {
+              y: {
+                  min: 5,
+                  max: 35
+                }
+      }
+    }
+  );
+}
+
+(async function(){
+    var a = await getFirstWeightData();
     var startDate = document.getElementById('startDate').value;
     var endDate = document.getElementById("endDate").value;
-    console.log("__________________");
-    console.log(startDate);
     var weightList = await getWeightBetweenDates(startDate, endDate);
     console.log(weightList);
-    var weightValueList = weightList.map(weight => {
-    return weight.weight;
-    }
-    )
-
-
+    createChart();
 })();
