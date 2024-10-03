@@ -73,9 +73,27 @@ function calculateMaxValueInChart(arrayWeight){
     }
     return chartMax;
 }
+function mapWeightOnDatesInChart(dates, weightList){
+    var weightForDates = dates.map(date =>{
+        const weightEntry = weightList.find(weight => date.getTime() === weight.date.getTime());
+        return {
+            date: date,
+            weight: weightEntry ? weightEntry.weightKg : null
+        };
+        });
+    return weightForDates;
+}
 
 function generateRecordForDates(){
-
+    const dates = []
+    var startDate = document.getElementById('startDate').value;
+    var endDate = document.getElementById("endDate").value;
+    let currentDate = startDate;
+    while(currentDate<=endDate){
+        dates.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+    return dates;
 }
 
 async function createChart() {
@@ -111,11 +129,42 @@ async function createChart() {
   );
 }
 
+async function createChart2(data, minV, maxV) {
+  new Chart(
+    document.getElementById('weightChart'),
+    {
+      type: 'line',
+      data: {
+        labels: data.map(row => row.date.toISOString().split('T')[0]),
+        datasets: [
+          {
+            label: 'Weight in kg',
+            data: data.map(row => row.weightKg),
+            spanGaps: true
+          }
+        ]
+      },
+      options: {
+              y: {
+                  min: minV,
+                  max: maxV
+                }
+      }
+    }
+  );
+}
+
+
 (async function(){
     var a = await getFirstWeightData();
     var startDate = document.getElementById('startDate').value;
     var endDate = document.getElementById("endDate").value;
     var weightList = await getWeightBetweenDates(startDate, endDate);
     console.log(weightList);
+    var datesForChart = generateRecordForDates();
+    var dataForChart = mapWeightOnDatesInChart(datesForChart, weightList);
+    console.log(datesForChart);
+    console.log(dataForChart);
     createChart();
+    console.log(generateRecordForDates());
 })();
