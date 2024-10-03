@@ -1,3 +1,5 @@
+let currentChart;
+
 async function getWeightBetweenDates(start, end){
       const url = 'http://localhost:8080/weight/get/betweendates?start='+encodeURIComponent(start)+'&end='+encodeURIComponent(end);
     try {
@@ -96,8 +98,11 @@ function generateRecordForDates(){
     return dates;
 }
 
-async function createChart(data, minV, maxV) {
-  new Chart(
+async function generateChart(data, minV, maxV) {
+    if (currentChart) {
+        currentChart.destroy();
+    }
+  currentChart = new Chart(
     document.getElementById('weightChart'),
     {
       type: 'line',
@@ -121,14 +126,16 @@ async function createChart(data, minV, maxV) {
   );
 }
 
-
-(async function(){
-    var a = await getFirstWeightData();
+async function createChart(){
     var startDate = document.getElementById('startDate').value;
     var endDate = document.getElementById("endDate").value;
     var weightList = await getWeightBetweenDates(startDate, endDate);
     var weights = weightList.map(weight => weight.weightInKg);
     var datesForChart = generateRecordForDates();
     var dataForChart = mapWeightOnDatesInChart(datesForChart, weightList);
-    createChart(dataForChart, calculateMinValueInChart(weights), calculateMaxValueInChart(weights));
+    generateChart(dataForChart, calculateMinValueInChart(weights), calculateMaxValueInChart(weights));
+}
+
+(async function(){
+    createChart();
 })();
