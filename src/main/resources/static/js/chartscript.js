@@ -1,4 +1,6 @@
 let currentChart;
+let cachedLabel = {};
+
 const ctx = document.getElementById('weightChart').getContext('2d');
     async function getWeightBefore(start){
         const url= 'http://localhost:8080/weight/get/before?date='+encodeURIComponent(start);
@@ -159,19 +161,18 @@ const ctx = document.getElementById('weightChart').getContext('2d');
         }
     }
 
-    async function createArrayToShow(weightStr, basicCircumference, info){
+    async function createArrayToShow(weightStr, basicCircumference){
         var arrayToShow = [];
         arrayToShow.push(weightStr);
-        console.log(basicCircumference);
         for (let key in basicCircumference) {
             if (basicCircumference.hasOwnProperty(key)) {
-                console.log(`${key}: ${basicCircumference[key]}`);
-                arrayToShow.push(`${key}: ${basicCircumference[key]}`);
+                if(key!=='id'){
+                arrayToShow.push(`${key}: ${basicCircumference[key]} cm`);
+                }
             }
         }
-        console.log("endOfShow");
         arrayToShow.push(``);
-        arrayToShow.push(info);
+        arrayToShow.push("Click to see more detail or edit");
         return arrayToShow;
     }
 
@@ -219,14 +220,31 @@ const ctx = document.getElementById('weightChart').getContext('2d');
                            plugins: {
                               tooltip: {
                                 callbacks: {
-                                    label: async function(context) {
+                                    label: function(context) {
                                         const point = context.raw;
-                                        console.log(point.x);
-                                        var basicCircumference = await getBasicCircumference(point.x);
-                                        return await createArrayToShow(`Weight: ${point.y}`, basicCircumference, `${point.info}`);;
+                                        return cachedLabel[point.x] ||[`Weight: ${point.y}`, ``, `${point.info}`];
                                     }
                                 }
                               }
+                           },
+                           onHover: async function(event, chartElements) {
+                                if (chartElements.length) {
+                                    const activeElement = chartElements[0];
+                                    const point = activeElement.element.$context.raw;
+                                    const cacheKey = `${point.x}`;
+                                    if(!cachedLabel[cacheKey]){
+                                        var basicCircumference = await getBasicCircumference(cacheKey);
+                                        var arrayToShow = await createArrayToShow(point.y, basicCircumference);
+                                        cachedLabel[cacheKey] = arrayToShow;
+                                        const tooltip = this.tooltip;
+                                        tooltip.setActiveElements([{
+                                            datasetIndex: activeElement.datasetIndex,
+                                            index: activeElement.index
+                                        }]);
+                                        tooltip.update();
+                                    }
+                                    }
+
                            }
           }
         }
