@@ -1,5 +1,6 @@
 package com.body.measurement.controllers;
 
+import com.body.measurement.dto.BasicCircumference;
 import com.body.measurement.services.CircumferenceMeasurementService;
 import com.body.measurement.dto.CircumferenceData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,12 @@ public class MeasurementController {
     public CircumferenceData getCircumferenceData(@PathVariable("id") long id){
         return this.circumferenceMeasurementService.getCircumferenceDataById(id);
     }
+
+    @GetMapping("bodyMonitoring/getBasicCircumferece")
+    public BasicCircumference getBasicCircumferenceByDate(@RequestParam("date") LocalDate date){
+        return this.circumferenceMeasurementService.getBasicCircumferenceByDate(date);
+    }
+
     @GetMapping("/bodyMonitoring/getCircumference/betweenDate")
     public List<CircumferenceData> getCircumferenceDataBetweenDate(@RequestParam LocalDate start,@RequestParam LocalDate end){
         return this.circumferenceMeasurementService.getCircumferenceDataInDateRange(start, end);

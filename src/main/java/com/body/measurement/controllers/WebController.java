@@ -13,7 +13,7 @@ public class WebController {
 
     @GetMapping("/addNewMeasurement")
     public String getAddNewMeasurement(){
-        return "new_measurement";
+        return "add_measurement";
     }
 
     @GetMapping("/addWeight")

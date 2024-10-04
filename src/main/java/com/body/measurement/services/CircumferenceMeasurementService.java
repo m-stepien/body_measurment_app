@@ -71,6 +71,10 @@ public class CircumferenceMeasurementService {
         return this.circumferenceDataRepository.findById(id).orElse(null);
     }
 
+    public BasicCircumference getBasicCircumferenceByDate(LocalDate date){
+        return this.circumferenceDataRepository.findBasicCircumferenceByDate(date).orElse(new BasicCircumference());
+    }
+
     public List<CircumferenceData> getCircumferenceDataFromDate(LocalDate startDate) {
         return this.circumferenceDataRepository.findByMeasurementDateGreaterThanEqual(startDate);
     }

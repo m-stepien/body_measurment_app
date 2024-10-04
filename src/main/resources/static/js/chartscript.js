@@ -138,6 +138,43 @@ const ctx = document.getElementById('weightChart').getContext('2d');
         return dates;
     }
 
+    async function getBasicCircumference(date){
+        const url = 'http://localhost:8080/bodyMonitoring/getBasicCircumferece?date='+encodeURIComponent(date);
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+            const basicCircumference = await response.json();
+            if(basicCircumference===null || basicCircumference.id===null){
+                return null;
+            }
+            else{
+                console.log("Data fetched successfully:", basicCircumference);
+                return basicCircumference;
+            }
+        } catch (error) {
+            console.error(error.message);
+            return null;
+        }
+    }
+
+    async function createArrayToShow(weightStr, basicCircumference, info){
+        var arrayToShow = [];
+        arrayToShow.push(weightStr);
+        console.log(basicCircumference);
+        for (let key in basicCircumference) {
+            if (basicCircumference.hasOwnProperty(key)) {
+                console.log(`${key}: ${basicCircumference[key]}`);
+                arrayToShow.push(`${key}: ${basicCircumference[key]}`);
+            }
+        }
+        console.log("endOfShow");
+        arrayToShow.push(``);
+        arrayToShow.push(info);
+        return arrayToShow;
+    }
+
     async function generateChart(data, minV, maxV, minDate, maxDate) {
         if (currentChart) {
             currentChart.destroy();
@@ -182,12 +219,11 @@ const ctx = document.getElementById('weightChart').getContext('2d');
                            plugins: {
                               tooltip: {
                                 callbacks: {
-                                    label: function(context) {
+                                    label: async function(context) {
                                         const point = context.raw;
-                                        return [`Weight: ${point.y}`,
-                                                ``,
-                                                `${point.info}`
-                                                ]
+                                        console.log(point.x);
+                                        var basicCircumference = await getBasicCircumference(point.x);
+                                        return await createArrayToShow(`Weight: ${point.y}`, basicCircumference, `${point.info}`);;
                                     }
                                 }
                               }
@@ -227,4 +263,3 @@ const ctx = document.getElementById('weightChart').getContext('2d');
     (async function(){
         createChart();
     })();
-

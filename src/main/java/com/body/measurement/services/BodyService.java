@@ -31,14 +31,11 @@ public class BodyService {
     public BodySaveResponse saveBodyDetails(BodyDetails bodyDetails) {
         BodySaveResponse bodySaveResponse = new BodySaveResponse();
         try {
-            System.out.println("I am in service");
             this.validator.isBodyDetailsValid(bodyDetails);
             this.bodyDetailsRepository.save(bodyDetails);
             bodySaveResponse.setBasicBodyData(bodyDetails);
-            bodySaveResponse.setMessage("Basic body data save successful");
             bodySaveResponse.setSuccess(true);
         } catch (MissingRequiredDataException | InvalidDataException e) {
-            System.out.println("but i got error");
             System.out.println(e.getMessage());
             bodySaveResponse.setBasicBodyData(bodyDetails);
             bodySaveResponse.setSuccess(false);
