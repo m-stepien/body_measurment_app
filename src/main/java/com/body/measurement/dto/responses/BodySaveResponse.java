@@ -1,11 +1,11 @@
 package com.body.measurement.dto.responses;
 
-import com.body.measurement.dto.BasicBodyData;
+import com.body.measurement.dto.BodyDetails;
 
 public class BodySaveResponse {
     private boolean success;
     private String message;
-    private BasicBodyData basicBodyData;
+    private BodyDetails bodyDetails;
 
     public BodySaveResponse() {
     }
@@ -26,11 +26,11 @@ public class BodySaveResponse {
         this.message = message;
     }
 
-    public BasicBodyData getBasicBodyData() {
-        return basicBodyData;
+    public BodyDetails getBasicBodyData() {
+        return bodyDetails;
     }
 
-    public void setBasicBodyData(BasicBodyData basicBodyData) {
-        this.basicBodyData = basicBodyData;
+    public void setBasicBodyData(BodyDetails bodyDetails) {
+        this.bodyDetails = bodyDetails;
     }
 }

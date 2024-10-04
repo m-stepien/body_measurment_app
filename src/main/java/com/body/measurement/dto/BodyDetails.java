@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "basic_body_data")
-public class BasicBodyData {
+@Table(name = "body_details")
+public class BodyDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -51,7 +51,7 @@ public class BasicBodyData {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BasicBodyData that = (BasicBodyData) o;
+        BodyDetails that = (BodyDetails) o;
         return Objects.equals(id, that.id) && Objects.equals(heightInCm, that.heightInCm) && Objects.equals(age, that.age) && Objects.equals(gender, that.gender);
     }
 

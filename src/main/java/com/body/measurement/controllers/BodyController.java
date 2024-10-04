@@ -1,6 +1,6 @@
 package com.body.measurement.controllers;
 
-import com.body.measurement.dto.BasicBodyData;
+import com.body.measurement.dto.BodyDetails;
 import com.body.measurement.dto.Weight;
 import com.body.measurement.dto.responses.BodySaveResponse;
 import com.body.measurement.services.BodyService;
@@ -20,20 +20,22 @@ public class BodyController {
     }
 
     @PostMapping("/body/basic/save")
-    public void saveBasicBodyData(@RequestParam("gender") String gender, @ModelAttribute BasicBodyData basicBodyData){
+    public void saveBodyDetails(@RequestParam("gender") String gender, @ModelAttribute BodyDetails bodyDetails){
         //temp drut
-        basicBodyData.setGender(gender);
-        this.bodyService.saveBasicBodyData(basicBodyData);
+        bodyDetails.setGender(gender);
+        System.out.println("i am here");
+        System.out.println(bodyDetails);
+        this.bodyService.saveBodyDetails(bodyDetails);
     }
 
     @GetMapping("/body/basic/get/{id}")
-    public BasicBodyData getBasicBodyDataById(@PathVariable("id") long id){
-        return this.bodyService.getBasicBodyData(id);
+    public BodyDetails getBodyDetails(@PathVariable("id") long id){
+        return this.bodyService.getBodyDetailsData(id);
     }
 
-    @DeleteMapping("/body/basic/delete/{id}")
-    public void deleteBasicBodyDataById(@PathVariable("id") long id){
-        this.bodyService.deleteBasicBodyData(id);
+    @DeleteMapping("/body/details/delete/{id}")
+    public void deleteBodyDetailsById(@PathVariable("id") long id){
+        this.bodyService.deleteBodyDetailsData(id);
     }
 
     @PostMapping("/weight/save")

@@ -3,10 +3,10 @@ package com.body.measurement.services;
 import com.body.measurement.custom.exception.InvalidDataException;
 import com.body.measurement.custom.exception.MissingRequiredDataException;
 import com.body.measurement.custom.exception.NoSuchObjectInDatabaseException;
-import com.body.measurement.dto.BasicBodyData;
+import com.body.measurement.dto.BodyDetails;
 import com.body.measurement.dto.Weight;
 import com.body.measurement.dto.responses.BodySaveResponse;
-import com.body.measurement.repositories.BasicBodyDataRepository;
+import com.body.measurement.repositories.BodyDetailsRepository;
 import com.body.measurement.repositories.WeightRepository;
 import com.body.measurement.utils.BodyDataValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,38 +18,41 @@ import java.util.List;
 @Service
 public class BodyService {
     private final WeightRepository weightRepository;
-    private final BasicBodyDataRepository basicBodyDataRepository;
+    private final BodyDetailsRepository bodyDetailsRepository;
     private final BodyDataValidator validator;
 
     @Autowired
-    public BodyService(WeightRepository weightRepository, BasicBodyDataRepository basicBodyDataRepository, BodyDataValidator validator) {
+    public BodyService(WeightRepository weightRepository, BodyDetailsRepository bodyDetailsRepository, BodyDataValidator validator) {
         this.weightRepository = weightRepository;
-        this.basicBodyDataRepository = basicBodyDataRepository;
+        this.bodyDetailsRepository = bodyDetailsRepository;
         this.validator = validator;
     }
 
-    public BodySaveResponse saveBasicBodyData(BasicBodyData basicBodyData) {
+    public BodySaveResponse saveBodyDetails(BodyDetails bodyDetails) {
         BodySaveResponse bodySaveResponse = new BodySaveResponse();
         try {
-            this.validator.isBodyDataValid(basicBodyData);
-            this.basicBodyDataRepository.save(basicBodyData);
-            bodySaveResponse.setBasicBodyData(basicBodyData);
+            System.out.println("I am in service");
+            this.validator.isBodyDetailsValid(bodyDetails);
+            this.bodyDetailsRepository.save(bodyDetails);
+            bodySaveResponse.setBasicBodyData(bodyDetails);
             bodySaveResponse.setMessage("Basic body data save successful");
             bodySaveResponse.setSuccess(true);
         } catch (MissingRequiredDataException | InvalidDataException e) {
-            bodySaveResponse.setBasicBodyData(basicBodyData);
+            System.out.println("but i got error");
+            System.out.println(e.getMessage());
+            bodySaveResponse.setBasicBodyData(bodyDetails);
             bodySaveResponse.setSuccess(false);
             bodySaveResponse.setMessage(e.getMessage());
         }
         return bodySaveResponse;
     }
 
-    public BasicBodyData getBasicBodyData(long id) {
-        return this.basicBodyDataRepository.findById(id).orElse(null);
+    public BodyDetails getBodyDetailsData(long id) {
+        return this.bodyDetailsRepository.findById(id).orElse(null);
     }
 
-    public void deleteBasicBodyData(long id) {
-        this.basicBodyDataRepository.deleteById(id);
+    public void deleteBodyDetailsData(long id) {
+        this.bodyDetailsRepository.deleteById(id);
     }
 
     public BodySaveResponse saveWeight(Weight weight) {

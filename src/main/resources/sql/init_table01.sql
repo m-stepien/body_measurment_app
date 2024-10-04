@@ -34,7 +34,7 @@ CREATE table IF NOT EXISTS weight(
     date DATE not null
 );
 
-CREATE table IF NOT EXISTS basic_body_data(
+CREATE table IF NOT EXISTS body_details(
     id SERIAL primary key,
     height_in_cm numeric(5,2) not null,
     age INT not null,

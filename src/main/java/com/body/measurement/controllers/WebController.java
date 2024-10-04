@@ -21,9 +21,9 @@ public class WebController {
         return "add_weight";
     }
 
-    @GetMapping("/addBasicBodyData")
+    @GetMapping("/addBodyDetails")
     public String addBasicBodyData(){
-        return "add_basic_body_data";
+        return "add_body_details";
     }
 
     @GetMapping("/measurement")

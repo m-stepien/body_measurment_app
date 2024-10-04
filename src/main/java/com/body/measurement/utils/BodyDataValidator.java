@@ -2,7 +2,7 @@ package com.body.measurement.utils;
 
 import com.body.measurement.custom.exception.InvalidDataException;
 import com.body.measurement.custom.exception.MissingRequiredDataException;
-import com.body.measurement.dto.BasicBodyData;
+import com.body.measurement.dto.BodyDetails;
 import com.body.measurement.dto.BasicCircumference;
 import com.body.measurement.dto.Weight;
 import org.springframework.stereotype.Component;
@@ -11,11 +11,11 @@ import java.time.LocalDate;
 
 @Component
 public class BodyDataValidator {
-    public boolean isBodyDataValid(BasicBodyData basicBodyData) throws InvalidDataException, MissingRequiredDataException {
-        checkIsAllRequiredDataSet(basicBodyData);
-        checkAgeValid(basicBodyData.getAge());
-        checkHeightInCmValid(basicBodyData.getHeightInCm());
-        checkGenderValid(basicBodyData.getGender());
+    public boolean isBodyDetailsValid(BodyDetails bodyDetails) throws InvalidDataException, MissingRequiredDataException {
+        checkIsAllRequiredDataSet(bodyDetails);
+        checkAgeValid(bodyDetails.getAge());
+        checkHeightInCmValid(bodyDetails.getHeightInCm());
+        checkGenderValid(bodyDetails.getGender());
         return true;
     }
 
@@ -34,10 +34,10 @@ public class BodyDataValidator {
     }
 
 
-    private void checkIsAllRequiredDataSet(BasicBodyData basicBodyData) throws MissingRequiredDataException {
-        if(basicBodyData.getAge() == null || basicBodyData.getGender() == null || basicBodyData.getHeightInCm() == null)
+    private void checkIsAllRequiredDataSet(BodyDetails bodyDetails) throws MissingRequiredDataException {
+        if(bodyDetails.getAge() == null || bodyDetails.getGender() == null || bodyDetails.getHeightInCm() == null)
         {
-            throw new MissingRequiredDataException(BasicBodyData.class.getName());
+            throw new MissingRequiredDataException(BodyDetails.class.getName());
         }
     }
 

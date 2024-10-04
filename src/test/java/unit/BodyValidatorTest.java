@@ -2,7 +2,7 @@ package unit;
 
 import com.body.measurement.custom.exception.InvalidDataException;
 import com.body.measurement.custom.exception.MissingRequiredDataException;
-import com.body.measurement.dto.BasicBodyData;
+import com.body.measurement.dto.BodyDetails;
 import com.body.measurement.dto.Weight;
 import com.body.measurement.utils.BodyDataValidator;
 import org.junit.Test;
@@ -15,79 +15,79 @@ public class BodyValidatorTest {
     @Test
     public void isBodyDataValidSuccessfulTest() throws Exception{
         BodyDataValidator bodyDataValidator = new BodyDataValidator();
-        BasicBodyData basicBodyData = getValidBasicBodyData();
-        Assert.assertTrue(bodyDataValidator.isBodyDataValid(basicBodyData));
+        BodyDetails bodyDetails = getValidBasicBodyData();
+        Assert.assertTrue(bodyDataValidator.isBodyDetailsValid(bodyDetails));
     }
 
     @Test(expected = InvalidDataException.class)
     public void isBodyDataValidFailedNegativeAgeValueTest() throws Exception{
         BodyDataValidator bodyDataValidator = new BodyDataValidator();
-        BasicBodyData basicBodyData = getValidBasicBodyData();
-        basicBodyData.setAge(-22);
-        bodyDataValidator.isBodyDataValid(basicBodyData);
+        BodyDetails bodyDetails = getValidBasicBodyData();
+        bodyDetails.setAge(-22);
+        bodyDataValidator.isBodyDetailsValid(bodyDetails);
     }
 
     @Test(expected = InvalidDataException.class)
     public void isBodyDataValidFailedToHighAgeValueTest() throws Exception{
         BodyDataValidator bodyDataValidator = new BodyDataValidator();
-        BasicBodyData basicBodyData = getValidBasicBodyData();
-        basicBodyData.setAge(200);
-        bodyDataValidator.isBodyDataValid(basicBodyData);
+        BodyDetails bodyDetails = getValidBasicBodyData();
+        bodyDetails.setAge(200);
+        bodyDataValidator.isBodyDetailsValid(bodyDetails);
     }
 
     @Test(expected = InvalidDataException.class)
     public void isBodyDataValidFailedToHighHeightValueTest() throws Exception{
         BodyDataValidator bodyDataValidator = new BodyDataValidator();
-        BasicBodyData basicBodyData = getValidBasicBodyData();
-        basicBodyData.setHeightInCm(400D);
-        bodyDataValidator.isBodyDataValid(basicBodyData);
+        BodyDetails bodyDetails = getValidBasicBodyData();
+        bodyDetails.setHeightInCm(400D);
+        bodyDataValidator.isBodyDetailsValid(bodyDetails);
     }
 
     @Test(expected = InvalidDataException.class)
     public void isBodyDataValidFailedNegativeHeightValueTest() throws Exception{
         BodyDataValidator bodyDataValidator = new BodyDataValidator();
-        BasicBodyData basicBodyData = getValidBasicBodyData();
-        basicBodyData.setHeightInCm(-3d);
-        bodyDataValidator.isBodyDataValid(basicBodyData);
+        BodyDetails bodyDetails = getValidBasicBodyData();
+        bodyDetails.setHeightInCm(-3d);
+        bodyDataValidator.isBodyDetailsValid(bodyDetails);
     }
 
     @Test(expected = InvalidDataException.class)
     public void isBodyDataValidSuccessfulWomanAsGenderValueTest() throws Exception{
         BodyDataValidator bodyDataValidator = new BodyDataValidator();
-        BasicBodyData basicBodyData = getValidBasicBodyData();
-        basicBodyData.setGender("W");
-        bodyDataValidator.isBodyDataValid(basicBodyData);
+        BodyDetails bodyDetails = getValidBasicBodyData();
+        bodyDetails.setGender("W");
+        bodyDataValidator.isBodyDetailsValid(bodyDetails);
     }
 
     @Test(expected = MissingRequiredDataException.class)
     public void isBodyDataValidNoValueSetFailedTest() throws Exception{
         BodyDataValidator bodyDataValidator = new BodyDataValidator();
-        BasicBodyData basicBodyData = new BasicBodyData();
-        bodyDataValidator.isBodyDataValid(basicBodyData);
+        BodyDetails bodyDetails = new BodyDetails();
+        bodyDataValidator.isBodyDetailsValid(bodyDetails);
     }
 
     @Test(expected = MissingRequiredDataException.class)
     public void isBodyDataValidMissingAgeValueFailedTest() throws Exception {
         BodyDataValidator bodyDataValidator = new BodyDataValidator();
-        BasicBodyData basicBodyData = getValidBasicBodyData();
-        basicBodyData.setAge(null);
-        bodyDataValidator.isBodyDataValid(basicBodyData);
+        BodyDetails bodyDetails = getValidBasicBodyData();
+        bodyDetails.setAge(null);
+        bodyDataValidator.isBodyDetailsValid(bodyDetails);
     }
 
     @Test(expected = MissingRequiredDataException.class)
     public void isBodyDataValidMissingGenderValueFailedTest() throws Exception {
         BodyDataValidator bodyDataValidator = new BodyDataValidator();
-        BasicBodyData basicBodyData = getValidBasicBodyData();
-        basicBodyData.setGender(null);
-        bodyDataValidator.isBodyDataValid(basicBodyData);
+        BodyDetails bodyDetails = getValidBasicBodyData();
+        bodyDetails.setGender(null);
+        bodyDataValidator.isBodyDetailsValid(bodyDetails);
     }
 
     @Test(expected = MissingRequiredDataException.class)
     public void isBodyDataValidMissingHeightValueFailedTest() throws Exception {
         BodyDataValidator bodyDataValidator = new BodyDataValidator();
-        BasicBodyData basicBodyData = getValidBasicBodyData();
-        basicBodyData.setHeightInCm(null);
-        bodyDataValidator.isBodyDataValid(basicBodyData);
+        BodyDetails bodyDetails = getValidBasicBodyData();
+        bodyDetails.setHeightInCm(null);
+        bodyDataValidator.isBodyDetailsValid(bodyDetails);
     }
 
     @Test
@@ -152,12 +152,12 @@ public class BodyValidatorTest {
         bodyDataValidator.isWeightValid(weight);
     }
 
-    private BasicBodyData getValidBasicBodyData(){
-        BasicBodyData basicBodyData = new BasicBodyData();
-        basicBodyData.setAge(22);
-        basicBodyData.setGender("m");
-        basicBodyData.setHeightInCm(192.0);
-        basicBodyData.setId(1);
-        return basicBodyData;
+    private BodyDetails getValidBasicBodyData(){
+        BodyDetails bodyDetails = new BodyDetails();
+        bodyDetails.setAge(22);
+        bodyDetails.setGender("m");
+        bodyDetails.setHeightInCm(192.0);
+        bodyDetails.setId(1);
+        return bodyDetails;
     }
 }
