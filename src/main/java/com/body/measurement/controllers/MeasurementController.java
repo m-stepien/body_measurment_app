@@ -39,7 +39,7 @@ public class MeasurementController {
     }
 
     @GetMapping("/bodyMonitoring/getCircumference/betweenDate")
-    public List<CircumferenceData> getCircumferenceDataBetweenDate(@RequestParam LocalDate start,@RequestParam LocalDate end){
+    public List<CircumferenceData> getCircumferenceDataBetweenDate(@RequestParam("start") LocalDate start,@RequestParam("end") LocalDate end){
         return this.circumferenceMeasurementService.getCircumferenceDataInDateRange(start, end);
     }
 

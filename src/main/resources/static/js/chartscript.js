@@ -245,6 +245,14 @@ const ctx = document.getElementById('weightChart').getContext('2d');
                                     }
                                     }
 
+                           },
+                           onClick: function(event) {
+                               const activePoints = this.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+                               if (activePoints.length > 0) {
+                                const clickedPoint = activePoints[0].element.$context.raw;
+                                const redirectUrl = `/body-data?date=${clickedPoint.x}`;
+                                window.location.href = redirectUrl;
+                                }
                            }
           }
         }
