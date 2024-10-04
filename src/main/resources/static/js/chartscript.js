@@ -44,7 +44,6 @@ const ctx = document.getElementById('weightChart').getContext('2d');
 
     async function getWeightBetweenDates(start, end){
           const url = 'http://localhost:8080/weight/get/betweendates?start='+encodeURIComponent(start)+'&end='+encodeURIComponent(end);
-          console.log("url " + url);
         try {
             const response = await fetch(url);
         if (!response.ok) {
@@ -90,7 +89,6 @@ const ctx = document.getElementById('weightChart').getContext('2d');
               console.error(error.message);
               return null;
             }
-
     }
 
     function calculateMinValueInChart(arrayWeight){
@@ -133,11 +131,7 @@ const ctx = document.getElementById('weightChart').getContext('2d');
         const dates = []
         let currentDate = new Date(startDateStr);
         let endDate = new Date(endDateStr);
-        console.log("I am in function");
-        console.log("current date" + currentDate);
-        console.log("end date" + endDate);
         while(currentDate<=endDate){
-            console.log("Iam in loop");
             dates.push(new Date(currentDate));
             currentDate.setDate(currentDate.getDate() + 1);
         }
@@ -151,7 +145,8 @@ const ctx = document.getElementById('weightChart').getContext('2d');
         let chartData = data.map(row => {
         return {
             x: row.date.toISOString().split('T')[0],
-            y: row.weight
+            y: row.weight,
+            info: "Click to see more detail or edit"
         };});
       currentChart = new Chart(
         ctx,
@@ -173,7 +168,8 @@ const ctx = document.getElementById('weightChart').getContext('2d');
                               x: {
                                   type: 'time',
                                   time: {
-                                      unit: 'day'
+                                      unit: 'day',
+                                      tooltipFormat: 'dd/MM/yyyy'
                                   },
                                   min: new Date(minDate).getTime(),
                                   max: new Date(maxDate).getTime()
@@ -182,7 +178,20 @@ const ctx = document.getElementById('weightChart').getContext('2d');
                                 min: minV,
                                 max: maxV
                               }
-                          }
+                          },
+                           plugins: {
+                              tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const point = context.raw;
+                                        return [`Weight: ${point.y}`,
+                                                ``,
+                                                `${point.info}`
+                                                ]
+                                    }
+                                }
+                              }
+                           }
           }
         }
       );
@@ -197,16 +206,12 @@ const ctx = document.getElementById('weightChart').getContext('2d');
         var dateStart;
         var dateEnd;
         if(oneBefore!==null){
-            console.log("+")
-            console.log(oneBefore);
             dateStart = oneBefore.date;
         }
         else{
             dateStart = startDateFromInput;
         }
         if(oneAfter!==null){
-            console.log("+")
-            console.log(oneAfter);
             dateEnd = oneAfter.date;
         }
         else{
@@ -215,7 +220,6 @@ const ctx = document.getElementById('weightChart').getContext('2d');
         var weightList = await getWeightBetweenDates(dateStart, dateEnd);
         var weights = weightList.map(weight => weight.weightInKg);
         var datesForChart = generateRecordForDates(dateStart, dateEnd);
-        console.log("datesFordChart" + datesForChart);
         var dataForChart = mapWeightOnDatesInChart(datesForChart, weightList);
         generateChart(dataForChart, calculateMinValueInChart(weights), calculateMaxValueInChart(weights), startDateFromInput, endDateFromInput);
     }
