@@ -68,12 +68,12 @@ public class BodyController {
 
     @GetMapping("weight/get/before")
     public Weight findOneBeforeDate(@RequestParam("date") LocalDate date){
-        this.bodyService.getWeightOneBefore(date);
+        return this.bodyService.getWeightOneBefore(date);
     }
 
     @GetMapping("weight/get/after")
     public Weight findOneAfterDate(@RequestParam("date") LocalDate date){
-        this.bodyService.getWeightOneAfter(date);
+        return this.bodyService.getWeightOneAfter(date);
     }
 
     @DeleteMapping("/weight/delete/{id}")

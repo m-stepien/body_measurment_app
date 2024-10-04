@@ -1,7 +1,40 @@
 let currentChart;
 
+async function getWeightBefore(start){
+    const url= 'http://localhost:8080/weight/get/before?date='+encodeURIComponent(start);
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+        const weight = await response.json();
+        console.log("Data fetched successfully:", weight);
+        return weight;
+      } catch (error) {
+            console.error(error.message);
+        return null;
+      }
+}
+
+async function getWeightAfter(end){
+    const url= 'http://localhost:8080/weight/get/after?date='+encodeURIComponent(end);
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Response status: ${response.status}`);
+        }
+        const weight = await response.json();
+        console.log("Data fetched successfully:", weight);
+        return weight;
+      } catch (error) {
+            console.error(error.message);
+        return null;
+      }
+}
+
 async function getWeightBetweenDates(start, end){
       const url = 'http://localhost:8080/weight/get/betweendates?start='+encodeURIComponent(start)+'&end='+encodeURIComponent(end);
+      console.log("url " + url);
     try {
         const response = await fetch(url);
     if (!response.ok) {
@@ -88,8 +121,8 @@ function mapWeightOnDatesInChart(dates, weightList){
 
 function generateRecordForDates(){
     const dates = []
-    var startDate = document.getElementById('endDate').value;
-    var endDate = new Date(document.getElementById("startDate").value);
+    var startDate = document.getElementById('startDate').value;
+    var endDate = new Date(document.getElementById("endDate").value);
     let currentDate = new Date(startDate);
     while(currentDate<=endDate){
         dates.push(new Date(currentDate));
@@ -136,10 +169,33 @@ async function generateChart(data, minV, maxV, minDate, maxDate) {
   );
 }
 
+
 async function createChart(){
-    var startDate = document.getElementById('startDate').value;
-    var endDate = document.getElementById("endDate").value;
-    var weightList = await getWeightBetweenDates(startDate, endDate);
+    var startDateFromInput = document.getElementById('startDate').value;
+    var endDateFromInput = document.getElementById("endDate").value;
+    var oneBefore = await getWeightBefore(startDateFromInput);
+    var oneAfter = await getWeightAfter(endDateFromInput);
+    var dateStart;
+    var dateEnd;
+    if(oneBefore.date!==null){
+        console.log("+")
+        console.log(oneBefore);
+        dateStart = oneBefore.date;
+    }
+    else{
+        dateStart = startDateFromInput;
+    }
+    if(oneAfter.date!==null){
+        console.log("+")
+        console.log(oneAfter);
+        dateEnd = oneAfter.date;
+    }
+    else{
+        dateEnd = endDateFromInput;
+    }
+    console.log("start" + dateStart);
+    console.log("end" + dateEnd);
+    var weightList = await getWeightBetweenDates(dateStart, dateEnd);
     var weights = weightList.map(weight => weight.weightInKg);
     var datesForChart = generateRecordForDates();
     var dataForChart = mapWeightOnDatesInChart(datesForChart, weightList);

@@ -110,11 +110,11 @@ public class BodyService {
     }
 
     public Weight getWeightOneAfter(LocalDate localDate){
-        return this.weightRepository.findOneAfterGiven(localDate).orElse(null);
+        return this.weightRepository.findOneAfterGiven(localDate).orElse(new Weight());
     }
 
     public Weight getWeightLast(){
-        return this.weightRepository.findTopByOrderByDateDesc().orElse(null);
+        return this.weightRepository.findTopByOrderByDateDesc().orElse(new Weight());
     }
 
     public void deleteWeight(long id) {
