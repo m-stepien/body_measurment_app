@@ -98,6 +98,7 @@ function putBasicCircumferenceInsideDOM(basicCircumference, basicCircumferenceCo
         header.textContent = "Body Measurements";
         basicCircumferenceContainer.appendChild(header);
         let measurements = document.createElement("measurements");
+        measurements.id = "basicCircumferenceData";
         measurements.classList.add("body-measurements");
         for (let key in basicCircumference) {
             if (basicCircumference.hasOwnProperty(key)) {
@@ -117,9 +118,15 @@ function putBasicCircumferenceInsideDOM(basicCircumference, basicCircumferenceCo
             }
         }
         basicCircumferenceContainer.appendChild(measurements);
+        let buttonContainer = document.createElement("div");
+        buttonContainer.id = "button-container-basic-data";
         let buttonEdit = createButton("Edit");
-        buttonEdit.classList.add("edit-button");
-        basicCircumferenceContainer.appendChild(buttonEdit);
+        buttonEdit.addEventListener("click", function() {
+                                    edit("basicCircumferenceData");
+                                    });
+        buttonEdit.classList.add("button");
+        buttonContainer.appendChild(buttonContainer);
+        basicCircumferenceContainer.appendChild(buttonContainer);
         return basicCircumferenceContainer;
 }
 
@@ -130,6 +137,7 @@ function putAdditionalCircumferenceInsideDOM(additionalCircumference, additional
         header.textContent = "Limbs Measurements";
         additionalCircumferenceContainer.appendChild(header);
         let measurements = document.createElement("div");
+        measurements.id = "additionalCircumferenceData";
         measurements.classList.add("measurements");
         measurements.classList.add("limbs-measurements");
         for (let key in additionalCircumference) {
@@ -150,9 +158,15 @@ function putAdditionalCircumferenceInsideDOM(additionalCircumference, additional
             }
         }
         additionalCircumferenceContainer.appendChild(measurements);
+        let buttonContainer = document.createElement("div");
+        buttonContainer.id = "button-container-additional-data";
         let buttonEdit = createButton("Edit");
-        buttonEdit.classList.add("edit-button");
-        additionalCircumferenceContainer.appendChild(buttonEdit);
+        buttonEdit.addEventListener("click", function() {
+                                                 edit("additionalCircumferenceData");
+                                             });
+        buttonEdit.classList.add("button");
+        buttonContainer.appendChild(buttonContainer);
+        additionalCircumferenceContainer.appendChild(buttonContainer);
         return additionalCircumferenceContainer;
 }
 
@@ -178,21 +192,43 @@ function createLabelFromKey(key){
     return label;
 }
 
-function edit(){
-
+function edit(measurementsDataId, buttonContainerId){
+    var container = document.getElementById(measurementsDataId);
+    for(var i = 0; i<container.children.length; i++){
+        var child = container.children[i];
+        var spanElement = child.querySelector('span');
+        var defaultValue = spanElement.innerHTML;
+        var id = spanElement.id;
+        var inputElem = document.createElement("input");
+        inputElem.type = "number";
+        inputElem.id = id;
+        console.log(defaultValue);
+        inputElem.value = parseFloat(defaultValue);
+        inputElem.step = '0.01';
+        inputElem.classList.add("styled-input")
+        child.replaceChild(inputElem, spanElement);
+    }
+    var buttonContainer = document.getElementById(buttonContainerId);
+    var editButton = buttonContainer.querySelector("button");
+    var saveButton = createButton("start");
+    saveButton.classList.add("button");
+    var cancelButton = createButton("Cancel");
+    cancelButton.classList.add("button");
+    buttonContainer.replaceChild(cancelButton, editButton);
+    buttonContainer.appendChild(saveButton);
 }
 
 function add(){
-
+    console.log("add function run");
 }
 
 function save(){
-
+    console.log("save function run");
 }
 
 
 function cancel(){
-
+    console.log("cancel function run");
 }
 
 (async ()=>{
