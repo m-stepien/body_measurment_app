@@ -1,5 +1,3 @@
-console.log("hello word");
-
 async function getWeightByDate(date){
         const url = 'http://localhost:8080/weight/get/betweendates?start='+encodeURIComponent(date)+'&end='+encodeURIComponent(date);
             try {
@@ -52,21 +50,59 @@ function putWeightInsideDOM(weight){
 function putBasicCircumferenceInsideDOM(basicCircumference){
     let summary = document.getElementById("body-summary");
     let basicCircumferenceContainer = document.createElement('div');
-    for (let key in basicCircumference) {
-        if (basicCircumference.hasOwnProperty(key)) {
-            if(key!=='id'){
-                let bodyPartElement = document.createElement('span');
-                bodyPartElement.id = key;
-                bodyPartElement.textContent = basicCircumference[key] + " cm ";
-                let bodyPartLabel = document.createElement('label');
-                bodyPartLabel.textContent = key + ": ";
-                bodyPartLabel.htmlFor = key;
-                basicCircumferenceContainer.appendChild(bodyPartLabel);
-                basicCircumferenceContainer.appendChild(bodyPartElement);
+    if(basicCircumference!==null){
+        for (let key in basicCircumference) {
+            if (basicCircumference.hasOwnProperty(key)) {
+                if(key !== 'id'){
+                    let bodyPartElement = document.createElement('span');
+                    bodyPartElement.id = key;
+                    bodyPartElement.textContent = basicCircumference[key] !== null ? basicCircumference[key] + " cm " : "";
+                    let bodyPartLabel = document.createElement('label');
+                    bodyPartLabel.textContent = key + ": ";
+                    bodyPartLabel.htmlFor = key;
+                    basicCircumferenceContainer.appendChild(bodyPartLabel);
+                    basicCircumferenceContainer.appendChild(bodyPartElement);
+                }
             }
         }
+        let buttonEdit = document.createElement('button');
+        buttonEdit.textContent = "Edit";
+        basicCircumferenceContainer.appendChild(buttonEdit);
+
+
+
     }
     summary.appendChild(basicCircumferenceContainer);
+}
+
+
+function putAdditionalCircumferenceInsideDOM(additionalCircumference){
+    let summary = document.getElementById("body-summary");
+    let additionalCircumferenceContainer = document.createElement('div');
+    if(additionalCircumference!==null){
+        for (let key in additionalCircumference) {
+            if (additionalCircumference.hasOwnProperty(key)) {
+                if(key !== 'id'){
+                    let bodyPartElement = document.createElement('span');
+                    bodyPartElement.id = key;
+                    bodyPartElement.textContent = additionalCircumference[key] !== null ? additionalCircumference[key] + " cm " : "";
+                    let bodyPartLabel = document.createElement('label');
+                    bodyPartLabel.textContent = key + ": ";
+                    bodyPartLabel.htmlFor = key;
+                    additionalCircumferenceContainer.appendChild(bodyPartLabel);
+                    additionalCircumferenceContainer.appendChild(bodyPartElement);
+                }
+            }
+        }
+        let buttonEdit = document.createElement('button');
+        buttonEdit.textContent = "Edit";
+        additionalCircumferenceContainer.appendChild(buttonEdit);
+    }
+    else{
+        let addButton = document.createElement('button');
+        additionalCircumferenceContainer.appendChild(addButton);
+    }
+    summary.appendChild(additionalCircumferenceContainer);
 }
 
 
@@ -75,8 +111,7 @@ function putBasicCircumferenceInsideDOM(basicCircumference){
     var weight = await getWeightByDate(date);
     putWeightInsideDOM(weight);
     var measurementData = await getMeasurementData(date);
-    if(measurementData.basicCircumference!==null){
-        putBasicCircumferenceInsideDOM(measurementData.basicCircumference);
-    }
-    ///...
+    putBasicCircumferenceInsideDOM(measurementData.basicCircumference);
+    putAdditionalCircumferenceInsideDOM(measurementData.additionalCircumference);
+    ///... must lock adding many record for one day eq measurementData
 })();
