@@ -15,11 +15,6 @@ public class WebController {
         return "index";
     }
 
-    @GetMapping("/addNewMeasurement")
-    public String getAddNewMeasurement(){
-        return "add_measurement";
-    }
-
     @GetMapping("/addWeight")
     public String addWeight(){
         return "add_weight";

@@ -1,0 +1,77 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f4f8;
+    color: #333;
+    margin: 0;
+    padding: 40px;
+}
+
+.summary {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.date-section, .weight-section {
+    margin-bottom: 15px;
+}
+
+.date-section label, .weight-section label {
+    font-weight: bold;
+    color: #5a9bd5;
+}
+
+.measurement-section {
+    margin-bottom: 20px;
+    border-top: 1px solid #ccc;
+    padding-top: 10px;
+}
+
+.measurement-section h2 {
+    color: #5a9bd5;
+    margin-bottom: 10px;
+}
+
+.body-measurements {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+}
+
+.limbs-measurements {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+}
+
+.measurement {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+}
+
+.measurement label {
+    font-weight: bold;
+}
+
+.edit-button {
+    background-color: #5a9bd5;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+    background-color: #3f8ccc;
+}
+
+@media (max-width: 600px) {
+    .limbs-measurements {
+        grid-template-columns: 1fr;
+    }
+}

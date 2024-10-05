@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script type="text/javascript" th:src="@{/js/bodydata.js}" defer></script>
+    <link rel="stylesheet" href="/css/body-summary.css">
 </head>
 <body>
 <div class="summary" id="body-summary">
-        <label for="date">Date: </label><span id="date" th:text="${date}" ></span>
+    <div class="date-section">
+        <label for="date">Date: </label>
+        <span id="date" th:text="${date}" ></span>
+    </div>
 </div>
 </body>
 </html>

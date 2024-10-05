@@ -37,14 +37,17 @@ async function getMeasurementData(date){
 
 function putWeightInsideDOM(weight){
     let summary = document.getElementById("body-summary");
+    let weightContainer = document.createElement("div");
+    weightContainer.classList.add('weight-section')
     let weightElement = document.createElement('span');
     weightElement.id = 'weight';
     weightElement.textContent = weight + " kg";
     let weightLabel = document.createElement('label');
     weightLabel.textContent = 'Weight: ';
     weightLabel.htmlFor = weightElement.id;
-    summary.appendChild(weightLabel);
-    summary.appendChild(weightElement);
+    weightContainer.appendChild(weightLabel);
+    weightContainer.appendChild(weightElement);
+    summary.appendChild(weightContainer);
 }
 
 function putCircumferenceDataInsideDOM(measurementData){
@@ -90,46 +93,107 @@ function createButton(text){
 
 
 function putBasicCircumferenceInsideDOM(basicCircumference, basicCircumferenceContainer){
+        basicCircumferenceContainer.classList.add("measurement-section");
+        let header = document.createElement("h2");
+        header.textContent = "Body Measurements";
+        basicCircumferenceContainer.appendChild(header);
+        let measurements = document.createElement("measurements");
+        measurements.classList.add("body-measurements");
         for (let key in basicCircumference) {
             if (basicCircumference.hasOwnProperty(key)) {
                 if(key !== 'id'){
+                    let measurement = document.createElement("div");
+                    measurement.classList.add("measurement");
                     let bodyPartElement = document.createElement('span');
                     bodyPartElement.id = key;
                     bodyPartElement.textContent = basicCircumference[key] !== null ? basicCircumference[key] + " cm " : "";
                     let bodyPartLabel = document.createElement('label');
-                    bodyPartLabel.textContent = key + ": ";
+                    bodyPartLabel.textContent = createLabelFromKey(key) + ": ";
                     bodyPartLabel.htmlFor = key;
-                    basicCircumferenceContainer.appendChild(bodyPartLabel);
-                    basicCircumferenceContainer.appendChild(bodyPartElement);
+                    measurement.appendChild(bodyPartLabel);
+                    measurement.appendChild(bodyPartElement);
+                    measurements.appendChild(measurement);
                 }
             }
         }
+        basicCircumferenceContainer.appendChild(measurements);
         let buttonEdit = createButton("Edit");
+        buttonEdit.classList.add("edit-button");
         basicCircumferenceContainer.appendChild(buttonEdit);
         return basicCircumferenceContainer;
 }
 
 
 function putAdditionalCircumferenceInsideDOM(additionalCircumference, additionalCircumferenceContainer){
+        additionalCircumferenceContainer.classList.add("measurement-section");
+        let header = document.createElement("h2");
+        header.textContent = "Limbs Measurements";
+        additionalCircumferenceContainer.appendChild(header);
+        let measurements = document.createElement("div");
+        measurements.classList.add("measurements");
+        measurements.classList.add("limbs-measurements");
         for (let key in additionalCircumference) {
             if (additionalCircumference.hasOwnProperty(key)) {
                 if(key !== 'id'){
+                    let measurement = document.createElement("div");
+                    measurement.classList.add("measurement");
                     let bodyPartElement = document.createElement('span');
                     bodyPartElement.id = key;
                     bodyPartElement.textContent = additionalCircumference[key] !== null ? additionalCircumference[key] + " cm " : "";
                     let bodyPartLabel = document.createElement('label');
-                    bodyPartLabel.textContent = key + ": ";
+                    bodyPartLabel.textContent = createLabelFromKey(key) + ": ";
                     bodyPartLabel.htmlFor = key;
-                    additionalCircumferenceContainer.appendChild(bodyPartLabel);
-                    additionalCircumferenceContainer.appendChild(bodyPartElement);
+                    measurement.appendChild(bodyPartLabel);
+                    measurement.appendChild(bodyPartElement);
+                    measurements.appendChild(measurement);
                 }
             }
         }
+        additionalCircumferenceContainer.appendChild(measurements);
         let buttonEdit = createButton("Edit");
+        buttonEdit.classList.add("edit-button");
         additionalCircumferenceContainer.appendChild(buttonEdit);
         return additionalCircumferenceContainer;
 }
 
+function createLabelFromKey(key){
+    const match = key.match(/[A-Z]/);
+    let label;
+    let idx = match ? key.indexOf(match[0]) : -1;
+    if(idx>=0){
+        let limb = key.slice(0, idx);
+        let side;
+        if(key.slice(idx)==="R"){
+            side = "Right";
+        }
+        else{
+            side = "Left";
+        }
+        label = limb + " " + side;
+    }
+    else{
+        label = key;
+    }
+    label = label.charAt(0).toUpperCase() + label.slice(1);
+    return label;
+}
+
+function edit(){
+
+}
+
+function add(){
+
+}
+
+function save(){
+
+}
+
+
+function cancel(){
+
+}
 
 (async ()=>{
     var date = document.getElementById("date").innerText;
