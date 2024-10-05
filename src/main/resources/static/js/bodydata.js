@@ -47,10 +47,49 @@ function putWeightInsideDOM(weight){
     summary.appendChild(weightElement);
 }
 
-function putBasicCircumferenceInsideDOM(basicCircumference){
+function putCircumferenceDataInsideDOM(measurementData){
     let summary = document.getElementById("body-summary");
     let basicCircumferenceContainer = document.createElement('div');
-    if(basicCircumference!==null){
+    let additionalCircumferenceContainer = document.createElement('div');
+    if(measurementData!==null){
+        if(measurementData.basicCircumference!==null){
+            basicCircumferenceContainer = putBasicCircumferenceInsideDOM(measurementData.basicCircumference, basicCircumferenceContainer);
+            summary.appendChild(basicCircumferenceContainer);
+        }
+        else{
+            let buttonAddBasicCircumference = createButton("Add basic circumference");
+            basicCircumferenceContainer.appendChild(buttonAddBasicCircumference);
+            summary.appendChild(basicCircumferenceContainer);
+        }
+        if(measurementData.additionalCircumference!==null){
+            console.log(measurementData);
+            additionalCircumferenceContainer = putAdditionalCircumferenceInsideDOM(measurementData.additionalCircumference, additionalCircumferenceContainer);
+            summary.appendChild(additionalCircumferenceContainer);
+        }
+        else{
+            let buttonAddAdditionalCircumference = createButton("Add additionalCircumference");
+            additionalCircumferenceContainer.appendChild(buttonAddAdditionalCircumference);
+            summary.appendChild(additionalCircumferenceContainer);
+        }
+    }
+    else{
+        let buttonAddBasicCircumference = createButton("Add basic circumference");
+        let buttonAddAdditionalCircumference = createButton("Add additionalCircumference");
+        basicCircumferenceContainer.appendChild(buttonAddBasicCircumference);
+        additionalCircumferenceContainer.appendChild(buttonAddAdditionalCircumference);
+        summary.appendChild(basicCircumferenceContainer);
+        summary.appendChild(additionalCircumferenceContainer);
+    }
+}
+
+function createButton(text){
+        let button = document.createElement('button');
+        button.textContent = text;
+        return button;
+}
+
+
+function putBasicCircumferenceInsideDOM(basicCircumference, basicCircumferenceContainer){
         for (let key in basicCircumference) {
             if (basicCircumference.hasOwnProperty(key)) {
                 if(key !== 'id'){
@@ -65,21 +104,13 @@ function putBasicCircumferenceInsideDOM(basicCircumference){
                 }
             }
         }
-        let buttonEdit = document.createElement('button');
-        buttonEdit.textContent = "Edit";
+        let buttonEdit = createButton("Edit");
         basicCircumferenceContainer.appendChild(buttonEdit);
-
-
-
-    }
-    summary.appendChild(basicCircumferenceContainer);
+        return basicCircumferenceContainer;
 }
 
 
-function putAdditionalCircumferenceInsideDOM(additionalCircumference){
-    let summary = document.getElementById("body-summary");
-    let additionalCircumferenceContainer = document.createElement('div');
-    if(additionalCircumference!==null){
+function putAdditionalCircumferenceInsideDOM(additionalCircumference, additionalCircumferenceContainer){
         for (let key in additionalCircumference) {
             if (additionalCircumference.hasOwnProperty(key)) {
                 if(key !== 'id'){
@@ -94,15 +125,9 @@ function putAdditionalCircumferenceInsideDOM(additionalCircumference){
                 }
             }
         }
-        let buttonEdit = document.createElement('button');
-        buttonEdit.textContent = "Edit";
+        let buttonEdit = createButton("Edit");
         additionalCircumferenceContainer.appendChild(buttonEdit);
-    }
-    else{
-        let addButton = document.createElement('button');
-        additionalCircumferenceContainer.appendChild(addButton);
-    }
-    summary.appendChild(additionalCircumferenceContainer);
+        return additionalCircumferenceContainer;
 }
 
 
@@ -111,7 +136,6 @@ function putAdditionalCircumferenceInsideDOM(additionalCircumference){
     var weight = await getWeightByDate(date);
     putWeightInsideDOM(weight);
     var measurementData = await getMeasurementData(date);
-    putBasicCircumferenceInsideDOM(measurementData.basicCircumference);
-    putAdditionalCircumferenceInsideDOM(measurementData.additionalCircumference);
+    putCircumferenceDataInsideDOM(measurementData);
     ///... must lock adding many record for one day eq measurementData
 })();
