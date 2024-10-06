@@ -1,6 +1,5 @@
 let ids = {};
 
-
 async function getWeightByDate(date){
         const url = 'http://localhost:8080/weight/get/betweendates?start='+encodeURIComponent(date)+'&end='+encodeURIComponent(date);
             try {
@@ -64,7 +63,12 @@ function putCircumferenceDataInsideDOM(measurementData){
             summary.appendChild(basicCircumferenceContainer);
         }
         else{
-            let buttonAddBasicCircumference = createButton("Add basic circumference");
+            basicCircumferenceContainer.classList.add("measurement-section");
+            let header = document.createElement("h2");
+            header.textContent = "Body Measurements";
+            let buttonAddBasicCircumference = createButton("Add");
+            buttonAddBasicCircumference.classList.add("button");
+            basicCircumferenceContainer.appendChild(header);
             basicCircumferenceContainer.appendChild(buttonAddBasicCircumference);
             summary.appendChild(basicCircumferenceContainer);
         }
@@ -74,15 +78,30 @@ function putCircumferenceDataInsideDOM(measurementData){
             summary.appendChild(additionalCircumferenceContainer);
         }
         else{
-            let buttonAddAdditionalCircumference = createButton("Add additionalCircumference");
+            additionalCircumferenceContainer.classList.add("measurement-section");
+            let header = document.createElement("h2");
+            header.textContent = "Limbs Measurements";
+            let buttonAddAdditionalCircumference = createButton("Add");
+            buttonAddAdditionalCircumference.classList.add("button");
+            additionalCircumferenceContainer.appendChild(header);
             additionalCircumferenceContainer.appendChild(buttonAddAdditionalCircumference);
             summary.appendChild(additionalCircumferenceContainer);
         }
     }
     else{
-        let buttonAddBasicCircumference = createButton("Add basic circumference");
-        let buttonAddAdditionalCircumference = createButton("Add additionalCircumference");
+        basicCircumferenceContainer.classList.add("measurement-section");
+        let header = document.createElement("h2");
+        header.textContent = "Body Measurements";
+        additionalCircumferenceContainer.classList.add("measurement-section");
+        let header2 = document.createElement("h2");
+        header.textContent = "Limbs Measurements";
+        let buttonAddBasicCircumference = createButton("Add");
+        let buttonAddAdditionalCircumference = createButton("Add");
+        buttonAddBasicCircumference.classList.add("button");
+        buttonAddAdditionalCircumference.classList.add("button");
+        basicCircumferenceContainer.appendChild(header);
         basicCircumferenceContainer.appendChild(buttonAddBasicCircumference);
+        additionalCircumferenceContainer.appendChild(header2);
         additionalCircumferenceContainer.appendChild(buttonAddAdditionalCircumference);
         summary.appendChild(basicCircumferenceContainer);
         summary.appendChild(additionalCircumferenceContainer);
@@ -166,7 +185,6 @@ function putAdditionalCircumferenceInsideDOM(additionalCircumference, additional
                     ids["additional_id"] = additionalCircumference[key];
                 }
             }
-
         }
         additionalCircumferenceContainer.appendChild(measurements);
         let buttonContainer = document.createElement("div");
