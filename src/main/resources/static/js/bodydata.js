@@ -1,3 +1,6 @@
+let ids = {};
+
+
 async function getWeightByDate(date){
         const url = 'http://localhost:8080/weight/get/betweendates?start='+encodeURIComponent(date)+'&end='+encodeURIComponent(date);
             try {
@@ -55,6 +58,7 @@ function putCircumferenceDataInsideDOM(measurementData){
     let basicCircumferenceContainer = document.createElement('div');
     let additionalCircumferenceContainer = document.createElement('div');
     if(measurementData!==null){
+        ids["main_id"]=measurementData["id"];
         if(measurementData.basicCircumference!==null){
             basicCircumferenceContainer = putBasicCircumferenceInsideDOM(measurementData.basicCircumference, basicCircumferenceContainer);
             summary.appendChild(basicCircumferenceContainer);
@@ -115,6 +119,9 @@ function putBasicCircumferenceInsideDOM(basicCircumference, basicCircumferenceCo
                     measurement.appendChild(bodyPartElement);
                     measurements.appendChild(measurement);
                 }
+                else{
+                    ids["basic_id"] = basicCircumference[key];
+                }
             }
         }
         basicCircumferenceContainer.appendChild(measurements);
@@ -155,7 +162,11 @@ function putAdditionalCircumferenceInsideDOM(additionalCircumference, additional
                     measurement.appendChild(bodyPartElement);
                     measurements.appendChild(measurement);
                 }
+                else{
+                    ids["additional_id"] = additionalCircumference[key];
+                }
             }
+
         }
         additionalCircumferenceContainer.appendChild(measurements);
         let buttonContainer = document.createElement("div");
@@ -219,12 +230,14 @@ function edit(measurementsDataId, buttonContainerId){
     var buttonContainer = document.getElementById(buttonContainerId);
     console.log("buttonContainerId" + buttonContainerId);
     var editButton = buttonContainer.querySelector("button");
-    var saveButton = createButton("start");
+    var saveButton = createButton("Save");
     saveButton.classList.add("button");
     var cancelButton = createButton("Cancel");
     cancelButton.classList.add("button");
     cancelButton.addEventListener("click", cancel);
-    saveButton.addEventListener("click", save);
+    saveButton.addEventListener("click", function() {
+                                                        save(measurementsDataId);
+                                                    });
     buttonContainer.replaceChild(cancelButton, editButton);
     buttonContainer.appendChild(saveButton);
 }
@@ -233,8 +246,44 @@ function add(){
     console.log("add function run");
 }
 
-function save(){
-    console.log("save function run");
+async function save(dataSectionId){
+    var dataSection = document.getElementById(dataSectionId);
+    var changed = {};
+    dataSection.getElementsByClassName("measurements");
+    for(var i = 0; i < dataSection.children.length; i++){
+        var inputElem = dataSection.children[i].querySelector('input');
+        changed[inputElem.id] = inputElem.value
+    }
+    var preparedToSend = prepareDataToSendUpdate(changed, dataSectionId);
+    await sendUpdate(preparedToSend);
+    cancel();
+}
+
+function prepareDataToSendUpdate(changed, sectionId){
+    var toSend = {};
+    toSend["id"] = ids["main_id"];
+    toSend["measurementDate"] = document.getElementById("date").innerText;
+    if(sectionId==="additionalCircumferenceData"){
+        toSend["additionalCircumference"] = changed;
+        toSend["basicCircumference"] = null;
+    }
+    else{
+        toSend["additionalCircumference"] = null;
+        toSend["basicCircumference"] = changed;
+    }
+    return toSend;
+}
+
+async function sendUpdate(toSend){
+    const url = 'http://localhost:8080/bodyMonitoring/update/circumference/'+encodeURIComponent(toSend.id);
+    fetch(url, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(toSend)
+    })
+    .catch(error => console.error('Error:', error));
 }
 
 
