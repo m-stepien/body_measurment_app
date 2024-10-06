@@ -1,4 +1,7 @@
 let ids = {};
+let basicCircumferenceKeyArray = ["abdominal", "chest", "hip", "waist"];
+let additionalCircumferenceKeyArray = ["armL", "armR", "calfL", "calfR", "forarmL", "forarmR", "neck", "thighL", "thighR"];
+var measurementData;
 
 async function getWeightByDate(date){
         const url = 'http://localhost:8080/weight/get/betweendates?start='+encodeURIComponent(date)+'&end='+encodeURIComponent(date);
@@ -67,6 +70,9 @@ function putCircumferenceDataInsideDOM(measurementData){
             let header = document.createElement("h2");
             header.textContent = "Body Measurements";
             let buttonAddBasicCircumference = createButton("Add");
+            buttonAddBasicCircumference.addEventListener("click", function() {
+                add(basicCircumferenceContainer);
+            });
             buttonAddBasicCircumference.classList.add("button");
             basicCircumferenceContainer.appendChild(header);
             basicCircumferenceContainer.appendChild(buttonAddBasicCircumference);
@@ -82,6 +88,9 @@ function putCircumferenceDataInsideDOM(measurementData){
             let header = document.createElement("h2");
             header.textContent = "Limbs Measurements";
             let buttonAddAdditionalCircumference = createButton("Add");
+            buttonAddAdditionalCircumference.addEventListener("click", function() {
+                                                add(additionalCircumferenceContainer);
+                                                });
             buttonAddAdditionalCircumference.classList.add("button");
             additionalCircumferenceContainer.appendChild(header);
             additionalCircumferenceContainer.appendChild(buttonAddAdditionalCircumference);
@@ -97,6 +106,12 @@ function putCircumferenceDataInsideDOM(measurementData){
         header.textContent = "Limbs Measurements";
         let buttonAddBasicCircumference = createButton("Add");
         let buttonAddAdditionalCircumference = createButton("Add");
+        buttonAddBasicCircumference.addEventListener("click", function() {
+            add(basicCircumferenceContainer);
+        });
+        buttonAddAdditionalCircumference.addEventListener("click", function() {
+            add(additionalCircumferenceContainer);
+            });
         buttonAddBasicCircumference.classList.add("button");
         buttonAddAdditionalCircumference.classList.add("button");
         basicCircumferenceContainer.appendChild(header);
@@ -225,7 +240,7 @@ async function initReadView(){
     var date = document.getElementById("date").innerText;
     var weight = await getWeightByDate(date);
     putWeightInsideDOM(weight);
-    var measurementData = await getMeasurementData(date);
+    measurementData = await getMeasurementData(date);
     putCircumferenceDataInsideDOM(measurementData);
 }
 
@@ -260,8 +275,75 @@ function edit(measurementsDataId, buttonContainerId){
     buttonContainer.appendChild(saveButton);
 }
 
-function add(){
+async function addNew(dataSectionId){
+    var dataSection = document.getElementById(dataSectionId);
+    var changed = {};
+    dataSection.getElementsByClassName("measurements");
+    for(var i = 0; i < dataSection.children.length; i++){
+        var inputElem = dataSection.children[i].querySelector('input');
+        changed[inputElem.id] = inputElem.value
+    }
+    var preparedToSend = prepareDataToSendNew(changed, dataSectionId);
+    await sendNew(preparedToSend);
+    cancel();
+}
+
+
+function add(section){
     console.log("add function run");
+    section.children[section.children.length-1].remove();//delete add button
+    var measurements = document.createElement("div");
+    measurements.classList.add("measurements");
+    var sectionsElement = document.getElementsByClassName("measurement-section");
+    let keyArray;
+    if(section===sectionsElement[0]){
+        measurements.classList.add("body-measurements");
+        measurements.id = "basicCircumferenceData";
+        keyArray = basicCircumferenceKeyArray;
+
+    }
+    else{
+        measurements.classList.add("limbs-measurements");
+        measurements.id = "additionalCircumferenceData";
+        keyArray = additionalCircumferenceKeyArray;
+    }
+    for(var i=0;i<keyArray.length;i++){
+        var measurement = document.createElement("div");
+        measurement.classList.add("measurement");
+        var label = document.createElement("label");
+        label.textContent = createLabelFromKey(keyArray[i]);
+        label.htmlFor = keyArray[i];
+        var input = document.createElement("input");
+        input.id = keyArray[i];
+        input.type = "number";
+        input.step = '0.01';
+        input.classList.add("styled-input")
+        measurement.appendChild(label);
+        measurement.appendChild(input);
+        measurements.appendChild(measurement);
+    }
+    section.appendChild(measurements);
+    var buttonContainer = document.createElement("div");
+    var editButton = buttonContainer.querySelector("button");
+    var saveButton = createButton("Save");
+    saveButton.classList.add("button");
+    var cancelButton = createButton("Cancel");
+    cancelButton.classList.add("button");
+    cancelButton.addEventListener("click", cancel);
+    if(measurementData == null){
+    saveButton.addEventListener("click", function() {
+                                                     addNew(measurements.id);
+                                                    });
+    }
+    else{
+        saveButton.addEventListener("click", function() {
+                                                         save(measurements.id);
+                                                        });
+    }
+    buttonContainer.appendChild(cancelButton, editButton);
+    buttonContainer.appendChild(saveButton);
+    section.appendChild(buttonContainer);
+
 }
 
 async function save(dataSectionId){
@@ -290,6 +372,32 @@ function prepareDataToSendUpdate(changed, sectionId){
         toSend["basicCircumference"] = changed;
     }
     return toSend;
+}
+
+function prepareDataToSendNew(changed, sectionId){
+    var toSend = {};
+    toSend["measurementDate"] = document.getElementById("date").innerText;
+    if(sectionId==="additionalCircumferenceData"){
+        toSend["additionalCircumference"] = changed;
+        toSend["basicCircumference"] = null;
+    }
+    else{
+        toSend["additionalCircumference"] = null;
+        toSend["basicCircumference"] = changed;
+    }
+    return toSend;
+}
+
+async function sendNew(toSend){
+    const url = 'http://localhost:8080/bodyMonitoring/addNewCircumference';
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(toSend)
+    })
+    .catch(error => console.error('Error:', error));
 }
 
 async function sendUpdate(toSend){
