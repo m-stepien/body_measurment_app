@@ -122,10 +122,10 @@ function putBasicCircumferenceInsideDOM(basicCircumference, basicCircumferenceCo
         buttonContainer.id = "button-container-basic-data";
         let buttonEdit = createButton("Edit");
         buttonEdit.addEventListener("click", function() {
-                                    edit("basicCircumferenceData");
+                                    edit("basicCircumferenceData", "button-container-basic-data");
                                     });
         buttonEdit.classList.add("button");
-        buttonContainer.appendChild(buttonContainer);
+        buttonContainer.appendChild(buttonEdit);
         basicCircumferenceContainer.appendChild(buttonContainer);
         return basicCircumferenceContainer;
 }
@@ -162,10 +162,10 @@ function putAdditionalCircumferenceInsideDOM(additionalCircumference, additional
         buttonContainer.id = "button-container-additional-data";
         let buttonEdit = createButton("Edit");
         buttonEdit.addEventListener("click", function() {
-                                                 edit("additionalCircumferenceData");
+                                                 edit("additionalCircumferenceData", "button-container-additional-data");
                                              });
         buttonEdit.classList.add("button");
-        buttonContainer.appendChild(buttonContainer);
+        buttonContainer.appendChild(buttonEdit);
         additionalCircumferenceContainer.appendChild(buttonContainer);
         return additionalCircumferenceContainer;
 }
@@ -192,6 +192,14 @@ function createLabelFromKey(key){
     return label;
 }
 
+async function initReadView(){
+    var date = document.getElementById("date").innerText;
+    var weight = await getWeightByDate(date);
+    putWeightInsideDOM(weight);
+    var measurementData = await getMeasurementData(date);
+    putCircumferenceDataInsideDOM(measurementData);
+}
+
 function edit(measurementsDataId, buttonContainerId){
     var container = document.getElementById(measurementsDataId);
     for(var i = 0; i<container.children.length; i++){
@@ -209,11 +217,14 @@ function edit(measurementsDataId, buttonContainerId){
         child.replaceChild(inputElem, spanElement);
     }
     var buttonContainer = document.getElementById(buttonContainerId);
+    console.log("buttonContainerId" + buttonContainerId);
     var editButton = buttonContainer.querySelector("button");
     var saveButton = createButton("start");
     saveButton.classList.add("button");
     var cancelButton = createButton("Cancel");
     cancelButton.classList.add("button");
+    cancelButton.addEventListener("click", cancel);
+    saveButton.addEventListener("click", save);
     buttonContainer.replaceChild(cancelButton, editButton);
     buttonContainer.appendChild(saveButton);
 }
@@ -228,14 +239,15 @@ function save(){
 
 
 function cancel(){
-    console.log("cancel function run");
+    var sectionsElement = document.getElementById("body-summary");
+    console.log(sectionsElement.children.length);
+    for(var i = sectionsElement.children.length-1; i > 0; i--){//skip date
+        sectionsElement.children[i].remove();
+    }
+    initReadView();
 }
 
 (async ()=>{
-    var date = document.getElementById("date").innerText;
-    var weight = await getWeightByDate(date);
-    putWeightInsideDOM(weight);
-    var measurementData = await getMeasurementData(date);
-    putCircumferenceDataInsideDOM(measurementData);
+    initReadView();
     ///... must lock adding many record for one day eq measurementData
 })();
