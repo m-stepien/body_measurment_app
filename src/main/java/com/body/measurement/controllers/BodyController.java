@@ -23,8 +23,6 @@ public class BodyController {
     public void saveBodyDetails(@RequestParam("gender") String gender, @ModelAttribute BodyDetails bodyDetails){
         //temp drut
         bodyDetails.setGender(gender);
-        System.out.println("i am here");
-        System.out.println(bodyDetails);
         this.bodyService.saveBodyDetails(bodyDetails);
     }
 
@@ -58,22 +56,22 @@ public class BodyController {
         return this.bodyService.getWeightLast();
     }
 
-    @GetMapping("weight/get/betweendates")
+    @GetMapping("/weight/get/betweendates")
     public List<Weight> findWeightBetweenDates(@RequestParam("start") LocalDate start, @RequestParam("end") LocalDate end){
         return this.bodyService.getWeightBetweenDates(start, end);
     }
 
-    @GetMapping("weight/get/first")
+    @GetMapping("/weight/get/first")
     public Weight findFirstWeight(){
         return this.bodyService.getWeightFirst();
     }
 
-    @GetMapping("weight/get/before")
+    @GetMapping("/weight/get/before")
     public Weight findOneBeforeDate(@RequestParam("date") LocalDate date){
         return this.bodyService.getWeightOneBefore(date);
     }
 
-    @GetMapping("weight/get/after")
+    @GetMapping("/weight/get/after")
     public Weight findOneAfterDate(@RequestParam("date") LocalDate date){
         return this.bodyService.getWeightOneAfter(date);
     }

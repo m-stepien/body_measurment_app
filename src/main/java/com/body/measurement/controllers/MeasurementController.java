@@ -19,8 +19,8 @@ public class MeasurementController {
     }
 
     @PostMapping("/bodyMonitoring/addNewCircumference")
-    public void addNewMeasurement(@ModelAttribute CircumferenceData circumferenceData){
-            this.circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
+    public void addNewMeasurement(@RequestBody CircumferenceData circumferenceData){
+        this.circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
     }
 
     @PatchMapping("/bodyMonitoring/update/circumference/{id}")

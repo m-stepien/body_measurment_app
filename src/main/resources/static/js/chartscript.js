@@ -191,7 +191,7 @@ const ctx = document.getElementById('weightChart').getContext('2d');
         {
           type: 'line',
           data: {
-            datasets: [
+            datasets:[
               {
                 label: 'Weight in kg',
                 data: chartData,

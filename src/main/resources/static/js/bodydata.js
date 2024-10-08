@@ -79,7 +79,6 @@ function putCircumferenceDataInsideDOM(measurementData){
             summary.appendChild(basicCircumferenceContainer);
         }
         if(measurementData.additionalCircumference!==null){
-            console.log(measurementData);
             additionalCircumferenceContainer = putAdditionalCircumferenceInsideDOM(measurementData.additionalCircumference, additionalCircumferenceContainer);
             summary.appendChild(additionalCircumferenceContainer);
         }
@@ -103,7 +102,7 @@ function putCircumferenceDataInsideDOM(measurementData){
         header.textContent = "Body Measurements";
         additionalCircumferenceContainer.classList.add("measurement-section");
         let header2 = document.createElement("h2");
-        header.textContent = "Limbs Measurements";
+        header2.textContent = "Limbs Measurements";
         let buttonAddBasicCircumference = createButton("Add");
         let buttonAddAdditionalCircumference = createButton("Add");
         buttonAddBasicCircumference.addEventListener("click", function() {
@@ -254,14 +253,12 @@ function edit(measurementsDataId, buttonContainerId){
         var inputElem = document.createElement("input");
         inputElem.type = "number";
         inputElem.id = id;
-        console.log(defaultValue);
         inputElem.value = parseFloat(defaultValue);
         inputElem.step = '0.01';
         inputElem.classList.add("styled-input")
         child.replaceChild(inputElem, spanElement);
     }
     var buttonContainer = document.getElementById(buttonContainerId);
-    console.log("buttonContainerId" + buttonContainerId);
     var editButton = buttonContainer.querySelector("button");
     var saveButton = createButton("Save");
     saveButton.classList.add("button");
@@ -415,7 +412,6 @@ async function sendUpdate(toSend){
 
 function cancel(){
     var sectionsElement = document.getElementById("body-summary");
-    console.log(sectionsElement.children.length);
     for(var i = sectionsElement.children.length-1; i > 0; i--){//skip date
         sectionsElement.children[i].remove();
     }
