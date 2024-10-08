@@ -23,6 +23,8 @@ public class BodyController {
     public void saveBodyDetails(@RequestParam("gender") String gender, @ModelAttribute BodyDetails bodyDetails){
         //temp drut
         bodyDetails.setGender(gender);
+        bodyDetails.setId(1);
+        System.out.println(bodyDetails);
         this.bodyService.saveBodyDetails(bodyDetails);
     }
 
