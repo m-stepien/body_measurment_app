@@ -1,14 +1,17 @@
+const server_address = "http://localhost:8080";
+
 async function getBasicBodyData() {
-  const url = "http://localhost:8080/body/basic/get/1";
-  try {
-    const response = await fetch(url);
+    const url = server_address + "/body/basic/get/1";
+    try {
+        const response = await fetch(url);
     if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
+        throw new Error(`Response status: ${response.status}`);
     }
     const bodyData = await response.json();
     console.log("Data fetched successfully:", bodyData);
     return bodyData;
-  } catch (error) {
+  }
+  catch (error) {
     return null;
   }
 }
