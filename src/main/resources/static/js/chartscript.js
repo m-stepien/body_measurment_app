@@ -1,4 +1,3 @@
-const server_address = "http://localhost:8080";
 let currentChart;
 let cachedLabel = {};
 const ctx = document.getElementById('weightChart').getContext('2d');
@@ -6,12 +5,24 @@ const ctx = document.getElementById('weightChart').getContext('2d');
 
 async function getWeightBefore(start){
     const url= server_address + '/weight/get/before?date='+encodeURIComponent(start);
-    return getData(url);
+    let weightBefore = await getData(url);
+    if(weightBefore==null || weightBefore.date==null){
+        return null;
+    }
+    else{
+        return weightBefore;
+    }
     }
 
 async function getWeightAfter(end) {
     const url= server_address + '/weight/get/after?date=' + encodeURIComponent(end);
-    return getData(url);
+    let weightAfter = await getData(url);
+    if(weightAfter == null || weightAfter.date == null){
+        return null;
+    }
+    else{
+        return weightAfter;
+    }
     }
 
 async function getWeightBetweenDates(start, end) {
@@ -32,7 +43,7 @@ async function getLastWeightData() {
 
 async function getBasicCircumference(date) {
     const url = server_address + '/bodyMonitoring/getBasicCircumferece?date=' + encodeURIComponent(date);
-    let basicCircumference = getData(url);
+    let basicCircumference = await getData(url);
     if(basicCircumference === null || basicCircumference.id === null) {
         return null;
         }
@@ -68,7 +79,13 @@ function calculateMaxValueInChart(arrayWeight) {
     }
 
 function calculateLimitValueInChart(arrayWeight, c, d) {
-    var limit = Math.max(...arrayWeight);
+    var limit;
+    if(c>0){
+        limit = Math.max(...arrayWeight);
+    }
+    else{
+        limit = Math.min(...arrayWeight);
+    }
     var mod = limit % 10;
     var chartLimit;
     if(mod >= 5) {

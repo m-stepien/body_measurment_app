@@ -7,8 +7,8 @@ var measurementData;
 async function getWeightByDate(date){
         const url = server_address + '/weight/get/betweendates?start=' + encodeURIComponent(date)
                                                              + '&end=' + encodeURIComponent(date);
-        let weightList = getData(url);
-        if(weight.length){
+        let weightList = await getData(url);
+        if(weightList.length){
             return weightList[0].weightInKg;
         }
         else{
@@ -19,7 +19,7 @@ async function getWeightByDate(date){
 async function getMeasurementData(date){
     const url = server_address + '/bodyMonitoring/getCircumference/betweenDate?start='
                        + encodeURIComponent(date) + '&end=' + encodeURIComponent(date);
-    let measurementData = getData(url);
+    let measurementData = await getData(url);
     if(measurementData.length){
         return measurementData[0];
     }
