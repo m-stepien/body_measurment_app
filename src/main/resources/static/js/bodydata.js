@@ -1,43 +1,47 @@
+const server_address = "http://localhost:8080";
 let ids = {};
 let basicCircumferenceKeyArray = ["abdominal", "chest", "hip", "waist"];
 let additionalCircumferenceKeyArray = ["armL", "armR", "calfL", "calfR", "forarmL", "forarmR", "neck", "thighL", "thighR"];
 var measurementData;
 
 async function getWeightByDate(date){
-        const url = 'http://localhost:8080/weight/get/betweendates?start='+encodeURIComponent(date)+'&end='+encodeURIComponent(date);
-            try {
-                const response = await fetch(url);
-            if (!response.ok) {
-              throw new Error(`Response status: ${response.status}`);
-            }
-            const weightList = await response.json();
-            console.log("Data fetched successfully:", weightList);
+        const url = server_address + '/weight/get/betweendates?start=' + encodeURIComponent(date)
+                                                             + '&end=' + encodeURIComponent(date);
+        let weightList = getData(url);
+        if(weight.length){
             return weightList[0].weightInKg;
-          } catch (error) {
-                console.error(error.message);
-            return null;
-          }
-}
-
-async function getMeasurementData(date){
-    const url = 'http://localhost:8080/bodyMonitoring/getCircumference/betweenDate?start='+encodeURIComponent(date)+'&end='+encodeURIComponent(date);
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Response status: ${response.status}`);
-        }
-        const measurementData = await response.json();
-        console.log("Data fetched successfully:", measurementData);
-        if(measurementData.length){
-            return measurementData[0];
         }
         else{
             return null;
         }
-        } catch (error) {
-            console.error(error.message);
-            return null;
-        }
+}
+
+async function getMeasurementData(date){
+    const url = server_address + '/bodyMonitoring/getCircumference/betweenDate?start='
+                       + encodeURIComponent(date) + '&end=' + encodeURIComponent(date);
+    let measurementData = getData(url);
+    if(measurementData.length){
+        return measurementData[0];
+    }
+    else{
+        return null;
+    }
+}
+
+async function getData(url){
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Response status: ${response.status}`);
+            }
+        const dataObject = await response.json();
+        console.log("Data fetched successfully:", dataObject);
+        return dataObject;
+    }
+    catch (error) {
+        console.error(error.message);
+        return null;
+    }
 }
 
 function putWeightInsideDOM(weight){
@@ -418,7 +422,6 @@ function cancel(){
     initReadView();
 }
 
-(async ()=>{
+(async () => {
     initReadView();
-    ///... must lock adding many record for one day eq measurementData
 })();

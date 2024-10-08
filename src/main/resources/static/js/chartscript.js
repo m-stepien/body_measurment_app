@@ -189,8 +189,8 @@ async function generateChart(data, minV, maxV, minDate, maxDate) {
 
                            },
                            onClick: function(event) {
-                               const activePoints = this.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
-                               if (activePoints.length > 0) {
+                                const activePoints = this.getElementsAtEventForMode(event, 'nearest', { intersect: true }, true);
+                                if (activePoints.length > 0) {
                                 const clickedPoint = activePoints[0].element.$context.raw;
                                 const redirectUrl = `/body-data?date=${clickedPoint.x}`;
                                 window.location.href = redirectUrl;
