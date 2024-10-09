@@ -1,3 +1,6 @@
+//todo update weight
+//todo delte record
+//todo solve problem with reload of website after send new data or edditing empty row in additional data
 const server_address = "http://localhost:8080";
 let ids = {};
 let basicCircumferenceKeyArray = ["abdominal", "chest", "hip", "waist"];

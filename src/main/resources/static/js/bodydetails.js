@@ -1,5 +1,5 @@
 const server_address = "http://localhost:8080";
-
+//todo redirection after sending form
 async function getBasicBodyData() {
     const url = server_address + "/body/basic/get/1";
     try {
@@ -36,6 +36,9 @@ function putInsideDom(bodyDetails){
 }
 
 (async ()=>{
+    document.getElementById("bodyDetailsForm").onsubmit = function() {
+        window.location.href = '/';
+    };
     let bodyDetails = await getBasicBodyData();
     putInsideDom(bodyDetails);
 })();
