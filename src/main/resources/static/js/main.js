@@ -4,12 +4,12 @@ const numberOfMonthsBackDefault = 1;
 
 
 async function getBasicBodyData() {
-    const url = server_address + "/body/basic/get/1";
+    const url = server_address + "/body/details/get/1";
     return getData(url);
 }
 
 async function getOldestWeightRecord(){
-    const url = server_address + "/weight/get/first";
+    const url = server_address + "/body/weight/get/first";
     return getData(url);
 }
 

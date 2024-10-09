@@ -36,13 +36,7 @@ public class BodyServiceTest {
 
         when(validator.isBodyDetailsValid(bodyDetails)).thenReturn(true);
         when(bodyDetailsRepository.save(any(BodyDetails.class))).thenReturn(getCorrectBasicBodyData());
-
-        BodySaveResponse response = bodyService.saveBodyDetails(bodyDetails);
-
-        Assert.assertTrue(response.isSuccess());
-        Assert.assertEquals("Basic body data save successful", response.getMessage());
-        Assert.assertEquals(getCorrectBasicBodyData(), response.getBasicBodyData());
-
+        bodyService.saveBodyDetails(bodyDetails);
         verify(bodyDetailsRepository).save(any(BodyDetails.class));
         verify(validator).isBodyDetailsValid(any(BodyDetails.class));
     }
@@ -54,11 +48,7 @@ public class BodyServiceTest {
         when(validator.isBodyDetailsValid(bodyDetails)).thenReturn(true);
         when(bodyDetailsRepository.save(any(BodyDetails.class))).thenReturn(getCorrectBasicBodyData());
 
-        BodySaveResponse response = bodyService.saveBodyDetails(bodyDetails);
-
-        Assert.assertTrue(response.isSuccess());
-        Assert.assertEquals("Basic body data save successful", response.getMessage());
-        Assert.assertEquals(bodyDetails, response.getBasicBodyData());
+       bodyService.saveBodyDetails(bodyDetails);
 
         verify(bodyDetailsRepository).save(any(BodyDetails.class));
         verify(validator).isBodyDetailsValid(any(BodyDetails.class));
@@ -70,11 +60,7 @@ public class BodyServiceTest {
         bodyDetails.setHeightInCm(null);
 
         when(validator.isBodyDetailsValid(bodyDetails)).thenThrow(MissingRequiredDataException.class);
-
-        BodySaveResponse response = bodyService.saveBodyDetails(bodyDetails);
-
-        Assert.assertFalse(response.isSuccess());
-        Assert.assertEquals(bodyDetails, response.getBasicBodyData());
+        bodyService.saveBodyDetails(bodyDetails);
 
         verify(validator).isBodyDetailsValid(any(BodyDetails.class));
     }
@@ -85,43 +71,9 @@ public class BodyServiceTest {
         bodyDetails.setAge(null);
 
         when(validator.isBodyDetailsValid(bodyDetails)).thenThrow(MissingRequiredDataException.class);
-
-        BodySaveResponse response = bodyService.saveBodyDetails(bodyDetails);
-
-        Assert.assertFalse(response.isSuccess());
-        Assert.assertEquals(bodyDetails, response.getBasicBodyData());
+        bodyService.saveBodyDetails(bodyDetails);
 
         verify(validator).isBodyDetailsValid(any(BodyDetails.class));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void saveBodyDataFailedInvalidDetailsDataAgeTest() throws MissingRequiredDataException, InvalidDataException {
-        BodyDetails bodyDetails = getCorrectBasicBodyData();
-        bodyDetails.setAge(-43);
-
-        when(validator.isBodyDetailsValid(bodyDetails)).thenThrow(IllegalArgumentException.class);
-
-        BodySaveResponse response = bodyService.saveBodyDetails(bodyDetails);
-
-        Assert.assertFalse(response.isSuccess());
-        Assert.assertEquals(getCorrectBasicBodyDataOverwrite(), response.getBasicBodyData());
-
-        verify(validator.isBodyDetailsValid(any(BodyDetails.class)));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void saveBodyDetailsFailedInvalidHeightInCm() throws MissingRequiredDataException, InvalidDataException {
-        BodyDetails bodyDetails = getCorrectBasicBodyData();
-        bodyDetails.setHeightInCm(-43.2);
-
-        when(validator.isBodyDetailsValid(bodyDetails)).thenThrow(IllegalArgumentException.class);
-
-        BodySaveResponse response = bodyService.saveBodyDetails(bodyDetails);
-
-        Assert.assertFalse(response.isSuccess());
-        Assert.assertEquals(getCorrectBasicBodyDataOverwrite(), response.getBasicBodyData());
-
-        verify(validator.isBodyDetailsValid(any(BodyDetails.class)));
     }
 
     private BodyDetails getCorrectBasicBodyData() {

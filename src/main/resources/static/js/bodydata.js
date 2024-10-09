@@ -8,7 +8,7 @@ let additionalCircumferenceKeyArray = ["armL", "armR", "calfL", "calfR", "forarm
 var measurementData;
 
 async function getWeightByDate(date){
-        const url = server_address + '/weight/get/betweendates?start=' + encodeURIComponent(date)
+        const url = server_address + '/body/weight/get/betweendates?start=' + encodeURIComponent(date)
                                                              + '&end=' + encodeURIComponent(date);
         let weightList = await getData(url);
         if(weightList.length){

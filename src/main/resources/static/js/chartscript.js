@@ -4,7 +4,7 @@ const ctx = document.getElementById('weightChart').getContext('2d');
 
 
 async function getWeightBefore(start){
-    const url= server_address + '/weight/get/before?date='+encodeURIComponent(start);
+    const url= server_address + '/body/weight/get/before?date='+encodeURIComponent(start);
     let weightBefore = await getData(url);
     if(weightBefore==null || weightBefore.date==null){
         return null;
@@ -15,7 +15,7 @@ async function getWeightBefore(start){
     }
 
 async function getWeightAfter(end) {
-    const url= server_address + '/weight/get/after?date=' + encodeURIComponent(end);
+    const url= server_address + '/body/weight/get/after?date=' + encodeURIComponent(end);
     let weightAfter = await getData(url);
     if(weightAfter == null || weightAfter.date == null){
         return null;
@@ -26,18 +26,18 @@ async function getWeightAfter(end) {
     }
 
 async function getWeightBetweenDates(start, end) {
-    const url = server_address + '/weight/get/betweendates?start=' + encodeURIComponent(start)
+    const url = server_address + '/body/weight/get/betweendates?start=' + encodeURIComponent(start)
                                                              + '&end=' + encodeURIComponent(end);
     return getData(url);
     }
 
 async function getFirstWeightData(){
-    const url = server_address + "/weight/get/first";
+    const url = server_address + "/body/weight/get/first";
     return getData(url);
     }
 
 async function getLastWeightData() {
-    const url = server_address + "/weight/get/last";
+    const url = server_address + "/body/weight/get/last";
     return getData(url);
     }
 

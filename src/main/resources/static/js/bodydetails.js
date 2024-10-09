@@ -1,7 +1,7 @@
 const server_address = "http://localhost:8080";
 //todo redirection after sending form
 async function getBasicBodyData() {
-    const url = server_address + "/body/basic/get/1";
+    const url = server_address + "/body/details/get/1";
     try {
         const response = await fetch(url);
     if (!response.ok) {

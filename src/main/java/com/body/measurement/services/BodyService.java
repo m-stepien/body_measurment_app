@@ -5,7 +5,6 @@ import com.body.measurement.custom.exception.MissingRequiredDataException;
 import com.body.measurement.custom.exception.NoSuchObjectInDatabaseException;
 import com.body.measurement.dto.BodyDetails;
 import com.body.measurement.dto.Weight;
-import com.body.measurement.dto.responses.BodySaveResponse;
 import com.body.measurement.repositories.BodyDetailsRepository;
 import com.body.measurement.repositories.WeightRepository;
 import com.body.measurement.utils.BodyDataValidator;
@@ -32,22 +31,15 @@ public class BodyService {
         this.validator = validator;
     }
 
-    public BodySaveResponse saveBodyDetails(BodyDetails bodyDetails) {
+    public void saveBodyDetails(BodyDetails bodyDetails) {
         log.info("Start saving body details");
-        BodySaveResponse bodySaveResponse = new BodySaveResponse();
         try {
             this.validator.isBodyDetailsValid(bodyDetails);
             this.bodyDetailsRepository.save(bodyDetails);
             log.info("Object save successful {}", bodyDetails);
-            bodySaveResponse.setBasicBodyData(bodyDetails);
-            bodySaveResponse.setSuccess(true);
         } catch (MissingRequiredDataException | InvalidDataException e) {
             log.error(e.getMessage());
-            bodySaveResponse.setBasicBodyData(bodyDetails);
-            bodySaveResponse.setSuccess(false);
-            bodySaveResponse.setMessage(e.getMessage());
         }
-        return bodySaveResponse;
     }
 
     public BodyDetails getBodyDetailsData(long id) {
@@ -63,9 +55,8 @@ public class BodyService {
         log.info("Deleting body details with id: {} completed", id);
     }
 
-    public BodySaveResponse saveWeight(Weight weight) {
+    public void saveWeight(Weight weight) {
         log.info("Starting weight save");
-        BodySaveResponse response = new BodySaveResponse();
         try {
             this.validator.isWeightValid(weight);
             this.setDefaultDataIfNeeded(weight);
@@ -78,38 +69,33 @@ public class BodyService {
             log.info("Save in database weight: {}", weight);
             this.weightRepository.save(weight);
             log.info("Save successful weight: {}", weight);
-            response.setMessage("Weight save successful");
-            response.setSuccess(true);
         } catch (MissingRequiredDataException | InvalidDataException e) {
             log.error("Exception while trying to save weight {}", weight);
             log.error(e.getMessage());
-            response.setSuccess(false);
-            response.setMessage(e.getMessage());
         }
-        return response;
     }
 
-    public BodySaveResponse updateWeight(Weight weight) {
+    public Weight updateWeight(Weight weight) {
         log.info("Starting update weight {}", weight);
+        Weight updatedWeight = null;
         if (weight.getId() != null) {
             try {
-                Weight updatedWeight = this.mapWeight(weight);
-                return saveWeight(updatedWeight);
+                updatedWeight = this.mapWeight(weight);
+                saveWeight(updatedWeight);
             } catch (NoSuchObjectInDatabaseException e) {
                 log.error("Exception during update weight {}", weight);
                 log.error(e.getMessage());
-                return setWeightSaveResponse(false, e.getMessage());
             }
         }
         else {
-            log.info("Could not update weight becouse weight id is null {}", weight);
-            return setWeightSaveResponse(false, "Id is required for update");
+            log.info("Could not update weight because weight id is null {}", weight);
         }
+        return updatedWeight;
     }
 
     public List<Weight> getWeightBetweenDates(LocalDate start, LocalDate end){
         log.info("Start search for weights between given dates. Start: {} End {}", start, end);
-        List<Weight> weightList =this.weightRepository.findByDateBetween(start, end);
+        List<Weight> weightList = this.weightRepository.findByDateBetween(start, end);
         log.info("Result of weight search between dates {} {} \n{}",start, end, weightList);
         return weightList;
     }
@@ -184,13 +170,5 @@ public class BodyService {
             log.info("Adding default date");
             weight.setDate(LocalDate.now());
         }
-    }
-
-    private BodySaveResponse setWeightSaveResponse(boolean success, String message) {
-        log.info("Prepering weight response");
-        BodySaveResponse bodySaveResponse = new BodySaveResponse();
-        bodySaveResponse.setSuccess(success);
-        bodySaveResponse.setMessage(message);
-        return bodySaveResponse;
     }
 }
