@@ -12,6 +12,8 @@ import com.body.measurement.repositories.AdditionalCircumferenceRepository;
 import com.body.measurement.repositories.BasicCircumferenceRepository;
 import com.body.measurement.repositories.CircumferenceDataRepository;
 import com.body.measurement.utils.Validator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ import java.util.List;
 
 @Service
 public class CircumferenceMeasurementService {
+    private static final Logger log = LoggerFactory.getLogger(CircumferenceMeasurementService.class);
     private final Validator validator;
     private final BasicCircumferenceRepository basicCircumferenceRepository;
     private final AdditionalCircumferenceRepository additionalCircumferenceRepository;
@@ -34,72 +37,105 @@ public class CircumferenceMeasurementService {
     }
 
     public CircumferenceDataSaveResponse saveCircumferenceMeasurement(CircumferenceData circumferenceData) {
+        log.info("Starting save circumgerence measurement {}", circumferenceData);
         try {
             this.validator.validateCircumferenceData(circumferenceData);
         } catch (InvalidDataException | MissingRequiredDataException e) {
+            log.error("Exception during validation CircumferenceData {}", circumferenceData);
+            log.error(e.getMessage());
             return this.prepareResponseForSaveOperation(false, e.getMessage(), circumferenceData);
         }
         this.setDefaultDataIfNeeded(circumferenceData);
         try {
             circumferenceData = this.saveCircumferenceData(circumferenceData);
         } catch (DatabaseException e) {
+            log.error("Failed to save CircumfereceData {} in database exception {}", circumferenceData, e.getMessage());
             return this.prepareResponseForSaveOperation(false, "Failed save to database", circumferenceData);
         }
+        log.info("Saving circumference data completed");
         return this.prepareResponseForSaveOperation(true, "Save CircumferenceData successful", circumferenceData);
-
     }
 
     public CircumferenceDataSaveResponse updateCircumference(CircumferenceData circumferenceData) {
+        log.info("Start update CircumferenceData {}", circumferenceData);
+        CircumferenceDataSaveResponse circumferenceDataSaveResponse;
         if (circumferenceData.getId() != null) {
             try {
                 CircumferenceData updatedCircumferenceData = this.mapCircumferenceData(circumferenceData);
-                return saveCircumferenceMeasurement(updatedCircumferenceData);
+                circumferenceDataSaveResponse = saveCircumferenceMeasurement(updatedCircumferenceData);
             }
             catch (NoSuchObjectInDatabaseException e){
-                return prepareResponseForSaveOperation(false, e.getMessage(), circumferenceData);
+                log.error("Failed to update CircumferenceData {}", circumferenceData);
+                log.error(e.getMessage());
+                circumferenceDataSaveResponse = prepareResponseForSaveOperation(false, e.getMessage(), circumferenceData);
             }
         }
         else{
-            return this.prepareResponseForSaveOperation(
+            log.info("Cannot update CircumferenceData because id is null");
+            circumferenceDataSaveResponse = this.prepareResponseForSaveOperation(
                     false, "Id is required for update",
                     circumferenceData);
         }
-
+        log.info("Finished update circumference data {}", circumferenceData);
+        return circumferenceDataSaveResponse;
     }
 
     public CircumferenceData getCircumferenceDataById(long id) {
-        return this.circumferenceDataRepository.findById(id).orElse(null);
+        log.info("Start searching for circumference data with id {}", id);
+        CircumferenceData circumferenceData = this.circumferenceDataRepository.findById(id).orElse(null);
+        log.info("Found circumference data in database for id {} {}", id, circumferenceData);
+        return circumferenceData;
     }
 
     public BasicCircumference getBasicCircumferenceByDate(LocalDate date){
-        return this.circumferenceDataRepository.findBasicCircumferenceByDate(date).orElse(new BasicCircumference());
+        log.info("Start searching basic circumference with date {}", date);
+        BasicCircumference basicCircumference = this.circumferenceDataRepository.findBasicCircumferenceByDate(date)
+                                                                                .orElse(new BasicCircumference());
+        log.info("Found basic circumference with date {} {}", date, basicCircumference);
+        return basicCircumference;
     }
 
     public List<CircumferenceData> getCircumferenceDataFromDate(LocalDate startDate) {
-        return this.circumferenceDataRepository.findByMeasurementDateGreaterThanEqual(startDate);
+        log.info("Start searching for circumference data with date greater then {}", startDate);
+        List<CircumferenceData> circumferenceDataList = this.circumferenceDataRepository
+                                                                    .findByMeasurementDateGreaterThanEqual(startDate);
+        log.info("Circumference data with date greater then {}\n{}", startDate, circumferenceDataList);
+        return circumferenceDataList;
     }
 
     public List<CircumferenceData> getCircumferenceDataInDateRange(LocalDate startDate, LocalDate endDate) {
-            return this.circumferenceDataRepository.findByMeasurementDateBetweenOrderByMeasurementDate(startDate, endDate);
+        log.info("Start searching for circumference data with date between dates {} {}", startDate, endDate);
+        List<CircumferenceData> circumferenceDataList = this.circumferenceDataRepository
+                                                .findByMeasurementDateBetweenOrderByMeasurementDate(startDate, endDate);
+        log.info("Circumference data with date between {} {}\n{}", startDate, endDate,  circumferenceDataList);
+        return this.circumferenceDataRepository.findByMeasurementDateBetweenOrderByMeasurementDate(startDate, endDate);
     }
 
     public List<CircumferenceData> getCircumferenceDataAll() {
-        return this.circumferenceDataRepository.findAll();
+        log.info("Start get all circumference data");
+        List<CircumferenceData> circumferenceDataList = this.circumferenceDataRepository.findAll();
+        log.info("All circumference data in database {}", circumferenceDataList);
+        return circumferenceDataList;
     }
 
     public void deleteCircumferenceById(long id) {
+        log.info("Start delete circumference data for id {}", id);
         this.circumferenceDataRepository.deleteById(id);
+        log.info("Finished deleting circumfernce data for id {}", id);
     }
 
     public void deleteAllCircumference() {
+        log.info("Start deleting all circumference data in database");
         this.circumferenceDataRepository.deleteAll();
+        log.info("Finished deleting all circumference data in database");
     }
 
     private CircumferenceData mapCircumferenceData(CircumferenceData circumferenceData) throws NoSuchObjectInDatabaseException{
-
+        log.info("Start mapping circumference data to object {}", circumferenceData);
         CircumferenceData oldCircumfarenceData = this.circumferenceDataRepository
                 .findById(circumferenceData.getId())
                 .orElseThrow(() -> new NoSuchObjectInDatabaseException("There is no CircumferenceData object with this id in database"));
+        log.info("Data found in database for id {} {}", circumferenceData.getId(), oldCircumfarenceData);
         if (oldCircumfarenceData != null) {
             if (circumferenceData.getAdditionalCircumference() != null) {
                 oldCircumfarenceData.setAdditionalCircumference(
@@ -117,11 +153,13 @@ public class CircumferenceMeasurementService {
                 oldCircumfarenceData.setMeasurementDate(circumferenceData.getMeasurementDate());
             }
         }
+        log.info("Finished mapping circumference data {}", oldCircumfarenceData);
         return oldCircumfarenceData;
     }
 
     private AdditionalCircumference mapNewDataToAdditionalCircumference(AdditionalCircumference additionalCircumference,
                                                                         AdditionalCircumference newData) {
+        log.info("Start mapping additional circumference {} to object {}", newData, additionalCircumference);
         if (additionalCircumference == null) {
             additionalCircumference = new AdditionalCircumference();
         }
@@ -152,11 +190,13 @@ public class CircumferenceMeasurementService {
         if (newData.getNeck() != null) {
             additionalCircumference.setNeck(newData.getNeck());
         }
+        log.info("Finished mapping additional circumference data {}", additionalCircumference);
         return additionalCircumference;
     }
 
     private BasicCircumference mapNewDataToBasicCircumference(BasicCircumference basicCircumference,
                                                               BasicCircumference newData) {
+        log.info("Start mapping basic circumference {} to object {}", newData, basicCircumference);
         if (newData.getAbdominal() != null) {
             basicCircumference.setAbdominal(newData.getAbdominal());
         }
@@ -169,29 +209,41 @@ public class CircumferenceMeasurementService {
         if (newData.getWaist() != null) {
             basicCircumference.setWaist(newData.getWaist());
         }
+        log.info("Finished mapping basic circumference data {}", basicCircumference);
         return basicCircumference;
     }
 
     private CircumferenceData saveCircumferenceData(CircumferenceData circumferenceData) throws DatabaseException {
+        log.info("Start save circumference data {}", circumferenceData);
         try {
             if (circumferenceData.getAdditionalCircumference() != null) {
+                log.info("Saving additional circumference {}", circumferenceData.getAdditionalCircumference());
                 this.additionalCircumferenceRepository.save(circumferenceData.getAdditionalCircumference());
             }
+            log.info("Save basic circumference {}", circumferenceData.getBasicCircumference());
             this.basicCircumferenceRepository.save(circumferenceData.getBasicCircumference());
+            log.info("Save circumference data {}", circumferenceData);
             this.circumferenceDataRepository.save(circumferenceData);
         } catch (Exception e) {
+            log.error("Failed to save circumference data {}", circumferenceData);
+            log.error(e.getMessage());
             throw new DatabaseException("Failed to save CircumferenceData\n" + e.getMessage());
         }
+        log.info("Finised save circumference data {}", circumferenceData);
         return circumferenceData;
     }
 
     private void setDefaultDataIfNeeded(CircumferenceData circumferenceData) {
         if (circumferenceData.getMeasurementDate() == null) {
+            log.info("Set default date for circuference datea {}", circumferenceData);
             circumferenceData.setMeasurementDate(LocalDate.now());
         }
+        log.info("Setting default date for circumference data completed {}", circumferenceData);
+
     }
 
     private CircumferenceDataSaveResponse prepareResponseForSaveOperation(boolean success, String message, CircumferenceData circumferenceData) {
+        log.info("Start preparing resposne");
         CircumferenceDataSaveResponse circumferenceDataSaveResponse = new CircumferenceDataSaveResponse();
         circumferenceDataSaveResponse.setSuccess(success);
         circumferenceDataSaveResponse.setMessage(message);

@@ -5,24 +5,31 @@ import com.body.measurement.custom.exception.MissingRequiredDataException;
 import com.body.measurement.dto.BodyDetails;
 import com.body.measurement.dto.BasicCircumference;
 import com.body.measurement.dto.Weight;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
 @Component
 public class BodyDataValidator {
+    private final static Logger log = LoggerFactory.getLogger(BodyDataValidator.class);
     public boolean isBodyDetailsValid(BodyDetails bodyDetails) throws InvalidDataException, MissingRequiredDataException {
+        log.info("Start body details validation {}", bodyDetails);
         checkIsAllRequiredDataSet(bodyDetails);
         checkAgeValid(bodyDetails.getAge());
         checkHeightInCmValid(bodyDetails.getHeightInCm());
         checkGenderValid(bodyDetails.getGender());
+        log.info("Body details validation completed");
         return true;
     }
 
     public boolean isWeightValid(Weight weight) throws InvalidDataException, MissingRequiredDataException{
+        log.info("Start weight validation {}", weight);
         checkIsAllRequiredDataSet(weight);
         checkDateValid(weight.getDate());
         checkWeightInKgValid(weight.getWeightInKg());
+        log.info("Weight validation completed");
         return true;
     }
 
