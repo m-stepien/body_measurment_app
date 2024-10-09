@@ -36,48 +36,46 @@ public class CircumferenceMeasurementService {
         this.validator = validator;
     }
 
-    public CircumferenceDataSaveResponse saveCircumferenceMeasurement(CircumferenceData circumferenceData) {
+    public CircumferenceData saveCircumferenceMeasurement(CircumferenceData circumferenceData) {
         log.info("Starting save circumgerence measurement {}", circumferenceData);
         try {
             this.validator.validateCircumferenceData(circumferenceData);
         } catch (InvalidDataException | MissingRequiredDataException e) {
             log.error("Exception during validation CircumferenceData {}", circumferenceData);
             log.error(e.getMessage());
-            return this.prepareResponseForSaveOperation(false, e.getMessage(), circumferenceData);
+            return null;
+
         }
         this.setDefaultDataIfNeeded(circumferenceData);
         try {
             circumferenceData = this.saveCircumferenceData(circumferenceData);
         } catch (DatabaseException e) {
             log.error("Failed to save CircumfereceData {} in database exception {}", circumferenceData, e.getMessage());
-            return this.prepareResponseForSaveOperation(false, "Failed save to database", circumferenceData);
+            return null;
         }
         log.info("Saving circumference data completed");
-        return this.prepareResponseForSaveOperation(true, "Save CircumferenceData successful", circumferenceData);
+        return circumferenceData;
     }
 
-    public CircumferenceDataSaveResponse updateCircumference(CircumferenceData circumferenceData) {
+    public CircumferenceData updateCircumference(CircumferenceData circumferenceData) {
         log.info("Start update CircumferenceData {}", circumferenceData);
-        CircumferenceDataSaveResponse circumferenceDataSaveResponse;
+        CircumferenceData updatedCircumferenceData;
         if (circumferenceData.getId() != null) {
             try {
-                CircumferenceData updatedCircumferenceData = this.mapCircumferenceData(circumferenceData);
-                circumferenceDataSaveResponse = saveCircumferenceMeasurement(updatedCircumferenceData);
+                updatedCircumferenceData = this.mapCircumferenceData(circumferenceData);
             }
             catch (NoSuchObjectInDatabaseException e){
                 log.error("Failed to update CircumferenceData {}", circumferenceData);
                 log.error(e.getMessage());
-                circumferenceDataSaveResponse = prepareResponseForSaveOperation(false, e.getMessage(), circumferenceData);
+                updatedCircumferenceData = null;
             }
         }
         else{
             log.info("Cannot update CircumferenceData because id is null");
-            circumferenceDataSaveResponse = this.prepareResponseForSaveOperation(
-                    false, "Id is required for update",
-                    circumferenceData);
+            updatedCircumferenceData = null;
         }
         log.info("Finished update circumference data {}", circumferenceData);
-        return circumferenceDataSaveResponse;
+        return updatedCircumferenceData;
     }
 
     public CircumferenceData getCircumferenceDataById(long id) {

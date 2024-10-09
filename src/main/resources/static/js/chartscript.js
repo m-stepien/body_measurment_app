@@ -42,7 +42,7 @@ async function getLastWeightData() {
     }
 
 async function getBasicCircumference(date) {
-    const url = server_address + '/bodyMonitoring/getBasicCircumferece?date=' + encodeURIComponent(date);
+    const url = server_address + '/circumference/basic?date=' + encodeURIComponent(date);
     let basicCircumference = await getData(url);
     if(basicCircumference === null || basicCircumference.id === null) {
         return null;

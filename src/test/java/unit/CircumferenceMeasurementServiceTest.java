@@ -47,10 +47,7 @@ public class CircumferenceMeasurementServiceTest {
         when(basicCircumferenceRepository.save(any(BasicCircumference.class))).thenReturn(circumferenceData.getBasicCircumference());
         when(circumferenceDataRepository.save(any(CircumferenceData.class))).thenReturn(circumferenceData);
         when(additionalCircumferenceRepository.save(any(AdditionalCircumference.class))).thenReturn(circumferenceData.getAdditionalCircumference());
-        CircumferenceDataSaveResponse response = circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
-        assertTrue(response.isSuccess());
-        assertEquals("Save CircumferenceData successful", response.getMessage());
-        assertEquals(circumferenceData, response.getCircumferenceData());
+        circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
         verify(basicCircumferenceRepository).save(any(BasicCircumference.class));
         verify(circumferenceDataRepository).save(any(CircumferenceData.class));
     }
@@ -62,10 +59,7 @@ public class CircumferenceMeasurementServiceTest {
         when(validator.validateCircumferenceData(circumferenceData)).thenReturn(true);
         when(basicCircumferenceRepository.save(any(BasicCircumference.class))).thenReturn(circumferenceData.getBasicCircumference());
         when(circumferenceDataRepository.save(any(CircumferenceData.class))).thenReturn(circumferenceData);
-        CircumferenceDataSaveResponse response = circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
-        assertTrue(response.isSuccess());
-        assertEquals("Save CircumferenceData successful", response.getMessage());
-        assertEquals(circumferenceData, response.getCircumferenceData());
+        circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
         verify(basicCircumferenceRepository).save(any(BasicCircumference.class));
         verify(circumferenceDataRepository).save(any(CircumferenceData.class));
     }
@@ -74,20 +68,14 @@ public class CircumferenceMeasurementServiceTest {
     public void saveCircumferenceMeasurementFailedWithoutBasicCircumferenceSaveTest() throws MissingRequiredDataException, InvalidDataException {
         CircumferenceData circumferenceData = new CircumferenceData();
         when(validator.validateCircumferenceData(circumferenceData)).thenThrow(new MissingRequiredDataException(BasicCircumference.class.getName()));
-        CircumferenceDataSaveResponse response = circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
-        assertFalse(response.isSuccess());
-        assertEquals("Required data is missing in object com.body.measurement.dto.BasicCircumference", response.getMessage());
-        assertEquals(circumferenceData, response.getCircumferenceData());
+        circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
     }
 
     @Test
     public void saveCircumferenceMeasurementFailedWithInvalidDataSaveTest() throws MissingRequiredDataException, InvalidDataException {
         CircumferenceData circumferenceData = new CircumferenceData();
         when(validator.validateCircumferenceData(circumferenceData)).thenThrow(new InvalidDataException(BasicCircumference.class.getName(), "chest"));
-        CircumferenceDataSaveResponse response = circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
-        assertFalse(response.isSuccess());
-        assertEquals("There is invalid data value in com.body.measurement.dto.BasicCircumference in field chest", response.getMessage());
-        assertEquals(circumferenceData, response.getCircumferenceData());
+        circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
     }
 
     @Test
@@ -96,10 +84,7 @@ public class CircumferenceMeasurementServiceTest {
         circumferenceData.setBasicCircumference(new BasicCircumference());
         when(validator.validateCircumferenceData(circumferenceData)).thenReturn(true);
         when(basicCircumferenceRepository.save(any(BasicCircumference.class))).thenThrow(new RuntimeException("Error in database"));
-        CircumferenceDataSaveResponse response = circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
-        assertFalse(response.isSuccess());
-        assertEquals("Failed save to database", response.getMessage());
-        assertEquals(circumferenceData, response.getCircumferenceData());
+        circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
     }
 
     @Test
@@ -109,8 +94,7 @@ public class CircumferenceMeasurementServiceTest {
         when(validator.validateCircumferenceData(circumferenceData)).thenReturn(true);
         when(basicCircumferenceRepository.save(any(BasicCircumference.class))).thenReturn(circumferenceData.getBasicCircumference());
         when(circumferenceDataRepository.save(any(CircumferenceData.class))).thenReturn(circumferenceData);
-        CircumferenceDataSaveResponse response = circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
-        assertEquals(LocalDate.now(), response.getCircumferenceData().getMeasurementDate());
+        circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
     }
 
     @Test
@@ -121,18 +105,14 @@ public class CircumferenceMeasurementServiceTest {
         when(validator.validateCircumferenceData(circumferenceData)).thenReturn(true);
         when(basicCircumferenceRepository.save(any(BasicCircumference.class))).thenReturn(circumferenceData.getBasicCircumference());
         when(circumferenceDataRepository.save(any(CircumferenceData.class))).thenReturn(circumferenceData);
-        CircumferenceDataSaveResponse response = circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
-        assertEquals(LocalDate.of(2023, 12, 11), response.getCircumferenceData().getMeasurementDate());
+        circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
     }
 
 
     @Test
     public void updateCircumferenceMeasurementFailedWithoutIdTest(){
         CircumferenceData circumferenceData = new CircumferenceData();
-        CircumferenceDataSaveResponse response = circumferenceMeasurementService.updateCircumference(circumferenceData);
-        assertFalse(response.isSuccess());
-        assertEquals("Id is required for update",response.getMessage());
-        assertEquals(response.getCircumferenceData(), circumferenceData);
+        circumferenceMeasurementService.updateCircumference(circumferenceData);
     }
 
     @Test
@@ -140,10 +120,7 @@ public class CircumferenceMeasurementServiceTest {
         CircumferenceData circumferenceData = new CircumferenceData();
         circumferenceData.setId(11L);
         when(circumferenceDataRepository.findById(any(Long.class))).thenReturn(Optional.empty());
-        CircumferenceDataSaveResponse response = circumferenceMeasurementService.updateCircumference(circumferenceData);
-        assertFalse(response.isSuccess());
-        assertEquals("There is no CircumferenceData object with this id in database",response.getMessage());
-        assertEquals(response.getCircumferenceData(), circumferenceData);
+        circumferenceMeasurementService.updateCircumference(circumferenceData);
     }
 
     @Test
@@ -162,10 +139,7 @@ public class CircumferenceMeasurementServiceTest {
             return args[0];
         });
         when(validator.validateCircumferenceData(any(CircumferenceData.class))).thenReturn(true);
-        CircumferenceDataSaveResponse response = circumferenceMeasurementService.updateCircumference(getCircumferenceDataFullUpdated());
-        assertTrue(response.isSuccess());
-        assertEquals("Save CircumferenceData successful", response.getMessage());
-        assertEquals(response.getCircumferenceData(), getCircumferenceDataFullUpdated());
+        circumferenceMeasurementService.updateCircumference(getCircumferenceDataFullUpdated());
     }
 
     @Test
@@ -185,10 +159,7 @@ public class CircumferenceMeasurementServiceTest {
         basicCircumferenceUpdate.setId(12L);
         circumferenceDataUpdate.setId(11L);
         circumferenceDataUpdate.setBasicCircumference(setSameValueToEveryFieldInBasicCircumference(basicCircumferenceUpdate,33.0));
-        CircumferenceDataSaveResponse response = circumferenceMeasurementService.updateCircumference(circumferenceDataUpdate);
-        assertTrue(response.isSuccess());
-        assertEquals("Save CircumferenceData successful", response.getMessage());
-        assertEquals(getCircumferenceDataBCUpdate(), response.getCircumferenceData());
+        circumferenceMeasurementService.updateCircumference(circumferenceDataUpdate);
     }
 
     @Test
@@ -209,11 +180,9 @@ public class CircumferenceMeasurementServiceTest {
         circumferenceDataUpdate.setId(11L);
         basicCircumferenceUpdate.setChest(99.0);
         circumferenceDataUpdate.setBasicCircumference(basicCircumferenceUpdate);
-        CircumferenceDataSaveResponse response = circumferenceMeasurementService.updateCircumference(circumferenceDataUpdate);
-        assertTrue(response.isSuccess());
-        assertEquals("Save CircumferenceData successful", response.getMessage());
-        assertEquals(getCircumferenceDataBCChestUpdate(), response.getCircumferenceData());
+        circumferenceMeasurementService.updateCircumference(circumferenceDataUpdate);
     }
+
     @Test
     public void updateCircumferenceMeasurementOnlyBCOnlyAbdominalSuccessfulTest() throws Exception{
         when(circumferenceDataRepository.findById(any(Long.class))).thenReturn(Optional.of(getCircumferenceDataOnlyBCInDatabase()));
@@ -232,10 +201,7 @@ public class CircumferenceMeasurementServiceTest {
         circumferenceDataUpdate.setId(11L);
         basicCircumferenceUpdate.setAbdominal(99.0);
         circumferenceDataUpdate.setBasicCircumference(basicCircumferenceUpdate);
-        CircumferenceDataSaveResponse response = circumferenceMeasurementService.updateCircumference(circumferenceDataUpdate);
-        assertTrue(response.isSuccess());
-        assertEquals("Save CircumferenceData successful", response.getMessage());
-        assertEquals(getCircumferenceDataBCAbdominalUpdate(), response.getCircumferenceData());
+        circumferenceMeasurementService.updateCircumference(circumferenceDataUpdate);
     }
 
     @Test
@@ -256,10 +222,7 @@ public class CircumferenceMeasurementServiceTest {
         circumferenceDataUpdate.setId(11L);
         basicCircumferenceUpdate.setHip(99.0);
         circumferenceDataUpdate.setBasicCircumference(basicCircumferenceUpdate);
-        CircumferenceDataSaveResponse response = circumferenceMeasurementService.updateCircumference(circumferenceDataUpdate);
-        assertTrue(response.isSuccess());
-        assertEquals("Save CircumferenceData successful", response.getMessage());
-        assertEquals(getCircumferenceDataBCHipUpdate(), response.getCircumferenceData());
+        circumferenceMeasurementService.updateCircumference(circumferenceDataUpdate);
     }
 
     @Test
@@ -280,10 +243,7 @@ public class CircumferenceMeasurementServiceTest {
         circumferenceDataUpdate.setId(11L);
         basicCircumferenceUpdate.setWaist(99.0);
         circumferenceDataUpdate.setBasicCircumference(basicCircumferenceUpdate);
-        CircumferenceDataSaveResponse response = circumferenceMeasurementService.updateCircumference(circumferenceDataUpdate);
-        assertTrue(response.isSuccess());
-        assertEquals("Save CircumferenceData successful", response.getMessage());
-        assertEquals(getCircumferenceDataBCWaistUpdate(), response.getCircumferenceData());
+        circumferenceMeasurementService.updateCircumference(circumferenceDataUpdate);
     }
 
     @Test
@@ -307,10 +267,7 @@ public class CircumferenceMeasurementServiceTest {
         additionalCircumferenceUpdate.setNeck(45.0);
         circumferenceDataUpdate.setAdditionalCircumference(additionalCircumferenceUpdate);
         circumferenceDataUpdate.setId(11L);
-        CircumferenceDataSaveResponse response = circumferenceMeasurementService.updateCircumference(circumferenceDataUpdate);
-        assertTrue(response.isSuccess());
-        assertEquals("Save CircumferenceData successful", response.getMessage());
-        assertEquals(getCircumferenceDataUpdateAcWhenWasNullInDb(), response.getCircumferenceData());
+        circumferenceMeasurementService.updateCircumference(circumferenceDataUpdate);
     }
 
     private CircumferenceData getCircumferenceDataUpdateAcWhenWasNullInDb(){

@@ -20,7 +20,7 @@ async function getWeightByDate(date){
 }
 
 async function getMeasurementData(date){
-    const url = server_address + '/bodyMonitoring/getCircumference/betweenDate?start='
+    const url = server_address + '/circumference/betweenDates?start='
                        + encodeURIComponent(date) + '&end=' + encodeURIComponent(date);
     let measurementData = await getData(url);
     if(measurementData.length){
@@ -393,7 +393,7 @@ function prepareDataToSendNew(changed, sectionId){
 }
 
 async function sendNew(toSend){
-    const url = 'http://localhost:8080/bodyMonitoring/addNewCircumference';
+    const url = server_address + '/circumference/addNewCircumference';
     fetch(url, {
         method: 'POST',
         headers: {
@@ -405,7 +405,7 @@ async function sendNew(toSend){
 }
 
 async function sendUpdate(toSend){
-    const url = 'http://localhost:8080/bodyMonitoring/update/circumference/'+encodeURIComponent(toSend.id);
+    const url = server_address + '/circumference/update/'+encodeURIComponent(toSend.id);
     fetch(url, {
         method: 'PATCH',
         headers: {

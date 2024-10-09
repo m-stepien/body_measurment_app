@@ -6,12 +6,15 @@ import com.body.measurement.dto.CircumferenceData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @RestController
+@RequestMapping("/circumference")
 public class MeasurementController {
     private final static Logger log = LoggerFactory.getLogger(MeasurementController.class);
     private final CircumferenceMeasurementService circumferenceMeasurementService;
@@ -21,57 +24,66 @@ public class MeasurementController {
         this.circumferenceMeasurementService = circumferenceMeasurementService;
     }
 
-    @PostMapping("/bodyMonitoring/addNewCircumference")
-    public void addNewMeasurement(@RequestBody CircumferenceData circumferenceData){
-        log.info("Get request POST to add new circumference data {}", circumferenceData);
+    @PostMapping("/addNewCircumference")
+    public ResponseEntity<Void> addNewMeasurement(@RequestBody CircumferenceData circumferenceData){
+        log.info("Request to save circumference data received. Processing...");
         this.circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @PatchMapping("/bodyMonitoring/update/circumference/{id}")
-    public void updateCircumference(@PathVariable("id") long id, @RequestBody CircumferenceData circumferenceData){
-        log.info("Get request PATCH to update circumferece data with id {} {}", id, circumferenceData);
-        this.circumferenceMeasurementService.updateCircumference(circumferenceData);
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<CircumferenceData> updateCircumference(@PathVariable("id") long id, @RequestBody CircumferenceData circumferenceData){
+        log.info("Updating weight circumference data with ID: {}", circumferenceData.getId());
+        CircumferenceData updateCircumferenceData = this.circumferenceMeasurementService.updateCircumference(circumferenceData);
+        return ResponseEntity.ok(updateCircumferenceData);
     }
 
-    @GetMapping("/bodyMonitoring/getCircumference/{id}")
-    public CircumferenceData getCircumferenceData(@PathVariable("id") long id){
-        log.info("Get request GET for circumference data with id {} ", id);
-        return this.circumferenceMeasurementService.getCircumferenceDataById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<CircumferenceData> getCircumferenceData(@PathVariable("id") long id){
+        log.info("Fetching circumference data for ID: {}", id);
+        CircumferenceData circumferenceData = this.circumferenceMeasurementService.getCircumferenceDataById(id);
+        return circumferenceData != null ? ResponseEntity.ok(circumferenceData) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("bodyMonitoring/getBasicCircumferece")
-    public BasicCircumference getBasicCircumferenceByDate(@RequestParam("date") LocalDate date){
-        log.info("Get request GET for circumference data with date {} ", date);
-        return this.circumferenceMeasurementService.getBasicCircumferenceByDate(date);
+    @GetMapping("/basic")
+    public ResponseEntity<BasicCircumference> getBasicCircumferenceByDate(@RequestParam("date") LocalDate date){
+        log.info("Fetching circumference data for date: {}", date);
+        BasicCircumference basicCircumference = this.circumferenceMeasurementService.getBasicCircumferenceByDate(date);
+        return basicCircumference != null ? ResponseEntity.ok(basicCircumference) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/bodyMonitoring/getCircumference/betweenDate")
-    public List<CircumferenceData> getCircumferenceDataBetweenDate(@RequestParam("start") LocalDate start,@RequestParam("end") LocalDate end){
-        log.info("Get request GET for circumference data between dates {} {}", start, end);
-        return this.circumferenceMeasurementService.getCircumferenceDataInDateRange(start, end);
+    @GetMapping("/betweenDates")
+    public ResponseEntity<List<CircumferenceData>> getCircumferenceDataBetweenDate(@RequestParam("start") LocalDate start,@RequestParam("end") LocalDate end){
+        log.info("Fetching circumference data between dates: {} {}", start, end);
+        List<CircumferenceData> circumferenceDataList = this.circumferenceMeasurementService.getCircumferenceDataInDateRange(start, end);
+        return circumferenceDataList != null ? ResponseEntity.ok(circumferenceDataList) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/bodyMonitoring/getCircumference/sinceDate")
-    public List<CircumferenceData> getCircumferenceDataSinceDate(@RequestParam LocalDate start){
-        log.info("Get request GET for circumference data before date {}", start);
-        return this.circumferenceMeasurementService.getCircumferenceDataFromDate(start);
+    @GetMapping("/sinceDate")
+    public ResponseEntity<List<CircumferenceData>> getCircumferenceDataSinceDate(@RequestParam LocalDate start){
+        log.info("Fetching circumference data since dates: {}", start);
+        List<CircumferenceData> circumferenceDataList = this.circumferenceMeasurementService.getCircumferenceDataFromDate(start);
+        return circumferenceDataList != null ? ResponseEntity.ok(circumferenceDataList) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/bodyMonitoring/getCircumference/all")
-    public List<CircumferenceData> getCircumferenceDataAll(){
-        log.info("Get request GET for circumference data all");
-        return this.circumferenceMeasurementService.getCircumferenceDataAll();
+    @GetMapping("/all")
+    public ResponseEntity<List<CircumferenceData>> getCircumferenceDataAll(){
+        log.info("Fetching all circumference data");
+        List<CircumferenceData> circumferenceDataList = this.circumferenceMeasurementService.getCircumferenceDataAll();
+        return circumferenceDataList != null ? ResponseEntity.ok(circumferenceDataList) : ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/bodyMonitoring/circumference/deleta/{id}")
-    public void deleteCircumference(@PathVariable("id") long id){
-        log.info("Get request DELETE for circumference data with id {}", id);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteCircumference(@PathVariable("id") long id){
+        log.info("Deleting circumference data with ID: {}", id);
         this.circumferenceMeasurementService.deleteCircumferenceById(id);
+        return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/bodyMonitoring/circumference/delete/all")
-    public void deleteAllCircumference(){
-        log.info("Get request DELETE for circumference data all");
+    @DeleteMapping("/delete/all")
+    public ResponseEntity<Void> deleteAllCircumference(){
+        log.info("Deleting all circumference data");
         this.circumferenceMeasurementService.deleteAllCircumference();
+        return ResponseEntity.noContent().build();
     }
 }
