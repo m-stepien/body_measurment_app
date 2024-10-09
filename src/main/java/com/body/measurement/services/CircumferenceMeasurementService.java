@@ -7,7 +7,6 @@ import com.body.measurement.custom.exception.NoSuchObjectInDatabaseException;
 import com.body.measurement.dto.AdditionalCircumference;
 import com.body.measurement.dto.BasicCircumference;
 import com.body.measurement.dto.CircumferenceData;
-import com.body.measurement.dto.responses.CircumferenceDataSaveResponse;
 import com.body.measurement.repositories.AdditionalCircumferenceRepository;
 import com.body.measurement.repositories.BasicCircumferenceRepository;
 import com.body.measurement.repositories.CircumferenceDataRepository;
@@ -238,14 +237,5 @@ public class CircumferenceMeasurementService {
         }
         log.info("Setting default date for circumference data completed {}", circumferenceData);
 
-    }
-
-    private CircumferenceDataSaveResponse prepareResponseForSaveOperation(boolean success, String message, CircumferenceData circumferenceData) {
-        log.info("Start preparing resposne");
-        CircumferenceDataSaveResponse circumferenceDataSaveResponse = new CircumferenceDataSaveResponse();
-        circumferenceDataSaveResponse.setSuccess(success);
-        circumferenceDataSaveResponse.setMessage(message);
-        circumferenceDataSaveResponse.setCircumferenceData(circumferenceData);
-        return circumferenceDataSaveResponse;
     }
 }

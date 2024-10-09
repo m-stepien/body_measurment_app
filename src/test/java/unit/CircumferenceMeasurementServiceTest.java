@@ -5,7 +5,6 @@ import com.body.measurement.custom.exception.MissingRequiredDataException;
 import com.body.measurement.dto.AdditionalCircumference;
 import com.body.measurement.dto.BasicCircumference;
 import com.body.measurement.dto.CircumferenceData;
-import com.body.measurement.dto.responses.CircumferenceDataSaveResponse;
 import com.body.measurement.repositories.AdditionalCircumferenceRepository;
 import com.body.measurement.repositories.BasicCircumferenceRepository;
 import com.body.measurement.repositories.CircumferenceDataRepository;

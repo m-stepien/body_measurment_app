@@ -3,7 +3,6 @@ package unit;
 import com.body.measurement.custom.exception.InvalidDataException;
 import com.body.measurement.custom.exception.MissingRequiredDataException;
 import com.body.measurement.dto.BodyDetails;
-import com.body.measurement.dto.responses.BodySaveResponse;
 import com.body.measurement.repositories.BodyDetailsRepository;
 import com.body.measurement.repositories.WeightRepository;
 import com.body.measurement.services.BodyService;
