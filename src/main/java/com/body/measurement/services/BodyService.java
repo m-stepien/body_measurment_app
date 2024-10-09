@@ -9,6 +9,8 @@ import com.body.measurement.dto.responses.BodySaveResponse;
 import com.body.measurement.repositories.BodyDetailsRepository;
 import com.body.measurement.repositories.WeightRepository;
 import com.body.measurement.utils.BodyDataValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ import java.util.List;
 
 @Service
 public class BodyService {
+
+    private static final Logger log = LoggerFactory.getLogger(BodyService.class);
     private final WeightRepository weightRepository;
     private final BodyDetailsRepository bodyDetailsRepository;
     private final BodyDataValidator validator;
@@ -29,14 +33,16 @@ public class BodyService {
     }
 
     public BodySaveResponse saveBodyDetails(BodyDetails bodyDetails) {
+        log.info("Start saving body details");
         BodySaveResponse bodySaveResponse = new BodySaveResponse();
         try {
             this.validator.isBodyDetailsValid(bodyDetails);
             this.bodyDetailsRepository.save(bodyDetails);
+            log.info("Object save successful {}", bodyDetails);
             bodySaveResponse.setBasicBodyData(bodyDetails);
             bodySaveResponse.setSuccess(true);
         } catch (MissingRequiredDataException | InvalidDataException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
             bodySaveResponse.setBasicBodyData(bodyDetails);
             bodySaveResponse.setSuccess(false);
             bodySaveResponse.setMessage(e.getMessage());
@@ -45,26 +51,38 @@ public class BodyService {
     }
 
     public BodyDetails getBodyDetailsData(long id) {
-        return this.bodyDetailsRepository.findById(id).orElse(null);
+        log.info("Searching for body details with id: {}", id);
+        BodyDetails bodyDetails = this.bodyDetailsRepository.findById(id).orElse(null);
+        log.info("Found in database {}", bodyDetails);
+        return bodyDetails;
     }
 
     public void deleteBodyDetailsData(long id) {
+        log.info("Deleting body details with id: {}", id);
         this.bodyDetailsRepository.deleteById(id);
+        log.info("Deleting body details with id: {} completed", id);
     }
 
     public BodySaveResponse saveWeight(Weight weight) {
+        log.info("Starting weight save");
         BodySaveResponse response = new BodySaveResponse();
         try {
             this.validator.isWeightValid(weight);
             this.setDefaultDataIfNeeded(weight);
+            log.info("Checking if weight for given date already exist");
             Weight currentRecordOnDatabase = this.getWeightOnDate(weight.getDate());
             if(currentRecordOnDatabase!=null) {
+                log.info("Deleting old weight for date {} {}", weight.getDate(), currentRecordOnDatabase);
                 this.weightRepository.deleteById(currentRecordOnDatabase.getId());
             }
+            log.info("Save in database weight: {}", weight);
             this.weightRepository.save(weight);
+            log.info("Save successful weight: {}", weight);
             response.setMessage("Weight save successful");
             response.setSuccess(true);
         } catch (MissingRequiredDataException | InvalidDataException e) {
+            log.error("Exception while trying to save weight {}", weight);
+            log.error(e.getMessage());
             response.setSuccess(false);
             response.setMessage(e.getMessage());
         }
@@ -72,75 +90,104 @@ public class BodyService {
     }
 
     public BodySaveResponse updateWeight(Weight weight) {
+        log.info("Starting update weight {}", weight);
         if (weight.getId() != null) {
             try {
                 Weight updatedWeight = this.mapWeight(weight);
                 return saveWeight(updatedWeight);
             } catch (NoSuchObjectInDatabaseException e) {
+                log.error("Exception during update weight {}", weight);
+                log.error(e.getMessage());
                 return setWeightSaveResponse(false, e.getMessage());
             }
         }
         else {
+            log.info("Could not update weight becouse weight id is null {}", weight);
             return setWeightSaveResponse(false, "Id is required for update");
         }
     }
 
     public List<Weight> getWeightBetweenDates(LocalDate start, LocalDate end){
-        System.out.println(start);
-        System.out.println(end);
-        List<Weight> w =this.weightRepository.findByDateBetween(start, end);
-        System.out.println(w);
-        return w;
+        log.info("Start search for weights between given dates. Start: {} End {}", start, end);
+        List<Weight> weightList =this.weightRepository.findByDateBetween(start, end);
+        log.info("Result of weight search between dates {} {} \n{}",start, end, weightList);
+        return weightList;
     }
 
-    public Weight getWeightFirst(){
-        return this.weightRepository.findTopByOrderByDateAsc().orElse(null);
+    public Weight getWeightFirst() {
+        log.info("Searching for first weight in database");
+        Weight weight = this.weightRepository.findTopByOrderByDateAsc().orElse(null);
+        log.info("First weight in database {}", weight);
+        return weight;
     }
-
     public Weight getWeightById(long id) {
-        return this.weightRepository.findById(id).orElse(null);
+        log.info("Searching database for weight with id {}", id);
+        Weight weight = this.weightRepository.findById(id).orElse(null);
+        log.info("For id {} found weight {}", id, weight);
+        return weight;
     }
 
     public Weight getWeightOnDate(LocalDate date){
-        return this.weightRepository.findByDate(date).orElse(null);
+        log.info("Searching database for weight with date {}", date);
+        Weight weight = this.weightRepository.findByDate(date).orElse(null);
+        log.info("For date {} found weight {}", date, weight);
+        return weight;
     }
 
-    public Weight getWeightOneBefore(LocalDate localDate){
-        return this.weightRepository.findOneBeforeGiven(localDate).orElse(null);
+    public Weight getWeightOneBefore(LocalDate date){
+        log.info("Searching database for for first weight before date {}", date);
+        Weight weight = this.weightRepository.findOneBeforeGiven(date).orElse(null);
+        log.info("First weight before date {} {}", date, weight);
+        return weight;
     }
 
-    public Weight getWeightOneAfter(LocalDate localDate){
-        return this.weightRepository.findOneAfterGiven(localDate).orElse(new Weight());
+    public Weight getWeightOneAfter(LocalDate date){
+        log.info("Searching database for for first weight after date {}", date);
+        Weight weight = this.weightRepository.findOneAfterGiven(date).orElse(new Weight());
+        log.info("First weight after date {} {}", date, weight);
+        return weight;
     }
 
     public Weight getWeightLast(){
-        return this.weightRepository.findTopByOrderByDateDesc().orElse(new Weight());
+        log.info("Searching for last weight in database");
+        Weight weight = this.weightRepository.findTopByOrderByDateDesc().orElse(null);
+        log.info("Last weight in database {}", weight);
+        return weight;
     }
 
     public void deleteWeight(long id) {
+        log.info("Deleting weight with id: {}", id);
         this.weightRepository.deleteById(id);
+        log.info("Deleting weight with id: {} completed", id);
     }
 
     private Weight mapWeight(Weight newWeight) throws NoSuchObjectInDatabaseException {
+        log.info("Starting maping data from database to update object {}", newWeight);
         Weight weight = this.weightRepository
                 .findById(newWeight.getId())
                 .orElseThrow(() -> new NoSuchObjectInDatabaseException("There is no Weight object with this id in database"));
+        log.info("Data find in database for id {} {}", newWeight.getId(), weight);
         if (newWeight.getWeightInKg() != null) {
+            log.info("setting weight {}", newWeight.getWeightInKg());
             weight.setWeightInKg(newWeight.getWeightInKg());
         }
         if (newWeight.getDate() != null) {
+            log.info("setting date {}", newWeight.getDate());
             weight.setDate(newWeight.getDate());
         }
+        log.info("Weight mapping complete result: {}", weight);
         return weight;
     }
 
     private void setDefaultDataIfNeeded(Weight weight) {
         if (weight.getDate() == null) {
+            log.info("Adding default date");
             weight.setDate(LocalDate.now());
         }
     }
 
     private BodySaveResponse setWeightSaveResponse(boolean success, String message) {
+        log.info("Prepering weight response");
         BodySaveResponse bodySaveResponse = new BodySaveResponse();
         bodySaveResponse.setSuccess(success);
         bodySaveResponse.setMessage(message);
