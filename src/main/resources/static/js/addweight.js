@@ -5,7 +5,6 @@ async function saveWeight(event){
      let messageDiv = document.getElementById("message");
      messageDiv.innerText = ""
      data = await extractionDataFromForm();
-     console.log(data)
      let response = await sendSave(data);
      await afterSend(response);
 }
@@ -37,8 +36,9 @@ async function afterSend(response){
 }
 
 async function sendSave(data){
+    const url = server_address + '/body/weight/save';
     try {
-         const response = await fetch('/body/weight/save', {
+         const response = await fetch(url, {
          method: "POST",
          headers: {
             'Content-Type':'application/json'
@@ -54,8 +54,6 @@ async function sendSave(data){
 async function extractionDataFromForm(){
     const form = document.getElementById("addWeightForm");
     const formData = new FormData(form);
-    console.log("form data");
-    console.log(formData)
     let data = {};
     data.weightInKg = formData.get("weightInKg");
     data.date = formData.get("date");

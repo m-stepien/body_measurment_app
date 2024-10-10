@@ -28,11 +28,8 @@ public class BodyController {
     }
 
     @PostMapping("/details/save")
-    public ResponseEntity<Void> saveBodyDetails(@RequestParam("gender") String gender, @ModelAttribute BodyDetails bodyDetails) throws MissingRequiredDataException, InvalidDataException {
+    public ResponseEntity<Void> saveBodyDetails(@RequestBody BodyDetails bodyDetails) throws MissingRequiredDataException, InvalidDataException {
         log.info("Request to save body details received. Processing...");
-        //temp drut
-        bodyDetails.setGender(gender);
-        bodyDetails.setId(1);
         this.bodyService.saveBodyDetails(bodyDetails);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -7,8 +7,8 @@
 </head>
 <body>
 <div>
-    <form action="/body/details/save" method="post" id="bodyDetailsForm">
-        <label for="heightInCm" >Height</label><input id ="heightInCm" name="heightInCm" type="number">
+    <form id="bodyDetailsForm">
+    <label for="heightInCm" >Height</label><input id ="heightInCm" name="heightInCm" type="number">
         <label for="age">Age</label><input id="age" name="age" type="number" step="1">
         <fieldset>
             <legend>Gender</legend>
@@ -27,7 +27,8 @@
                 <span>Other</span>
             </label>
         </fieldset>
-        <button type="submit">Save</button>
+        <button type="submit">Pupa</button>
+        <div id="message" style="display: none;"></div>
     </form>
 </div>
 <script type="text/javascript" th:src="@{/js/bodydetails.js}" defer></script>

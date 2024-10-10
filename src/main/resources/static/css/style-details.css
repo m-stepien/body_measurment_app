@@ -92,6 +92,21 @@ button {
     transition: background-color 0.3s ease;
 }
 
+#message {
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #ffffff;
+    background-color: #f44336;
+    display: none;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+    margin: auto;
+    margin-top: 15px;
+}
+
 button:hover {
     background-color: #357abd;
 }
