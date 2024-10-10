@@ -4,14 +4,17 @@ import com.body.measurement.custom.exception.DatabaseException;
 import com.body.measurement.custom.exception.InvalidDataException;
 import com.body.measurement.custom.exception.MissingRequiredDataException;
 import com.body.measurement.custom.exception.NoSuchObjectInDatabaseException;
+import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@RestController
 @ControllerAdvice
 public class GlobalExceptionHandler {
 

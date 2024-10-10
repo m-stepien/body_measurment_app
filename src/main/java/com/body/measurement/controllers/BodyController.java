@@ -52,7 +52,7 @@ public class BodyController {
     }
 
     @PostMapping("/weight/save")
-    public ResponseEntity<Void> saveNewWeight(@ModelAttribute Weight weight) throws MissingRequiredDataException, InvalidDataException {
+    public ResponseEntity<Void> saveNewWeight(@RequestBody Weight weight) throws MissingRequiredDataException, InvalidDataException {
         log.info("Request to save weight received. Processing...");
         this.bodyService.saveWeight(weight);
         return ResponseEntity.status(HttpStatus.CREATED).build();

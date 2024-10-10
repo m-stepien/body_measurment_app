@@ -111,13 +111,13 @@ public class CircumferenceMeasurementServiceTest {
 
 
     @Test
-    public void updateCircumferenceMeasurementFailedWithoutIdTest() throws NoSuchObjectInDatabaseException {
+    public void updateCircumferenceMeasurementFailedWithoutIdTest() throws NoSuchObjectInDatabaseException, MissingRequiredDataException {
         CircumferenceData circumferenceData = new CircumferenceData();
         circumferenceMeasurementService.updateCircumference(circumferenceData);
     }
 
     @Test(expected = NoSuchObjectInDatabaseException.class)
-    public void updateCircumferenceMeasurementFailedNoObjectWithIdInDatabaseTest() throws NoSuchObjectInDatabaseException {
+    public void updateCircumferenceMeasurementFailedNoObjectWithIdInDatabaseTest() throws NoSuchObjectInDatabaseException, MissingRequiredDataException {
         CircumferenceData circumferenceData = new CircumferenceData();
         circumferenceData.setId(11L);
         when(circumferenceDataRepository.findById(any(Long.class))).thenReturn(Optional.empty());
