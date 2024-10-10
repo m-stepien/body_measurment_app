@@ -43,35 +43,35 @@ public class MeasurementController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CircumferenceData> getCircumferenceData(@PathVariable("id") long id){
+    public ResponseEntity<CircumferenceData> fetchCircumferenceData(@PathVariable("id") long id){
         log.info("Fetching circumference data for ID: {}", id);
         CircumferenceData circumferenceData = this.circumferenceMeasurementService.getCircumferenceDataById(id);
         return circumferenceData != null ? ResponseEntity.ok(circumferenceData) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/basic")
-    public ResponseEntity<BasicCircumference> getBasicCircumferenceByDate(@RequestParam("date") LocalDate date){
+    public ResponseEntity<BasicCircumference> fetchBasicCircumferenceByDate(@RequestParam("date") LocalDate date){
         log.info("Fetching circumference data for date: {}", date);
         BasicCircumference basicCircumference = this.circumferenceMeasurementService.getBasicCircumferenceByDate(date);
         return basicCircumference != null ? ResponseEntity.ok(basicCircumference) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/betweenDates")
-    public ResponseEntity<List<CircumferenceData>> getCircumferenceDataBetweenDate(@RequestParam("start") LocalDate start,@RequestParam("end") LocalDate end){
+    public ResponseEntity<List<CircumferenceData>> fetchCircumferenceDataBetweenDate(@RequestParam("start") LocalDate start,@RequestParam("end") LocalDate end){
         log.info("Fetching circumference data between dates: {} {}", start, end);
         List<CircumferenceData> circumferenceDataList = this.circumferenceMeasurementService.getCircumferenceDataInDateRange(start, end);
         return circumferenceDataList != null ? ResponseEntity.ok(circumferenceDataList) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/sinceDate")
-    public ResponseEntity<List<CircumferenceData>> getCircumferenceDataSinceDate(@RequestParam LocalDate start){
+    public ResponseEntity<List<CircumferenceData>> fetchCircumferenceDataSinceDate(@RequestParam LocalDate start){
         log.info("Fetching circumference data since dates: {}", start);
         List<CircumferenceData> circumferenceDataList = this.circumferenceMeasurementService.getCircumferenceDataFromDate(start);
         return circumferenceDataList != null ? ResponseEntity.ok(circumferenceDataList) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<CircumferenceData>> getCircumferenceDataAll(){
+    public ResponseEntity<List<CircumferenceData>> fetchCircumferenceDataAll(){
         log.info("Fetching all circumference data");
         List<CircumferenceData> circumferenceDataList = this.circumferenceMeasurementService.getCircumferenceDataAll();
         return circumferenceDataList != null ? ResponseEntity.ok(circumferenceDataList) : ResponseEntity.notFound().build();

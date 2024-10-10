@@ -38,7 +38,7 @@ public class BodyController {
     }
 
     @GetMapping("/details/get/{id}")
-    public ResponseEntity<BodyDetails> getBodyDetails(@PathVariable("id") long id){
+    public ResponseEntity<BodyDetails> fetchBodyDetails(@PathVariable("id") long id){
         log.info("Fetching body details for ID: {}", id);
         BodyDetails bodyDetails = this.bodyService.getBodyDetailsData(id);
         return bodyDetails != null ? ResponseEntity.ok(bodyDetails) : ResponseEntity.notFound().build();
@@ -66,14 +66,14 @@ public class BodyController {
     }
 
     @GetMapping("/weight/get/{id}")
-    public ResponseEntity<Weight> getWeightById(@PathVariable("id") long id){
+    public ResponseEntity<Weight> fetchWeightById(@PathVariable("id") long id){
         log.info("Fetching weight data for ID: {}", id);
         Weight weight = this.bodyService.getWeightById(id);
         return weight != null ? ResponseEntity.ok(weight) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/weight/get/last")
-    public ResponseEntity<Weight> getLastWeight(){
+    public ResponseEntity<Weight> fetchLastWeight(){
         log.info("Fetching last weight data");
         Weight weight = this.bodyService.getWeightLast();
         return weight != null ? ResponseEntity.ok(weight) : ResponseEntity.notFound().build();
