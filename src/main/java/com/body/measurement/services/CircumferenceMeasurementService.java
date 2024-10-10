@@ -15,7 +15,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -55,7 +57,7 @@ public class CircumferenceMeasurementService {
         return circumferenceData;
     }
 
-    public CircumferenceData updateCircumference(CircumferenceData circumferenceData) throws NoSuchObjectInDatabaseException {
+    public CircumferenceData updateCircumference(CircumferenceData circumferenceData) throws NoSuchObjectInDatabaseException, MissingRequiredDataException {
         log.info("Start update CircumferenceData {}", circumferenceData);
         CircumferenceData updatedCircumferenceData;
         if (circumferenceData.getId() != null) {
@@ -70,7 +72,7 @@ public class CircumferenceMeasurementService {
         }
         else{
             log.info("Cannot update CircumferenceData because id is null");
-            updatedCircumferenceData = null;
+            throw new MissingRequiredDataException(BasicCircumference.class.getName());
         }
         log.info("Finished update circumference data {}", circumferenceData);
         return updatedCircumferenceData;
@@ -104,7 +106,7 @@ public class CircumferenceMeasurementService {
         List<CircumferenceData> circumferenceDataList = this.circumferenceDataRepository
                                                 .findByMeasurementDateBetweenOrderByMeasurementDate(startDate, endDate);
         log.info("Circumference data with date between {} {}\n{}", startDate, endDate,  circumferenceDataList);
-        return this.circumferenceDataRepository.findByMeasurementDateBetweenOrderByMeasurementDate(startDate, endDate);
+        return circumferenceDataList;
     }
 
     public List<CircumferenceData> getCircumferenceDataAll() {
@@ -156,36 +158,7 @@ public class CircumferenceMeasurementService {
     private AdditionalCircumference mapNewDataToAdditionalCircumference(AdditionalCircumference additionalCircumference,
                                                                         AdditionalCircumference newData) {
         log.info("Start mapping additional circumference {} to object {}", newData, additionalCircumference);
-        if (additionalCircumference == null) {
-            additionalCircumference = new AdditionalCircumference();
-        }
-        if (newData.getArmL() != null) {
-            additionalCircumference.setArmL(newData.getArmL());
-        }
-        if (newData.getArmR() != null) {
-            additionalCircumference.setArmR(newData.getArmR());
-        }
-        if (newData.getCalfL() != null) {
-            additionalCircumference.setCalfL(newData.getCalfL());
-        }
-        if (newData.getCalfR() != null) {
-            additionalCircumference.setCalfR(newData.getCalfR());
-        }
-        if (newData.getForarmL() != null) {
-            additionalCircumference.setForarmL(newData.getForarmL());
-        }
-        if (newData.getForarmR() != null) {
-            additionalCircumference.setForarmR(newData.getForarmR());
-        }
-        if (newData.getThighL() != null) {
-            additionalCircumference.setThighL(newData.getThighL());
-        }
-        if (newData.getThighR() != null) {
-            additionalCircumference.setThighR(newData.getThighR());
-        }
-        if (newData.getNeck() != null) {
-            additionalCircumference.setNeck(newData.getNeck());
-        }
+        updateNotNullFields(additionalCircumference, newData);
         log.info("Finished mapping additional circumference data {}", additionalCircumference);
         return additionalCircumference;
     }
@@ -193,22 +166,12 @@ public class CircumferenceMeasurementService {
     private BasicCircumference mapNewDataToBasicCircumference(BasicCircumference basicCircumference,
                                                               BasicCircumference newData) {
         log.info("Start mapping basic circumference {} to object {}", newData, basicCircumference);
-        if (newData.getAbdominal() != null) {
-            basicCircumference.setAbdominal(newData.getAbdominal());
-        }
-        if (newData.getHip() != null) {
-            basicCircumference.setHip(newData.getHip());
-        }
-        if (newData.getChest() != null) {
-            basicCircumference.setChest(newData.getChest());
-        }
-        if (newData.getWaist() != null) {
-            basicCircumference.setWaist(newData.getWaist());
-        }
+        updateNotNullFields(basicCircumference, newData);
         log.info("Finished mapping basic circumference data {}", basicCircumference);
         return basicCircumference;
     }
 
+    @Transactional
     private CircumferenceData saveCircumferenceData(CircumferenceData circumferenceData) throws DatabaseException {
         log.info("Start save circumference data {}", circumferenceData);
         try {
@@ -235,6 +198,20 @@ public class CircumferenceMeasurementService {
             circumferenceData.setMeasurementDate(LocalDate.now());
         }
         log.info("Setting default date for circumference data completed {}", circumferenceData);
+    }
 
+    private <T> void updateNotNullFields(T target, T source){
+        Field[] fields = source.getClass().getDeclaredFields();
+        for(Field field : fields){
+            field.setAccessible(true);
+            try{
+                Object value = field.get(source);
+                if(value != null){
+                    field.set(target, value);
+                }
+            } catch (IllegalAccessException e) {
+                log.error("Failed to map field {} due to access issues", field.getName(), e);
+            }
+        }
     }
 }
