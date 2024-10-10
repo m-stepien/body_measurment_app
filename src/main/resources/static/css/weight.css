@@ -56,6 +56,7 @@ input[type="date"] {
 }
 
 button {
+    margin: 10px;
     background-color: #5a9bd5;
     color: white;
     border: none;

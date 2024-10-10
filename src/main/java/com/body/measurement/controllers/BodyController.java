@@ -56,7 +56,7 @@ public class BodyController {
     }
 
     @PatchMapping("/weight/update")
-    public ResponseEntity<Weight> updateWeight(@ModelAttribute Weight weight) throws MissingRequiredDataException, InvalidDataException, NoSuchObjectInDatabaseException {
+    public ResponseEntity<Weight> updateWeight(@RequestBody Weight weight) throws MissingRequiredDataException, InvalidDataException, NoSuchObjectInDatabaseException {
         log.info("Updating weight entry with ID: {}", weight.getId());
         Weight updatedWeight = this.bodyService.updateWeight(weight);
         return ResponseEntity.ok(updatedWeight);

@@ -1,4 +1,3 @@
-//todo update weight
 //todo delte record
 const server_address = "http://localhost:8080";
 let ids = {};
@@ -11,7 +10,9 @@ async function getWeightByDate(date){
                                                              + '&end=' + encodeURIComponent(date);
         let weightList = await getData(url);
         if(weightList.length){
-            return weightList[0].weightInKg;
+            let weight = weightList[0];
+            ids.weightId = weight.id
+            return weight.weightInKg;
         }
         else{
             return null;
@@ -56,8 +57,15 @@ function putWeightInsideDOM(weight){
     let weightLabel = document.createElement('label');
     weightLabel.textContent = 'Weight: ';
     weightLabel.htmlFor = weightElement.id;
+    weightUpdateButton = createButton("Edit");
+    weightUpdateButton.addEventListener("click", function() {
+                        updateWeight();
+                    });
+    weightUpdateButton.classList.add("button");
+    weightUpdateButton.id = "updateWeightButton";
     weightContainer.appendChild(weightLabel);
     weightContainer.appendChild(weightElement);
+    weightContainer.appendChild(weightUpdateButton);
     summary.appendChild(weightContainer);
 }
 
@@ -244,6 +252,7 @@ function createLabelFromKey(key){
 async function initReadView(){
     var date = document.getElementById("date").innerText;
     var weight = await getWeightByDate(date);
+    console.log(weight);
     putWeightInsideDOM(weight);
     measurementData = await getMeasurementData(date);
     putCircumferenceDataInsideDOM(measurementData);
@@ -440,6 +449,68 @@ function cancel(){
         sectionsElement.children[i].remove();
     }
     initReadView();
+}
+
+async function saveUpdateWeight(){
+    let toSend = await prepareWeightToSend();
+    let response = await sendUpdateWeight(toSend);
+    let responseObject = await response.json();
+    if(response.ok){
+            cancel();
+    }
+    else{
+        let err = responseObject.error;
+        console.error(err);
+        console.error(responseObject.details);
+    }
+
+}
+async function prepareWeightToSend(){
+        let inputWeight = document.getElementById("weight");
+        let updatedWeight = inputWeight.value;
+        let toSend = {};
+        toSend.id = ids.weightId;
+        toSend.weightInKg = updatedWeight;
+        return toSend;
+}
+async function sendUpdateWeight(toSend){
+    const url = server_address + "/body/weight/update"
+    let response = await fetch(url, {
+        method: 'PATCH',
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(toSend)
+        })
+        .catch(error => console.error('Error:', error));
+    return response;
+}
+
+async function updateWeight(){
+    let weightSpan = document.getElementById("weight");
+    let defaultValue = weightSpan.innerText;
+    let weightUpdateButton = document.getElementById("updateWeightButton");
+    let weightInput = document.createElement("input");
+    weightInput.type = "number";
+    weightInput.step = '0.01';
+    weightInput.classList.add("styled-input");
+    weightInput.id = "weight";
+    weightInput.value = parseFloat(defaultValue);
+    const parent = weightSpan.parentNode;
+    parent.replaceChild(weightInput, weightSpan);
+    parent.removeChild(weightUpdateButton);
+    let cancelButton = createButton("Cancel");
+    cancelButton.addEventListener("click", function() {
+                    cancel();
+                });
+    cancelButton.classList.add("button");
+    let saveButton = createButton("Save");
+    saveButton.classList.add("button");
+    saveButton.addEventListener("click", function() {
+                        saveUpdateWeight()
+    });
+    parent.appendChild(cancelButton);
+    parent.appendChild(saveButton);
 }
 
 (async () => {
