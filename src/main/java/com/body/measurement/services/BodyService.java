@@ -31,7 +31,7 @@ public class BodyService {
         this.validator = validator;
     }
 
-    public void saveBodyDetails(BodyDetails bodyDetails) {
+    public void saveBodyDetails(BodyDetails bodyDetails) throws MissingRequiredDataException, InvalidDataException {
         log.info("Start saving body details");
         try {
             this.validator.isBodyDetailsValid(bodyDetails);
@@ -39,6 +39,7 @@ public class BodyService {
             log.info("Object save successful {}", bodyDetails);
         } catch (MissingRequiredDataException | InvalidDataException e) {
             log.error(e.getMessage());
+            throw e;
         }
     }
 
@@ -55,7 +56,7 @@ public class BodyService {
         log.info("Deleting body details with id: {} completed", id);
     }
 
-    public void saveWeight(Weight weight) {
+    public void saveWeight(Weight weight) throws MissingRequiredDataException, InvalidDataException {
         log.info("Starting weight save");
         try {
             this.validator.isWeightValid(weight);
@@ -72,10 +73,11 @@ public class BodyService {
         } catch (MissingRequiredDataException | InvalidDataException e) {
             log.error("Exception while trying to save weight {}", weight);
             log.error(e.getMessage());
+            throw e;
         }
     }
 
-    public Weight updateWeight(Weight weight) {
+    public Weight updateWeight(Weight weight) throws NoSuchObjectInDatabaseException, MissingRequiredDataException, InvalidDataException {
         log.info("Starting update weight {}", weight);
         Weight updatedWeight = null;
         if (weight.getId() != null) {
@@ -85,6 +87,9 @@ public class BodyService {
             } catch (NoSuchObjectInDatabaseException e) {
                 log.error("Exception during update weight {}", weight);
                 log.error(e.getMessage());
+                throw e;
+            } catch (MissingRequiredDataException | InvalidDataException e){
+                throw e;
             }
         }
         else {

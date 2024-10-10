@@ -1,5 +1,9 @@
 package com.body.measurement.controllers;
 
+import com.body.measurement.custom.exception.DatabaseException;
+import com.body.measurement.custom.exception.InvalidDataException;
+import com.body.measurement.custom.exception.MissingRequiredDataException;
+import com.body.measurement.custom.exception.NoSuchObjectInDatabaseException;
 import com.body.measurement.dto.BasicCircumference;
 import com.body.measurement.services.CircumferenceMeasurementService;
 import com.body.measurement.dto.CircumferenceData;
@@ -25,14 +29,14 @@ public class MeasurementController {
     }
 
     @PostMapping("/addNewCircumference")
-    public ResponseEntity<Void> addNewMeasurement(@RequestBody CircumferenceData circumferenceData){
+    public ResponseEntity<Void> addNewMeasurement(@RequestBody CircumferenceData circumferenceData) throws MissingRequiredDataException, InvalidDataException, DatabaseException {
         log.info("Request to save circumference data received. Processing...");
         this.circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PatchMapping("/update/{id}")
-    public ResponseEntity<CircumferenceData> updateCircumference(@PathVariable("id") long id, @RequestBody CircumferenceData circumferenceData){
+    public ResponseEntity<CircumferenceData> updateCircumference(@PathVariable("id") long id, @RequestBody CircumferenceData circumferenceData) throws NoSuchObjectInDatabaseException {
         log.info("Updating weight circumference data with ID: {}", circumferenceData.getId());
         CircumferenceData updateCircumferenceData = this.circumferenceMeasurementService.updateCircumference(circumferenceData);
         return ResponseEntity.ok(updateCircumferenceData);

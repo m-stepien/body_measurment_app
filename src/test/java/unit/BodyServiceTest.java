@@ -53,7 +53,7 @@ public class BodyServiceTest {
         verify(validator).isBodyDetailsValid(any(BodyDetails.class));
     }
 
-    @Test
+    @Test(expected = MissingRequiredDataException.class)
     public void saveBodyDetailsFailedMissingHeightInCmValueTest() throws MissingRequiredDataException, InvalidDataException {
         BodyDetails bodyDetails = getCorrectBasicBodyData();
         bodyDetails.setHeightInCm(null);
@@ -64,7 +64,7 @@ public class BodyServiceTest {
         verify(validator).isBodyDetailsValid(any(BodyDetails.class));
     }
 
-    @Test
+    @Test(expected = MissingRequiredDataException.class)
     public void saveBodyDetailsFailedMissingAgeValueTest() throws MissingRequiredDataException, InvalidDataException {
         BodyDetails bodyDetails = getCorrectBasicBodyData();
         bodyDetails.setAge(null);

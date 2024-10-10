@@ -35,28 +35,27 @@ public class CircumferenceMeasurementService {
         this.validator = validator;
     }
 
-    public CircumferenceData saveCircumferenceMeasurement(CircumferenceData circumferenceData) {
+    public CircumferenceData saveCircumferenceMeasurement(CircumferenceData circumferenceData) throws InvalidDataException, MissingRequiredDataException, DatabaseException {
         log.info("Starting save circumgerence measurement {}", circumferenceData);
         try {
             this.validator.validateCircumferenceData(circumferenceData);
         } catch (InvalidDataException | MissingRequiredDataException e) {
             log.error("Exception during validation CircumferenceData {}", circumferenceData);
             log.error(e.getMessage());
-            return null;
-
+            throw e;
         }
         this.setDefaultDataIfNeeded(circumferenceData);
         try {
             circumferenceData = this.saveCircumferenceData(circumferenceData);
         } catch (DatabaseException e) {
             log.error("Failed to save CircumfereceData {} in database exception {}", circumferenceData, e.getMessage());
-            return null;
+            throw e;
         }
         log.info("Saving circumference data completed");
         return circumferenceData;
     }
 
-    public CircumferenceData updateCircumference(CircumferenceData circumferenceData) {
+    public CircumferenceData updateCircumference(CircumferenceData circumferenceData) throws NoSuchObjectInDatabaseException {
         log.info("Start update CircumferenceData {}", circumferenceData);
         CircumferenceData updatedCircumferenceData;
         if (circumferenceData.getId() != null) {
@@ -66,7 +65,7 @@ public class CircumferenceMeasurementService {
             catch (NoSuchObjectInDatabaseException e){
                 log.error("Failed to update CircumferenceData {}", circumferenceData);
                 log.error(e.getMessage());
-                updatedCircumferenceData = null;
+                throw e;
             }
         }
         else{

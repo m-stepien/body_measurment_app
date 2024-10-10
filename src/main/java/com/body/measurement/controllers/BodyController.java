@@ -1,5 +1,8 @@
 package com.body.measurement.controllers;
 
+import com.body.measurement.custom.exception.InvalidDataException;
+import com.body.measurement.custom.exception.MissingRequiredDataException;
+import com.body.measurement.custom.exception.NoSuchObjectInDatabaseException;
 import com.body.measurement.dto.BodyDetails;
 import com.body.measurement.dto.Weight;
 import com.body.measurement.services.BodyService;
@@ -25,7 +28,7 @@ public class BodyController {
     }
 
     @PostMapping("/details/save")
-    public ResponseEntity<Void> saveBodyDetails(@RequestParam("gender") String gender, @ModelAttribute BodyDetails bodyDetails){
+    public ResponseEntity<Void> saveBodyDetails(@RequestParam("gender") String gender, @ModelAttribute BodyDetails bodyDetails) throws MissingRequiredDataException, InvalidDataException {
         log.info("Request to save body details received. Processing...");
         //temp drut
         bodyDetails.setGender(gender);
@@ -49,14 +52,14 @@ public class BodyController {
     }
 
     @PostMapping("/weight/save")
-    public ResponseEntity<Void> saveNewWeight(@ModelAttribute Weight weight){
+    public ResponseEntity<Void> saveNewWeight(@ModelAttribute Weight weight) throws MissingRequiredDataException, InvalidDataException {
         log.info("Request to save weight received. Processing...");
         this.bodyService.saveWeight(weight);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PatchMapping("/weight/update")
-    public ResponseEntity<Weight> updateWeight(@ModelAttribute Weight weight){
+    public ResponseEntity<Weight> updateWeight(@ModelAttribute Weight weight) throws MissingRequiredDataException, InvalidDataException, NoSuchObjectInDatabaseException {
         log.info("Updating weight entry with ID: {}", weight.getId());
         Weight updatedWeight = this.bodyService.updateWeight(weight);
         return ResponseEntity.ok(updatedWeight);
