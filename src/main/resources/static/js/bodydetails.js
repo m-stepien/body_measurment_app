@@ -104,7 +104,10 @@ document.addEventListener("DOMContentLoaded", () => {
             let form = document.getElementById("bodyDetailsForm");
             form.addEventListener("submit", saveBodyDetails);
 });
-
+let backButton = document.getElementById("backButton");
+backButton.addEventListener("click", () => {
+    window.location.href = "/";
+});
 (async ()=>{
     let bodyDetails = await getBasicBodyData();
     putInsideDom(bodyDetails);

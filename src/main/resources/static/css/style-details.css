@@ -112,6 +112,29 @@ button:hover {
     background-color: #357abd;
 }
 
+.back-button {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.back-button:hover {
+    transform: translateY(-2px);
+}
+
+.back-button:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(255, 111, 97, 0.5);
+}
+
 @media (max-width: 480px) {
     div {
         padding: 15px;

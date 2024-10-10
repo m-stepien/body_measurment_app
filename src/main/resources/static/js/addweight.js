@@ -60,7 +60,10 @@ async function extractionDataFromForm(){
     return data;
 }
 
-
+let backButton = document.getElementById("backButton");
+backButton.addEventListener("click", () => {
+    window.location.href = "/";
+});
 (async () => {
     let today = new Date();
     document.getElementById('date').valueAsDate = today;
