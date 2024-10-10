@@ -56,7 +56,7 @@ public class CircumferenceMeasurementService {
         log.info("Saving circumference data completed");
         return circumferenceData;
     }
-
+    @Transactional
     public CircumferenceData updateCircumference(CircumferenceData circumferenceData) throws NoSuchObjectInDatabaseException, MissingRequiredDataException, InvalidDataException, DatabaseException {
         log.info("Start update CircumferenceData {}", circumferenceData);
         CircumferenceData updatedCircumferenceData;
@@ -159,6 +159,9 @@ public class CircumferenceMeasurementService {
     private AdditionalCircumference mapNewDataToAdditionalCircumference(AdditionalCircumference additionalCircumference,
                                                                         AdditionalCircumference newData) {
         log.info("Start mapping additional circumference {} to object {}", newData, additionalCircumference);
+        if(additionalCircumference == null){
+            additionalCircumference = new AdditionalCircumference();
+        }
         updateNotNullFields(additionalCircumference, newData);
         log.info("Finished mapping additional circumference data {}", additionalCircumference);
         return additionalCircumference;
@@ -167,6 +170,9 @@ public class CircumferenceMeasurementService {
     private BasicCircumference mapNewDataToBasicCircumference(BasicCircumference basicCircumference,
                                                               BasicCircumference newData) {
         log.info("Start mapping basic circumference {} to object {}", newData, basicCircumference);
+        if(basicCircumference == null){
+            basicCircumference = new BasicCircumference();
+        }
         updateNotNullFields(basicCircumference, newData);
         log.info("Finished mapping basic circumference data {}", basicCircumference);
         return basicCircumference;

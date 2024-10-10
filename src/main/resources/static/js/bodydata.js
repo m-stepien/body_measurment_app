@@ -1,6 +1,5 @@
 //todo update weight
 //todo delte record
-//todo solve problem with reload of website after send new data or edditing empty row in additional data
 const server_address = "http://localhost:8080";
 let ids = {};
 let basicCircumferenceKeyArray = ["abdominal", "chest", "hip", "waist"];
@@ -288,8 +287,16 @@ async function addNew(dataSectionId){
         changed[inputElem.id] = inputElem.value
     }
     var preparedToSend = prepareDataToSendNew(changed, dataSectionId);
-    await sendNew(preparedToSend);
-    cancel();
+    let response = await sendNew(preparedToSend);
+    let responseObject = await response.json();
+    if(response.ok){
+        cancel();
+    }
+    else{
+        let err = responseObject.error;
+        console.error(err);
+        console.error(responseObject.details);
+    }
 }
 
 
@@ -359,8 +366,16 @@ async function save(dataSectionId){
         changed[inputElem.id] = inputElem.value
     }
     var preparedToSend = prepareDataToSendUpdate(changed, dataSectionId);
-    await sendUpdate(preparedToSend);
-    cancel();
+    let response = await sendUpdate(preparedToSend);
+    let responseObject = await response.json();
+    if(response.ok){
+        cancel();
+    }
+    else{
+        let err = responseObject.error
+        console.error(err);
+        console.error(responseObject.details);
+    }
 }
 
 function prepareDataToSendUpdate(changed, sectionId){
@@ -394,7 +409,7 @@ function prepareDataToSendNew(changed, sectionId){
 
 async function sendNew(toSend){
     const url = server_address + '/circumference/addNewCircumference';
-    fetch(url, {
+    let response = await fetch(url, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -402,11 +417,12 @@ async function sendNew(toSend){
         body: JSON.stringify(toSend)
     })
     .catch(error => console.error('Error:', error));
+    return response;
 }
 
 async function sendUpdate(toSend){
     const url = server_address + '/circumference/update/'+encodeURIComponent(toSend.id);
-    fetch(url, {
+    let response = await fetch(url, {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
@@ -414,6 +430,7 @@ async function sendUpdate(toSend){
         body: JSON.stringify(toSend)
     })
     .catch(error => console.error('Error:', error));
+    return response;
 }
 
 
