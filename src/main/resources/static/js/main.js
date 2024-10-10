@@ -8,8 +8,8 @@ async function getBasicBodyData() {
     return getData(url);
 }
 
-async function getOldestWeightRecord(){
-    const url = server_address + "/body/weight/get/first";
+async function getLastWeightRecord(){
+    const url = server_address + "/body/weight/get/last";
     return getData(url);
 }
 
@@ -59,6 +59,6 @@ document.getElementById('startDate').valueAsDate = before;
 document.getElementById('endDate').valueAsDate = today;
 (async function() {
   var bd = await getBasicBodyData();
-  var lastWeight = await getOldestWeightRecord();
+  var lastWeight = await getLastWeightRecord();
   putDataToSummary(bd, lastWeight);
 })();
