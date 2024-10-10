@@ -36,7 +36,7 @@ public class MeasurementController {
     }
 
     @PatchMapping("/update/{id}")
-    public ResponseEntity<CircumferenceData> updateCircumference(@PathVariable("id") long id, @RequestBody CircumferenceData circumferenceData) throws NoSuchObjectInDatabaseException, MissingRequiredDataException {
+    public ResponseEntity<CircumferenceData> updateCircumference(@PathVariable("id") long id, @RequestBody CircumferenceData circumferenceData) throws NoSuchObjectInDatabaseException, MissingRequiredDataException, InvalidDataException, DatabaseException {
         log.info("Updating weight circumference data with ID: {}", circumferenceData.getId());
         CircumferenceData updateCircumferenceData = this.circumferenceMeasurementService.updateCircumference(circumferenceData);
         return ResponseEntity.ok(updateCircumferenceData);

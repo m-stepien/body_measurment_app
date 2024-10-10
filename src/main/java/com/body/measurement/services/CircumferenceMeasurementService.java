@@ -57,12 +57,13 @@ public class CircumferenceMeasurementService {
         return circumferenceData;
     }
 
-    public CircumferenceData updateCircumference(CircumferenceData circumferenceData) throws NoSuchObjectInDatabaseException, MissingRequiredDataException {
+    public CircumferenceData updateCircumference(CircumferenceData circumferenceData) throws NoSuchObjectInDatabaseException, MissingRequiredDataException, InvalidDataException, DatabaseException {
         log.info("Start update CircumferenceData {}", circumferenceData);
         CircumferenceData updatedCircumferenceData;
         if (circumferenceData.getId() != null) {
             try {
                 updatedCircumferenceData = this.mapCircumferenceData(circumferenceData);
+                this.saveCircumferenceMeasurement(updatedCircumferenceData);
             }
             catch (NoSuchObjectInDatabaseException e){
                 log.error("Failed to update CircumferenceData {}", circumferenceData);
