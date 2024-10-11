@@ -33,6 +33,9 @@ body {
     color: #5a9bd5;
     margin-bottom: 10px;
 }
+.measurement-section:last-of-type{
+    border-bottom: 1px solid #ccc;
+}
 
 .body-measurements {
     display: grid;
@@ -110,6 +113,33 @@ body {
 .back-button:focus {
     outline: none;
     box-shadow: 0 0 5px rgba(255, 111, 97, 0.5);
+}
+
+.delete-button {
+    background-color: #e74c3c;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.delete-button:hover {
+    background-color: #c0392b;
+    box-shadow: 0px 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.delete-button:active {
+    background-color: #a93226;
+    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2);
+}
+
+.delete-button:focus {
+    outline: none;
+    box-shadow: 0px 0px 0px 3px rgba(231, 76, 60, 0.4);
 }
 
 @media (max-width: 600px) {

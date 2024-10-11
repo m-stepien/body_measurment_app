@@ -1,4 +1,5 @@
-//todo delte record
+//todo adding error message
+//todo refaktor this complete mess
 const server_address = "http://localhost:8080";
 let ids = {};
 let basicCircumferenceKeyArray = ["abdominal", "chest", "hip", "waist"];
@@ -136,6 +137,17 @@ function putCircumferenceDataInsideDOM(measurementData){
     }
 }
 
+function putDeleteRecordInsideDOM(){
+    var summary = document.getElementById("body-summary");
+    var deleteButton = createButton("Delete");
+    deleteButton.classList.add("delete-button");
+    deleteButton.id = "delete-button";
+    addEventListener("click", function() {
+                           deleteRecord();
+                           });
+    summary.appendChild(deleteButton);
+}
+
 function createButton(text){
         let button = document.createElement('button');
         button.textContent = text;
@@ -256,6 +268,7 @@ async function initReadView(){
     putWeightInsideDOM(weight);
     measurementData = await getMeasurementData(date);
     putCircumferenceDataInsideDOM(measurementData);
+    putDeleteRecordInsideDOM();
 }
 
 function edit(measurementsDataId, buttonContainerId){
@@ -511,6 +524,55 @@ async function updateWeight(){
     });
     parent.appendChild(cancelButton);
     parent.appendChild(saveButton);
+}
+
+async function deleteMeasurementData(id){
+        const url = server_address + "/circumference/delete/" + encodeURIComponent(id)
+        let response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+            'Content-Type': 'application/json'
+            }
+            })
+            .catch(error => console.error('Error:', error));
+        return response;
+}
+
+async function deleteWeight(id){
+    const url = server_address + "/body/weight/delete/" + encodeURIComponent(id)
+    let response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+        })
+        .catch(error => console.error('Error:', error));
+    return response;
+}
+
+async function deleteRecord(){
+    let measurementsId = ids.main_id;
+    let weightId = ids.weightId;
+    let operationOnMeasurementOk = true;
+    if(measurementsId){
+        let responseMeasurement = await deleteMeasurementData(measurementsId);
+        if(!responseMeasurement.ok){
+            operationOnMeasurementOk = false;
+            let responseObject = responseMeasurement.json();
+            console.error(responseObject.error);
+            console.error(responseObject.details);
+        }
+    }
+    let responseWeight = await deleteWeight(weightId);
+    console.log(responseWeight);
+    if(responseWeight.ok){
+        window.location.href = "/";
+    }
+    else{
+        let responseObject = responseWeight.json();
+        console.error(responseObject.error);
+        console.error(responseObject.details);
+    }
 }
 
 let backButton = document.getElementById("backButton");
