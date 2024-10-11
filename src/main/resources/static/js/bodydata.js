@@ -1,6 +1,5 @@
-//todo adding error message
 //todo refaktor this complete mess
-//todo cleaning procedures in database
+
 const server_address = "http://localhost:8080";
 let ids = {};
 let basicCircumferenceKeyArray = ["abdominal", "chest", "hip", "waist"];

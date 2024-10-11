@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class BodyMeasurementApp {
     //TODO 4. refaktoring backend
     //TODO 7. podział na użytkowników
-
+    //todo indexes in database
+    //todo documentation
+    //todo todo readme
     public static void main(String[] args) {
         SpringApplication.run(BodyMeasurementApp.class, args);
     }
