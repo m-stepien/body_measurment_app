@@ -31,6 +31,20 @@ public class CircumferenceValidator implements Validator {
     }
 
     @Override
+    public boolean validateUpdateCircumferenceData(CircumferenceData circumferenceData) throws InvalidDataException {
+        log.info("Start update circumference data validation {}", circumferenceData);
+        boolean result = false;
+        if (circumferenceData.getBasicCircumference() != null) {
+            result = this.checkSignOnFields(circumferenceData.getBasicCircumference());
+            if (circumferenceData.getAdditionalCircumference() != null) {
+                result = result && this.checkSignOnFields(circumferenceData.getAdditionalCircumference());
+            }
+        }
+        log.info("Circumference update data validation completed");
+        return result;
+    }
+
+    @Override
     public boolean checkRequiredField(BasicCircumference basicCircumference) throws MissingRequiredDataException {
         log.info("Start checking required field in basic circumference {}", basicCircumference);
         if(basicCircumference.getAbdominal() == null || basicCircumference.getHip() == null
@@ -44,13 +58,13 @@ public class CircumferenceValidator implements Validator {
     @Override
     public boolean checkSignOnFields(BasicCircumference basicCircumference) throws InvalidDataException{
         log.info("Start check sign on fields for basic circumference {}", basicCircumference);
-        if (basicCircumference.getChest() <= 0) {
+        if (basicCircumference.getChest() != null && basicCircumference.getChest() <= 0) {
             throw new InvalidDataException(BasicCircumference.class.getName(), "chest");
-        } else if (basicCircumference.getHip() <= 0) {
+        } else if (basicCircumference.getHip() != null && basicCircumference.getHip() <= 0) {
             throw new InvalidDataException(BasicCircumference.class.getName(), "hip");
-        } else if (basicCircumference.getAbdominal() <= 0) {
+        } else if (basicCircumference.getAbdominal() != null && basicCircumference.getAbdominal() <= 0) {
             throw new InvalidDataException(BasicCircumference.class.getName(), "abdominal");
-        } else if (basicCircumference.getWaist() <= 0) {
+        } else if (basicCircumference.getWaist() != null && basicCircumference.getWaist() <= 0) {
             throw new InvalidDataException(BasicCircumference.class.getName(), "waist");
         }
         log.info("Check sign on fields for basic circumference completed");

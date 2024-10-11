@@ -10,10 +10,11 @@ public interface Validator {
 
     public boolean validateCircumferenceData(CircumferenceData circumferenceData) throws MissingRequiredDataException, InvalidDataException;
 
+    public boolean validateUpdateCircumferenceData(CircumferenceData circumferenceData) throws InvalidDataException;
+
     public boolean checkRequiredField(BasicCircumference basicCircumference) throws MissingRequiredDataException;
 
     public boolean checkSignOnFields(BasicCircumference basicCircumference) throws InvalidDataException;
 
     public boolean checkSignOnFields(AdditionalCircumference additionalCircumference) throws InvalidDataException;
-
 }
