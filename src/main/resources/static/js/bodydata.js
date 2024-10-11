@@ -1,5 +1,6 @@
 //todo adding error message
 //todo refaktor this complete mess
+//todo cleaning procedures in database
 const server_address = "http://localhost:8080";
 let ids = {};
 let basicCircumferenceKeyArray = ["abdominal", "chest", "hip", "waist"];
@@ -318,6 +319,7 @@ async function addNew(dataSectionId){
         let err = responseObject.error;
         console.error(err);
         console.error(responseObject.details);
+        showErrorAlert(err);
     }
 }
 
@@ -397,6 +399,7 @@ async function save(dataSectionId){
         let err = responseObject.error
         console.error(err);
         console.error(responseObject.details);
+        showErrorAlert(err);
     }
 }
 
@@ -475,6 +478,7 @@ async function saveUpdateWeight(){
         let err = responseObject.error;
         console.error(err);
         console.error(responseObject.details);
+        showErrorAlert(err);
     }
 
 }
@@ -572,7 +576,22 @@ async function deleteRecord(){
         let responseObject = responseWeight.json();
         console.error(responseObject.error);
         console.error(responseObject.details);
+        showErrorAlert(responseObject.error);
     }
+}
+
+function showErrorAlert(errorMessage) {
+    const errorAlert = document.createElement("div");
+    errorAlert.classList.add("error-alert");
+    errorAlert.textContent = "Error: " + errorMessage;
+    const closeButton = document.createElement("button");
+    closeButton.textContent = "Close";
+    closeButton.classList.add("close-button");
+    closeButton.addEventListener("click", () => {
+        errorAlert.remove();
+    });
+    errorAlert.appendChild(closeButton);
+    document.body.appendChild(errorAlert);
 }
 
 let backButton = document.getElementById("backButton");
