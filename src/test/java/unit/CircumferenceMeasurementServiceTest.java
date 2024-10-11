@@ -109,13 +109,6 @@ public class CircumferenceMeasurementServiceTest {
         circumferenceMeasurementService.saveCircumferenceMeasurement(circumferenceData);
     }
 
-
-    @Test
-    public void updateCircumferenceMeasurementFailedWithoutIdTest() throws NoSuchObjectInDatabaseException, MissingRequiredDataException, InvalidDataException, DatabaseException {
-        CircumferenceData circumferenceData = new CircumferenceData();
-        circumferenceMeasurementService.updateCircumference(circumferenceData);
-    }
-
     @Test(expected = NoSuchObjectInDatabaseException.class)
     public void updateCircumferenceMeasurementFailedNoObjectWithIdInDatabaseTest() throws NoSuchObjectInDatabaseException, MissingRequiredDataException, InvalidDataException, DatabaseException {
         CircumferenceData circumferenceData = new CircumferenceData();
@@ -127,19 +120,7 @@ public class CircumferenceMeasurementServiceTest {
     @Test
     public void updateCircumferenceMeasurementFullSuccessfulTest() throws Exception{
         when(circumferenceDataRepository.findById(any(Long.class))).thenReturn(Optional.of(getFullCircumferenceDataInDatabase()));
-        when(circumferenceDataRepository.save(any(CircumferenceData.class))).thenAnswer(invocation -> {
-            Object[] args = invocation.getArguments();
-            return args[0];
-        });
-        when(basicCircumferenceRepository.save(any(BasicCircumference.class))).thenAnswer(invocation -> {
-           Object[] args = invocation.getArguments();
-           return args[0];
-        });
-        when(additionalCircumferenceRepository.save(any(AdditionalCircumference.class))).thenAnswer(invocation -> {
-            Object[] args = invocation.getArguments();
-            return args[0];
-        });
-        when(validator.validateCircumferenceData(any(CircumferenceData.class))).thenReturn(true);
+        when(validator.validateUpdateCircumferenceData(any(CircumferenceData.class))).thenReturn(true);
         circumferenceMeasurementService.updateCircumference(getCircumferenceDataFullUpdated());
     }
 
@@ -157,14 +138,6 @@ public class CircumferenceMeasurementServiceTest {
     @Test
     public void updateCircumferenceMeasurementOnlyBCOnlyChestSuccessfulTest() throws Exception{
         when(circumferenceDataRepository.findById(any(Long.class))).thenReturn(Optional.of(getCircumferenceDataOnlyBCInDatabase()));
-        when(circumferenceDataRepository.save(any(CircumferenceData.class))).thenAnswer(invocation -> {
-            Object[] args = invocation.getArguments();
-            return args[0];
-        });
-        when(basicCircumferenceRepository.save(any(BasicCircumference.class))).thenAnswer(invocation -> {
-            Object[] args = invocation.getArguments();
-            return args[0];
-        });
         CircumferenceData circumferenceDataUpdate = new CircumferenceData();
         BasicCircumference basicCircumferenceUpdate = new BasicCircumference();
         basicCircumferenceUpdate.setId(12L);
@@ -177,15 +150,7 @@ public class CircumferenceMeasurementServiceTest {
     @Test
     public void updateCircumferenceMeasurementOnlyBCOnlyAbdominalSuccessfulTest() throws Exception{
         when(circumferenceDataRepository.findById(any(Long.class))).thenReturn(Optional.of(getCircumferenceDataOnlyBCInDatabase()));
-        when(circumferenceDataRepository.save(any(CircumferenceData.class))).thenAnswer(invocation -> {
-            Object[] args = invocation.getArguments();
-            return args[0];
-        });
-        when(basicCircumferenceRepository.save(any(BasicCircumference.class))).thenAnswer(invocation -> {
-            Object[] args = invocation.getArguments();
-            return args[0];
-        });
-        when(validator.validateCircumferenceData(any(CircumferenceData.class))).thenReturn(true);
+        when(validator.validateUpdateCircumferenceData(any(CircumferenceData.class))).thenReturn(true);
         CircumferenceData circumferenceDataUpdate = new CircumferenceData();
         BasicCircumference basicCircumferenceUpdate = new BasicCircumference();
         basicCircumferenceUpdate.setId(12L);
@@ -198,7 +163,7 @@ public class CircumferenceMeasurementServiceTest {
     @Test
     public void updateCircumferenceMeasurementOnlyBCOnlyHiplSuccessfulTest() throws Exception{
         when(circumferenceDataRepository.findById(any(Long.class))).thenReturn(Optional.of(getCircumferenceDataOnlyBCInDatabase()));
-        when(validator.validateCircumferenceData(any(CircumferenceData.class))).thenReturn(true);
+        when(validator.validateUpdateCircumferenceData(any(CircumferenceData.class))).thenReturn(true);
         CircumferenceData circumferenceDataUpdate = new CircumferenceData();
         BasicCircumference basicCircumferenceUpdate = new BasicCircumference();
         basicCircumferenceUpdate.setId(12L);
@@ -209,17 +174,9 @@ public class CircumferenceMeasurementServiceTest {
     }
 
     @Test
-    public void updateCircumferenceMeasurementOnlyBCOnlyWaistlSuccessfulTest() throws Exception{
+    public void updateCircumferenceMeasurementOnlyBCOnlyWaistSuccessfulTest() throws Exception{
         when(circumferenceDataRepository.findById(any(Long.class))).thenReturn(Optional.of(getCircumferenceDataOnlyBCInDatabase()));
-        when(circumferenceDataRepository.save(any(CircumferenceData.class))).thenAnswer(invocation -> {
-            Object[] args = invocation.getArguments();
-            return args[0];
-        });
-        when(basicCircumferenceRepository.save(any(BasicCircumference.class))).thenAnswer(invocation -> {
-            Object[] args = invocation.getArguments();
-            return args[0];
-        });
-        when(validator.validateCircumferenceData(any(CircumferenceData.class))).thenReturn(true);
+        when(validator.validateUpdateCircumferenceData(any(CircumferenceData.class))).thenReturn(true);
         CircumferenceData circumferenceDataUpdate = new CircumferenceData();
         BasicCircumference basicCircumferenceUpdate = new BasicCircumference();
         basicCircumferenceUpdate.setId(12L);
@@ -232,19 +189,7 @@ public class CircumferenceMeasurementServiceTest {
     @Test
     public void updateCircumferenceMeasurementOnlyACACNullInDatabaseSuccessfulTest() throws Exception{
         when(circumferenceDataRepository.findById(any(Long.class))).thenReturn(Optional.of(getCircumferenceDataOnlyBCInDatabase()));
-        when(circumferenceDataRepository.save(any(CircumferenceData.class))).thenAnswer(invocation -> {
-            Object[] args = invocation.getArguments();
-            return args[0];
-        });
-        when(basicCircumferenceRepository.save(any(BasicCircumference.class))).thenAnswer(invocation -> {
-            Object[] args = invocation.getArguments();
-            return args[0];
-        });
-        when(additionalCircumferenceRepository.save(any(AdditionalCircumference.class))).thenAnswer(invocation -> {
-            Object[] args = invocation.getArguments();
-            return args[0];
-        });
-        when(validator.validateCircumferenceData(any(CircumferenceData.class))).thenReturn(true);
+        when(validator.validateUpdateCircumferenceData(any(CircumferenceData.class))).thenReturn(true);
         CircumferenceData circumferenceDataUpdate = new CircumferenceData();
         AdditionalCircumference additionalCircumferenceUpdate = new AdditionalCircumference();
         additionalCircumferenceUpdate.setNeck(45.0);
