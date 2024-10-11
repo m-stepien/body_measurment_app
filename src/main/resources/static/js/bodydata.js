@@ -143,7 +143,7 @@ function putDeleteRecordInsideDOM(){
     var deleteButton = createButton("Delete");
     deleteButton.classList.add("delete-button");
     deleteButton.id = "delete-button";
-    addEventListener("click", function() {
+    deleteButton.addEventListener("click", function() {
                            deleteRecord();
                            });
     summary.appendChild(deleteButton);
@@ -581,17 +581,20 @@ async function deleteRecord(){
 }
 
 function showErrorAlert(errorMessage) {
-    const errorAlert = document.createElement("div");
-    errorAlert.classList.add("error-alert");
-    errorAlert.textContent = "Error: " + errorMessage;
-    const closeButton = document.createElement("button");
-    closeButton.textContent = "Close";
-    closeButton.classList.add("close-button");
-    closeButton.addEventListener("click", () => {
-        errorAlert.remove();
-    });
-    errorAlert.appendChild(closeButton);
-    document.body.appendChild(errorAlert);
+                let overlay = document.createElement("div");
+                overlay.classList.add("overlay");
+                let errorAlert = document.createElement("div");
+                errorAlert.classList.add("error-alert");
+                errorAlert.textContent = "Error: " + errorMessage;
+                const closeButton = document.createElement("button");
+                closeButton.textContent = "Close";
+                closeButton.classList.add("close-button");
+                closeButton.addEventListener("click", () => {
+                    overlay.remove();
+                });
+                errorAlert.appendChild(closeButton);
+                overlay.appendChild(errorAlert);
+                document.body.appendChild(overlay);
 }
 
 let backButton = document.getElementById("backButton");
